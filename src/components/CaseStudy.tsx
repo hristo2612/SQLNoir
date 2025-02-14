@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Book, Code, Send, Database, HelpCircle } from "lucide-react";
 import { CaseBrief } from "./case-study/CaseBrief";
 import { SQLWorkspace } from "./case-study/SQLWorkspace";
@@ -23,8 +23,26 @@ interface CaseStudyProps {
 export function CaseStudy({ caseData, onSolve }: CaseStudyProps) {
   const [activeTab, setActiveTab] = useState("brief");
 
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      const currentIndex = tabs.findIndex((tab) => tab.id === activeTab);
+      if (event.key === "Tab") {
+        event.preventDefault();
+        const nextIndex = event.shiftKey
+          ? (currentIndex - 1 + tabs.length) % tabs.length
+          : (currentIndex + 1) % tabs.length;
+        setActiveTab(tabs[nextIndex].id);
+      }
+    },
+    [activeTab]
+  );
+
   return (
-    <div className="min-h-screen bg-amber-50/50 p-4 md:p-8">
+    <div
+      className="min-h-screen bg-amber-50/50 p-4 md:p-8"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
       <div className="max-w-7xl mx-auto bg-amber-50 rounded-lg shadow-lg border border-amber-900/10">
         <div className="border-b border-amber-900/10">
           <div className="flex overflow-x-auto">
@@ -37,10 +55,9 @@ export function CaseStudy({ caseData, onSolve }: CaseStudyProps) {
                   onClick={() => setActiveTab(tab.id)}
                   className={`
                     flex items-center px-6 py-4 font-detective text-sm focus:outline-none
-                    ${
-                      isActive
-                        ? "bg-amber-100 text-amber-900 border-b-2 border-amber-900"
-                        : "text-amber-700 hover:bg-amber-100/50"
+                    ${isActive
+                      ? "bg-amber-100 text-amber-900 border-b-2 border-amber-900"
+                      : "text-amber-700 hover:bg-amber-100/50"
                     }
                   `}
                 >
