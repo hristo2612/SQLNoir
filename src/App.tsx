@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronRight, Github, Coffee, Share2 } from "lucide-react";
+import { ChevronRight, Github, Coffee, Share2, Loader2 } from "lucide-react"; // Import Loader2
 import { BsIncognito } from "react-icons/bs";
 import { FaDiscord } from "react-icons/fa";
 import { Dashboard } from "./components/Dashboard";
@@ -19,6 +19,7 @@ export default function App() {
   const [selectedCase, setSelectedCase] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
   const [userInfo, setUserInfo] = useState<any>(null);
+  const [isGuest, setIsGuest] = useState(false); // Add state to track if the user is a guest
   const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -30,11 +31,34 @@ export default function App() {
         .eq("id", userId)
         .single();
 
-      if (error) throw error;
-      setUserInfo(data);
+      if (error && error.message !== 'JSON object requested, multiple (or no) rows returned') {
+        // Ignore 'no rows returned' for potentially new users, handle other errors
+        throw error;
+      }
+      // Merge fetched data with existing guest data if necessary (though unlikely for logged-in users)
+      setUserInfo((prev: any) => ({ ...prev, ...data }));
     } catch (error) {
       console.error("Error fetching user info:", error);
+      // If fetching fails for a logged-in user, maybe fall back or show error
     }
+  };
+
+  // Function to load guest user data from localStorage
+  const loadGuestUser = () => {
+    const guestData = localStorage.getItem('sqlnoir-guest-user');
+    if (guestData) {
+      const parsedGuest = JSON.parse(guestData);
+      setUser(parsedGuest);
+      setUserInfo(parsedGuest); // Use local data directly for guests
+      setIsGuest(true); // Set guest flag
+      return true; // Indicate guest was loaded
+    }
+    return false; // Indicate no guest found
+  };
+
+  // Function to save guest user data to localStorage
+  const saveGuestUser = (data: any) => {
+    localStorage.setItem('sqlnoir-guest-user', JSON.stringify(data));
   };
 
   useEffect(() => {
@@ -42,11 +66,13 @@ export default function App() {
     setLoading(true);
     supabase.auth.getSession().then(({ data: { session } }) => {
       const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      if (currentUser) {
+      if (currentUser) { // If Supabase user exists
         // Auto-start if user is logged in
         setStarted(true);
         fetchUserInfo(currentUser.id);
+      } else if (loadGuestUser()) { // Otherwise, try loading guest user
+        // Auto-start if guest user exists
+        setStarted(true);
       }
       setLoading(false);
     });
@@ -59,11 +85,17 @@ export default function App() {
       setUser(currentUser);
 
       if (currentUser) {
+        setIsGuest(false); // No longer a guest if logged in
         // Auto-start if user logs in
         setStarted(true);
         fetchUserInfo(currentUser.id);
       } else {
-        setUserInfo(null);
+        // If logged out, check again for guest user (might have been logged in before)
+        if (!loadGuestUser()) {
+          // If no guest user found after logout, clear user info
+          setUserInfo(null);
+          setIsGuest(false);
+        }
       }
     });
 
@@ -72,8 +104,42 @@ export default function App() {
 
   const handleCaseSolved = async () => {
     if (user) {
-      await fetchUserInfo(user.id);
+      if (isGuest) {
+        // Update guest user info in state and localStorage
+        setUserInfo((prev: any) => {
+          const updatedInfo = {
+            ...prev,
+            xp: (prev.xp || 0) + (selectedCase?.xp_reward || 100), // Add XP
+            completed_cases: [...(prev.completed_cases || []), selectedCase.id], // Add solved case ID
+          };
+          saveGuestUser(updatedInfo); // Save updated guest data to localStorage
+          return updatedInfo;
+        });
+      } else {
+        // For registered users, update via Supabase
+        await fetchUserInfo(user.id);
+        // The fetchUserInfo call implicitly updates state after Supabase update (assuming trigger works)
+        // Or explicitly update state here if needed after Supabase call confirms success
+      }
     }
+  };
+
+  // Callback for when a guest signs in via UserMenu
+  const handleSignInGuest = (guestUser: any) => {
+    setUser(guestUser);
+    setUserInfo(guestUser);
+    setIsGuest(true);
+    setStarted(true); // Start the game for the guest
+  };
+
+  // Callback for clearing guest data
+  const handleClearGuest = () => {
+    localStorage.removeItem('sqlnoir-guest-user'); // Remove from localStorage
+    setUser(null);
+    setUserInfo(null);
+    setIsGuest(false);
+    // Optionally reset 'started' state or navigate back to landing
+    // setStarted(false);
   };
 
   // Show loading state while checking authentication
@@ -129,7 +195,13 @@ export default function App() {
         onClose={() => setIsSharePopupOpen(false)}
       />
       <div className="absolute top-4 right-4 flex items-center gap-4">
-        <UserMenu user={user} onSignOut={() => setUser(null)} />
+        {/* Pass user, sign out handlers, and guest handlers to UserMenu */}
+        <UserMenu
+          user={user}
+          onSignOut={() => supabase.auth.signOut()} // Standard sign out for registered users
+          onSignInGuest={handleSignInGuest}
+          onClearGuest={handleClearGuest}
+        />
         <button
           onClick={() => setIsSharePopupOpen(true)}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-100/80 hover:bg-amber-200/80 
