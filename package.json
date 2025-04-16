@@ -11,13 +11,15 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.7",
+    "@types/uuid": "^10.0.0",
     "@vercel/analytics": "^1.5.0",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.0.1",
     "reactflow": "^11.11.4",
-    "sql.js": "^1.10.2"
+    "sql.js": "^1.10.2",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -34,6 +36,6 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
-    "vite": "^5.4.2"
+    "vite": "^6.2.6"
   }
 }
