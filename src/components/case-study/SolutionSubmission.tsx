@@ -3,6 +3,15 @@ import { Send, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import type { Case } from "../../types";
 
+// List of common SQL reserved words (extend as needed)
+const sqlReservedWords = [
+  'select', 'insert', 'update', 'delete', 'from', 'where', 'and', 'or',
+  'join', 'inner', 'left', 'right', 'outer', 'on', 'group', 'by', 'having',
+  'order', 'asc', 'desc', 'limit', 'create', 'drop', 'alter', 'table',
+  'database', 'index', 'view', 'procedure', 'function', 'trigger', 'union',
+  'distinct', 'all', 'as', 'into', 'values', 'set'
+];
+
 interface SolutionSubmissionProps {
   caseData: Case;
   onSolve: () => void;
@@ -24,9 +33,34 @@ export function SolutionSubmission({
     setError(null);
 
     try {
-      // Check if the answer matches the solution (case-insensitive)
-      const isAnswerCorrect =
-        answer.trim().toLowerCase() === caseData.solution.answer.toLowerCase();
+	
+	const theAnswer = answer.trim().toLowerCase();
+	
+    // Check answer length
+    const minLength = 5;   // Minimum allowed length
+    const maxLength = 60;  // Maximum allowed length	
+	if ( theAnswer.length < minLength) {
+       setError(`Error: Answer is too short. It must be at least ${minLength} characters.`);
+       setIsLoading(false);
+       return;
+	}		
+	if ( theAnswer.length > maxLength) {
+       setError(`Error: Answer is too long. It must be at most ${maxLength} characters.`);
+       setIsLoading(false);
+       return;
+	}			
+    // Check for SQL reserved words // https://github.com/hristo2612/SQLNoir/issues/26
+    const containsReservedWord = sqlReservedWords.some(word => new RegExp(`\\b${word}\\b`, 'i').test(theAnswer));
+    // If a reserved word is found, set the error message and stop processing
+    if (containsReservedWord) {
+       setError('No SQL queries allow here!, we are looking for the name of the person who commit the crime.');
+       setIsLoading(false);
+       return;
+    }
+	
+    // Check if the answer matches the solution (case-insensitive)
+    const isAnswerCorrect =
+    theAnswer === caseData.solution.answer.toLowerCase();
 
       if (isAnswerCorrect) {
         const {
