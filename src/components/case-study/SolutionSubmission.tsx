@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Send, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import type { Case } from "../../types";
@@ -17,6 +17,7 @@ export function SolutionSubmission({
   const [isCorrect, setIsCorrect] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);      // Storing user data if logged in for conditional rendering XP reward message
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +86,14 @@ export function SolutionSubmission({
     }
   };
 
+  // Storing the user data in state if user is logged in
+  // This will allow us to show the XP reward message conditionally
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+    });
+  }, []);
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="bg-amber-100/50 p-6 rounded-lg border border-amber-900/10">
@@ -131,7 +140,8 @@ export function SolutionSubmission({
                     </p>
                   </div>
                 )}
-                {isCorrect && (
+                {/* Showing this only when user is not logged in */}
+                {!user && (
                   <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
                     <p className="text-amber-800 text-sm font-medium">
                       Note: You need an account to gain the XP reward for this
