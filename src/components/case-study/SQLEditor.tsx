@@ -12,8 +12,9 @@ const SQL_KEYWORDS = [
   "RIGHT",
   "INNER",
   "OUTER",
-  "GROUP BY",
-  "ORDER BY",
+  "GROUP",
+  "ORDER",
+  "BY",
   "HAVING",
   "LIMIT",
   "OFFSET",
@@ -29,11 +30,12 @@ const SQL_KEYWORDS = [
   "INTO",
   "VALUES",
   "SET",
+  "NOT",
   "NULL",
-  "NOT NULL",
   "DEFAULT",
-  "PRIMARY KEY",
-  "FOREIGN KEY",
+  "PRIMARY",
+  "FOREIGN",
+  "KEY",
   "AND",
   "OR",
   "IN",
@@ -274,12 +276,17 @@ export function SQLEditor({
     let remaining = code;
 
     while (remaining.length > 0) {
-      // Check for keywords
-      const keywordMatch = remaining.match(
-        new RegExp(`^(${SQL_KEYWORDS.join("|")})\\b`, "i")
-      );
-      if (keywordMatch) {
+      // Check for keywords - only match complete words
+      const keywordMatch = remaining.match(/^([a-zA-Z_][a-zA-Z0-9_]*)/);
+      if (keywordMatch && SQL_KEYWORDS.includes(keywordMatch[0].toUpperCase())) {
         tokens.push({ type: "keyword", value: keywordMatch[0] });
+        remaining = remaining.slice(keywordMatch[0].length);
+        continue;
+      }
+
+      // If we found a word but it's not a keyword, treat it as text
+      if (keywordMatch) {
+        tokens.push({ type: "text", value: keywordMatch[0] });
         remaining = remaining.slice(keywordMatch[0].length);
         continue;
       }
