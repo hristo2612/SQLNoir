@@ -325,55 +325,60 @@ export function SQLEditor({
 
   return (
     <div className="relative font-mono text-sm">
-      <div
-        ref={highlightRef}
-        className="absolute top-0 left-0 right-0 bottom-0 p-4 overflow-auto whitespace-pre-wrap break-words pointer-events-none text-amber-100"
-        aria-hidden="true"
-      >
-        {value ? (
-          tokenize(value).map((token, i) => {
-            switch (token.type) {
-              case "keyword":
-                return (
-                  <span key={i} className="sql-keyword">
-                    {token.value}
-                  </span>
-                );
-              case "string":
-                return (
-                  <span key={i} className="sql-string">
-                    {token.value}
-                  </span>
-                );
-              case "number":
-                return (
-                  <span key={i} className="sql-number">
-                    {token.value}
-                  </span>
-                );
-              case "comment":
-                return (
-                  <span key={i} className="sql-comment">
-                    {token.value}
-                  </span>
-                );
-              default:
-                return <span key={i}>{token.value}</span>;
-            }
-          })
-        ) : (
-          <span className="sql-placeholder">{placeholder}</span>
-        )}
+      {/* Just added a parent div so that there are no mismatch between the 
+          highlighted text and the textarea text.
+      */}
+      <div className="relative w-full h-48">
+        <div
+          ref={highlightRef}
+          className="absolute inset-0 p-4 overflow-auto whitespace-pre-wrap break-words pointer-events-none text-amber-100"
+          aria-hidden="true"
+        >
+          {value ? (
+            tokenize(value).map((token, i) => {
+              switch (token.type) {
+                case "keyword":
+                  return (
+                    <span key={i} className="sql-keyword">
+                      {token.value}
+                    </span>
+                  );
+                case "string":
+                  return (
+                    <span key={i} className="sql-string">
+                      {token.value}
+                    </span>
+                  );
+                case "number":
+                  return (
+                    <span key={i} className="sql-number">
+                      {token.value}
+                    </span>
+                  );
+                case "comment":
+                  return (
+                    <span key={i} className="sql-comment">
+                      {token.value}
+                    </span>
+                  );
+                default:
+                  return <span key={i}>{token.value}</span>;
+              }
+            })
+          ) : (
+            <span className="sql-placeholder">{placeholder}</span>
+          )}
+        </div>
+        <textarea
+          ref={textareaRef}
+          value={value}
+          onChange={handleInputChange}
+          placeholder={placeholder}
+          spellCheck={false}
+          className="p-4 w-full h-48 bg-transparent text-transparent caret-amber-100 resize-none focus:outline-none"
+          style={{ caretColor: "#fef3c7" }}
+        />
       </div>
-      <textarea
-        ref={textareaRef}
-        value={value}
-        onChange={handleInputChange}
-        placeholder={placeholder}
-        spellCheck={false}
-        className="w-full h-48 bg-transparent text-transparent caret-amber-100 p-4 resize-none focus:outline-none"
-        style={{ caretColor: "#fef3c7" }}
-      />
       {isMobile && suggestions.length > 0 && suggestionPosition && (
         <div
           className="absolute z-50 bg-amber-800 rounded-lg shadow-lg border border-amber-700 max-w-[200px]"
