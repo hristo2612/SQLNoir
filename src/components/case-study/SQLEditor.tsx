@@ -55,8 +55,10 @@ const SQL_KEYWORDS = [
 ].sort();
 
 interface SQLEditorProps {
-  value: string;
-  onChange: (value: string) => void;
+  query: string;
+  onChangeQuery: (query: string) => void;
+  selectedQuery: string;
+  onChangeSelectedQuery: (selectedQuery: string) => void;
   onExecute: () => void;
   placeholder?: string;
   caseId: string;
@@ -78,8 +80,10 @@ interface Suggestion {
 }
 
 export function SQLEditor({
-  value,
-  onChange,
+  query,
+  onChangeQuery,
+  selectedQuery,
+  onChangeSelectedQuery,
   onExecute,
   placeholder,
   caseId,
@@ -106,15 +110,15 @@ export function SQLEditor({
   // Load saved query from localStorage on mount
   useEffect(() => {
     const savedQuery = localStorage.getItem(`sqlnoir-query-${caseId}`);
-    if (savedQuery && value === "") {
-      onChange(savedQuery);
+    if (savedQuery && query === "") {
+      onChangeQuery(savedQuery);
     }
   }, [caseId]);
 
   // Save query to localStorage on change
   useEffect(() => {
-    localStorage.setItem(`sqlnoir-query-${caseId}`, value);
-  }, [value, caseId]);
+    localStorage.setItem(`sqlnoir-query-${caseId}`, query);
+  }, [query, caseId]);
 
   // Fetch table names when database is initialized
   useEffect(() => {
@@ -179,12 +183,36 @@ export function SQLEditor({
     return () => textarea.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Handle text selection
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const handleSelection = () => {
+      const selectedText = textarea.value.substring(
+        textarea.selectionStart,
+        textarea.selectionEnd
+      );
+      onChangeSelectedQuery(selectedText);
+    };
+
+    textarea.addEventListener("mouseup", handleSelection);
+    textarea.addEventListener("keyup", handleSelection);
+    textarea.addEventListener("select", handleSelection);
+
+    return () => {
+      textarea.removeEventListener("mouseup", handleSelection);
+      textarea.removeEventListener("keyup", handleSelection);
+      textarea.removeEventListener("select", handleSelection);
+    };
+  }, [onChangeSelectedQuery]);
+
   const getCurrentWordAndPosition = () => {
     const textarea = textareaRef.current;
     if (!textarea) return { word: "", position: null };
 
     const cursorPosition = textarea.selectionStart;
-    const textBeforeCursor = value.substring(0, cursorPosition);
+    const textBeforeCursor = query.substring(0, cursorPosition);
     const words = textBeforeCursor.split(/\s+/);
     const currentWord = words[words.length - 1].toUpperCase();
 
@@ -204,7 +232,7 @@ export function SQLEditor({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
-    onChange(newValue);
+    onChangeQuery(newValue);
 
     if (!isMobile) {
       setSuggestions([]);
@@ -246,8 +274,8 @@ export function SQLEditor({
     event?.preventDefault();
 
     const cursorPosition = textarea.selectionStart;
-    const textBeforeCursor = value.substring(0, cursorPosition);
-    const textAfterCursor = value.substring(cursorPosition);
+    const textBeforeCursor = query.substring(0, cursorPosition);
+    const textAfterCursor = query.substring(cursorPosition);
     const words = textBeforeCursor.split(/\s+/);
     const lastWord = words[words.length - 1];
 
@@ -260,7 +288,7 @@ export function SQLEditor({
     const newCursorPosition =
       cursorPosition - lastWord.length + suggestion.text.length;
 
-    onChange(newValue);
+    onChangeQuery(newValue);
     setSuggestions([]);
     setSuggestionPosition(null);
 
@@ -278,7 +306,10 @@ export function SQLEditor({
     while (remaining.length > 0) {
       // Check for keywords - only match complete words
       const keywordMatch = remaining.match(/^([a-zA-Z_][a-zA-Z0-9_]*)/);
-      if (keywordMatch && SQL_KEYWORDS.includes(keywordMatch[0].toUpperCase())) {
+      if (
+        keywordMatch &&
+        SQL_KEYWORDS.includes(keywordMatch[0].toUpperCase())
+      ) {
         tokens.push({ type: "keyword", value: keywordMatch[0] });
         remaining = remaining.slice(keywordMatch[0].length);
         continue;
@@ -330,8 +361,8 @@ export function SQLEditor({
         className="absolute top-0 left-0 right-0 bottom-0 p-4 overflow-auto whitespace-pre-wrap break-words pointer-events-none text-amber-100"
         aria-hidden="true"
       >
-        {value ? (
-          tokenize(value).map((token, i) => {
+        {query ? (
+          tokenize(query).map((token, i) => {
             switch (token.type) {
               case "keyword":
                 return (
@@ -367,7 +398,7 @@ export function SQLEditor({
       </div>
       <textarea
         ref={textareaRef}
-        value={value}
+        value={query}
         onChange={handleInputChange}
         placeholder={placeholder}
         spellCheck={false}

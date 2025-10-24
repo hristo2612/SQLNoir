@@ -32,7 +32,7 @@ class DatabaseService {
 
     try {
       this.SQL = await initSqlJs({
-        locateFile: (file) => `/${file}`
+        locateFile: (file) => `/${file}`,
       });
       this.initialized = true;
     } catch (error) {
@@ -84,6 +84,7 @@ class DatabaseService {
 
     try {
       const result = this.db.exec(sql);
+      console.log("Query result:", result);
 
       if (result.length === 0) {
         return { columns: [], values: [] };
