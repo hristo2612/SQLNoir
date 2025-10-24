@@ -18,6 +18,7 @@ interface SQLWorkspaceProps {
 export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
   const [query, setQuery] = useState("");
   const [selectedQuery, setSelectedQuery] = useState("");
+  const [lastExecutedQuery, setLastExecutedQuery] = useState("");
   const [error, setError] = useState("");
   const [results, setResults] = useState<QueryResult>({
     columns: [],
@@ -25,21 +26,31 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
   });
   const [isExecuting, setIsExecuting] = useState(false);
   const [isResultsExpanded, setIsResultsExpanded] = useState(true);
+
   const queryToExecute = useMemo(() => {
     const [queryToExecute] = `${selectedQuery || query}`.split(";");
-    return queryToExecute;
+    return queryToExecute.replace(/\n/g, "").trim();
   }, [selectedQuery, query]);
+
+  const executeButtonLabel = useMemo(() => {
+    if (isExecuting) {
+      return `Executing...`;
+    }
+
+    return `Execute ${selectedQuery ? "Selected Query" : "First Query"}`;
+  }, [isExecuting, selectedQuery]);
 
   const { isLoading, error: dbError, executeQuery } = useDatabase(caseId);
 
   const handleExecute = async () => {
     try {
-      if (!queryToExecute.trim()) {
+      if (!queryToExecute) {
         setError("Query cannot be empty");
         setResults({ columns: [], values: [] });
         return;
       }
 
+      setLastExecutedQuery(queryToExecute);
       setIsExecuting(true);
       setError("");
       setIsResultsExpanded(true);
@@ -50,6 +61,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
       const result = await executeQuery(queryToExecute);
 
       if (result.error) {
+        setLastExecutedQuery("");
         setError(result.error);
         setResults({ columns: [], values: [] });
       } else {
@@ -70,6 +82,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
         });
       }
     } catch (err) {
+      setLastExecutedQuery("");
       setError(err instanceof Error ? err.message : "An error occurred");
       setResults({ columns: [], values: [] });
     } finally {
@@ -114,7 +127,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
             ) : (
               <Play className="w-4 h-4 mr-1" />
             )}
-            Execute
+            {executeButtonLabel}
             <span className="hidden md:flex items-center ml-2 text-xs opacity-75">
               <Command className="w-3 h-3 mr-1" />
               Enter
@@ -173,7 +186,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
                         <span>Executed query:</span>
                         <pre className="bg-amber-700 text-white p-2 rounded-lg overflow-auto">
                           <code className="language-sql">
-                            {queryToExecute.replace(/\n/g, "").trim()}
+                            {lastExecutedQuery}
                           </code>
                         </pre>
                       </div>
