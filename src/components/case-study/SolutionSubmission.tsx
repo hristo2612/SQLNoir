@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Send, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { Send, CheckCircle, XCircle, Loader2, Coffee } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import type { Case } from "../../types";
 
@@ -17,7 +17,7 @@ export function SolutionSubmission({
   const [isCorrect, setIsCorrect] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);      // Storing user data if logged in for conditional rendering XP reward message
+  const [user, setUser] = useState<any>(null); // Storing user data if logged in for conditional rendering XP reward message
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,73 +94,102 @@ export function SolutionSubmission({
     });
   }, []);
 
+  const showSuccess = submitted && isCorrect;
+  const showIncorrect = submitted && !isCorrect;
+
+  if (showSuccess) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-6">
+        <div className="bg-green-50 border border-green-200 rounded-xl p-4 sm:p-6 space-y-4">
+          <div className="flex flex-col items-start justify-center gap-3">
+            <div className="flex items-center justify-center gap-3">
+              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
+              <h3 className="font-detective text-2xl text-green-900">
+                Case Solved!
+              </h3>
+            </div>
+            <p className="text-green-800 mt-1">
+              {caseData.solution.successMessage}
+            </p>
+          </div>
+
+          <div className="pt-4 border-t border-green-200">
+            <h4 className="font-detective text-lg text-green-900 mb-2">
+              Explanation
+            </h4>
+            <p className="text-green-800 leading-relaxed">
+              {caseData.solution.explanation}
+            </p>
+          </div>
+
+          {!user && (
+            <div className="bg-white border border-amber-200 rounded-lg p-4">
+              <p className="text-amber-800 text-sm font-medium">
+                Note: Create an account to save your XP rewards for solved
+                cases.
+              </p>
+            </div>
+          )}
+
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3 sm:flex sm:items-center sm:justify-between sm:space-y-0">
+            <div>
+              <p className="font-detective text-amber-900">
+                Enjoyed the mystery?
+              </p>
+              <p className="text-amber-700 text-sm">
+                Buy me a coffee and help fuel the next case.
+              </p>
+            </div>
+            <a
+              href="https://www.buymeacoffee.com/hristobogoev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2 rounded-lg bg-amber-700 text-amber-50 hover:bg-amber-600 transition-colors duration-200"
+            >
+              <Coffee className="w-4 h-4" />
+              <span>Buy me a coffee</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <div className="bg-amber-100/50 p-6 rounded-lg border border-amber-900/10">
-        <h3 className="font-detective text-xl text-amber-900 mb-4">
+      <div className="bg-amber-50 p-4 sm:p-6 rounded-xl border border-amber-900/10 space-y-4">
+        <h3 className="font-detective text-2xl text-amber-900">
           Submit Your Findings
         </h3>
-
-        {submitted ? (
-          <div
-            className={`p-6 rounded-lg ${
-              isCorrect ? "bg-green-100" : "bg-red-100"
-            }`}
-          >
-            <div className="flex items-start">
-              {isCorrect ? (
-                <CheckCircle className="w-6 h-6 text-green-600 mr-3 flex-shrink-0" />
-              ) : (
-                <XCircle className="w-6 h-6 text-red-600 mr-3 flex-shrink-0" />
-              )}
+        {showIncorrect ? (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-5 space-y-3">
+            <div className="flex items-start gap-3">
+              <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
               <div>
-                <h4
-                  className={`font-detective text-lg mb-2 ${
-                    isCorrect ? "text-green-800" : "text-red-800"
-                  }`}
-                >
-                  {isCorrect ? "Case Solved!" : "Not Quite Right"}
+                <h4 className="font-detective text-xl text-red-800">
+                  Not Quite Right
                 </h4>
-                <p
-                  className={`mb-4 ${
-                    isCorrect ? "text-green-700" : "text-red-700"
-                  }`}
-                >
-                  {isCorrect
-                    ? caseData.solution.successMessage
-                    : "Try again with a different answer."}
+                <p className="text-red-700 mt-1">
+                  Try again with a different answer.
                 </p>
-                {isCorrect && (
-                  <div className="bg-white/50 p-4 rounded-lg">
-                    <h5 className="font-detective text-green-800 mb-2">
-                      Case Explanation
-                    </h5>
-                    <p className="text-green-700">
-                      {caseData.solution.explanation}
-                    </p>
-                  </div>
-                )}
-                {/* Showing this only when user is not logged in */}
-                {!user && (
-                  <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
-                    <p className="text-amber-800 text-sm font-medium">
-                      Note: You need an account to gain the XP reward for this
-                      case.
-                    </p>
-                  </div>
-                )}
-                {!isCorrect && (
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="text-red-600 hover:text-red-700 font-detective"
-                  >
-                    Try Again
-                  </button>
-                )}
               </div>
             </div>
+            <button
+              type="button"
+              onClick={() => setSubmitted(false)}
+              className="text-red-700 hover:text-red-800 font-detective"
+            >
+              Try Again
+            </button>
           </div>
         ) : (
+          <p className="text-amber-700">
+            Submit the suspect you discovered through your investigation to see
+            if you cracked the case.
+          </p>
+        )}
+
+        {!showIncorrect && (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block font-detective text-amber-800 mb-2">
@@ -185,7 +214,7 @@ export function SolutionSubmission({
               </div>
             )}
 
-            <div className="flex justify-end">
+            <div className="flex flex-col sm:flex-row sm:justify-end">
               <button
                 type="submit"
                 disabled={isLoading}
