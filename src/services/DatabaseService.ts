@@ -84,7 +84,6 @@ class DatabaseService {
 
     try {
       const result = this.db.exec(sql);
-      console.log("Query result:", result);
 
       if (result.length === 0) {
         return { columns: [], values: [] };

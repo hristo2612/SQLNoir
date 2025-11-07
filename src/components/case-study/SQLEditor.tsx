@@ -57,7 +57,6 @@ const SQL_KEYWORDS = [
 interface SQLEditorProps {
   query: string;
   onChangeQuery: (query: string) => void;
-  selectedQuery: string;
   onChangeSelectedQuery: (selectedQuery: string) => void;
   onExecute: () => void;
   placeholder?: string;
@@ -82,7 +81,6 @@ interface Suggestion {
 export function SQLEditor({
   query,
   onChangeQuery,
-  selectedQuery,
   onChangeSelectedQuery,
   onExecute,
   placeholder,

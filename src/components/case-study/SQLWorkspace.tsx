@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   Play,
   AlertCircle,
@@ -18,7 +18,6 @@ interface SQLWorkspaceProps {
 export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
   const [query, setQuery] = useState("");
   const [selectedQuery, setSelectedQuery] = useState("");
-  const [lastExecutedQuery, setLastExecutedQuery] = useState("");
   const [error, setError] = useState("");
   const [results, setResults] = useState<QueryResult>({
     columns: [],
@@ -26,31 +25,22 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
   });
   const [isExecuting, setIsExecuting] = useState(false);
   const [isResultsExpanded, setIsResultsExpanded] = useState(true);
-
-  const queryToExecute = useMemo(() => {
-    const [queryToExecute] = `${selectedQuery || query}`.split(";");
-    return queryToExecute.replace(/\n/g, "").trim();
-  }, [selectedQuery, query]);
-
-  const executeButtonLabel = useMemo(() => {
-    if (isExecuting) {
-      return `Executing...`;
-    }
-
-    return `Execute ${selectedQuery ? "Selected Query" : "First Query"}`;
-  }, [isExecuting, selectedQuery]);
+  const hasSelection = selectedQuery.trim().length > 0;
 
   const { isLoading, error: dbError, executeQuery } = useDatabase(caseId);
 
   const handleExecute = async () => {
+    const trimmedSelection = selectedQuery.trim();
+    const rawQueryToExecute = trimmedSelection.length > 0 ? selectedQuery : query;
+    const sanitizedQuery = rawQueryToExecute.trim();
+
     try {
-      if (!queryToExecute) {
+      if (!sanitizedQuery) {
         setError("Query cannot be empty");
         setResults({ columns: [], values: [] });
         return;
       }
 
-      setLastExecutedQuery(queryToExecute);
       setIsExecuting(true);
       setError("");
       setIsResultsExpanded(true);
@@ -58,10 +48,9 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
       // Clear previous results first to avoid stale state
       setResults({ columns: [], values: [] });
 
-      const result = await executeQuery(queryToExecute);
+      const result = await executeQuery(sanitizedQuery);
 
       if (result.error) {
-        setLastExecutedQuery("");
         setError(result.error);
         setResults({ columns: [], values: [] });
       } else {
@@ -82,7 +71,6 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
         });
       }
     } catch (err) {
-      setLastExecutedQuery("");
       setError(err instanceof Error ? err.message : "An error occurred");
       setResults({ columns: [], values: [] });
     } finally {
@@ -116,6 +104,11 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
           <button
             onClick={handleExecute}
             disabled={isExecuting}
+            title={
+              hasSelection
+                ? "Executes only the highlighted text"
+                : "Executes the full editor contents"
+            }
             className={`flex items-center px-4 py-1 rounded text-sm transition-colors ${
               isExecuting
                 ? "bg-amber-800 text-amber-300 cursor-not-allowed"
@@ -127,7 +120,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
             ) : (
               <Play className="w-4 h-4 mr-1" />
             )}
-            {executeButtonLabel}
+            {isExecuting ? "Executing..." : "Execute"}
             <span className="hidden md:flex items-center ml-2 text-xs opacity-75">
               <Command className="w-3 h-3 mr-1" />
               Enter
@@ -138,7 +131,6 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
           <SQLEditor
             query={query}
             onChangeQuery={setQuery}
-            selectedQuery={selectedQuery}
             onChangeSelectedQuery={setSelectedQuery}
             onExecute={handleExecute}
             placeholder="SELECT * FROM some_table WHERE..."
@@ -162,9 +154,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
           onClick={() => setIsResultsExpanded(!isResultsExpanded)}
           className="w-full bg-amber-100 px-4 py-2 flex items-center justify-between hover:bg-amber-200/50 transition-colors"
         >
-          <span className="text-amber-900 font-detective">
-            Results ({results.values.length} records)
-          </span>
+          <span className="text-amber-900 font-detective">Results</span>
           {isResultsExpanded ? (
             <ChevronUp className="w-4 h-4 text-amber-700" />
           ) : (
@@ -176,23 +166,6 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead className="bg-amber-50">
-                {results.values.length > 0 && (
-                  <tr>
-                    <td
-                      colSpan={Math.max(1, results.columns.length)}
-                      className="px-6 py-4 opacity-90 whitespace-nowrap text-sm text-amber-800 italic"
-                    >
-                      <div className="flex flex-row items-center gap-2">
-                        <span>Executed query:</span>
-                        <pre className="bg-amber-700 text-white p-2 rounded-lg overflow-auto">
-                          <code className="language-sql">
-                            {lastExecutedQuery}
-                          </code>
-                        </pre>
-                      </div>
-                    </td>
-                  </tr>
-                )}
                 <tr>
                   {results.columns.map((column) => (
                     <th
