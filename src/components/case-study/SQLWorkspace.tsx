@@ -17,6 +17,7 @@ interface SQLWorkspaceProps {
 
 export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
   const [query, setQuery] = useState("");
+  const [selectedQuery, setSelectedQuery] = useState("");
   const [error, setError] = useState("");
   const [results, setResults] = useState<QueryResult>({
     columns: [],
@@ -24,12 +25,17 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
   });
   const [isExecuting, setIsExecuting] = useState(false);
   const [isResultsExpanded, setIsResultsExpanded] = useState(true);
+  const hasSelection = selectedQuery.trim().length > 0;
 
   const { isLoading, error: dbError, executeQuery } = useDatabase(caseId);
 
   const handleExecute = async () => {
+    const trimmedSelection = selectedQuery.trim();
+    const rawQueryToExecute = trimmedSelection.length > 0 ? selectedQuery : query;
+    const sanitizedQuery = rawQueryToExecute.trim();
+
     try {
-      if (!query.trim()) {
+      if (!sanitizedQuery) {
         setError("Query cannot be empty");
         setResults({ columns: [], values: [] });
         return;
@@ -42,7 +48,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
       // Clear previous results first to avoid stale state
       setResults({ columns: [], values: [] });
 
-      const result = await executeQuery(query);
+      const result = await executeQuery(sanitizedQuery);
 
       if (result.error) {
         setError(result.error);
@@ -98,6 +104,11 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
           <button
             onClick={handleExecute}
             disabled={isExecuting}
+            title={
+              hasSelection
+                ? "Executes only the highlighted text"
+                : "Executes the full editor contents"
+            }
             className={`flex items-center px-4 py-1 rounded text-sm transition-colors ${
               isExecuting
                 ? "bg-amber-800 text-amber-300 cursor-not-allowed"
@@ -109,7 +120,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
             ) : (
               <Play className="w-4 h-4 mr-1" />
             )}
-            Execute
+            {isExecuting ? "Executing..." : "Execute"}
             <span className="hidden md:flex items-center ml-2 text-xs opacity-75">
               <Command className="w-3 h-3 mr-1" />
               Enter
@@ -118,8 +129,9 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
         </div>
         <div className="bg-amber-950">
           <SQLEditor
-            value={query}
-            onChange={setQuery}
+            query={query}
+            onChangeQuery={setQuery}
+            onChangeSelectedQuery={setSelectedQuery}
             onExecute={handleExecute}
             placeholder="SELECT * FROM some_table WHERE..."
             caseId={caseId}
