@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Play,
   AlertCircle,
@@ -26,6 +26,38 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
   const [isExecuting, setIsExecuting] = useState(false);
   const [isResultsExpanded, setIsResultsExpanded] = useState(true);
   const hasSelection = selectedQuery.trim().length > 0;
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+  const [platform, setPlatform] = useState<"mac" | "windows" | "other">("other");
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const updateViewport = () => {
+      setIsMobileViewport(window.innerWidth <= 768);
+    };
+
+    updateViewport();
+    window.addEventListener("resize", updateViewport);
+    return () => window.removeEventListener("resize", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const nav = window.navigator;
+    const platformString = (nav.platform || nav.userAgent || "").toLowerCase();
+    if (platformString.includes("mac")) {
+      setPlatform("mac");
+    } else if (platformString.includes("win")) {
+      setPlatform("windows");
+    } else {
+      setPlatform("other");
+    }
+  }, []);
 
   const { isLoading, error: dbError, executeQuery } = useDatabase(caseId);
 
@@ -121,10 +153,18 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
               <Play className="w-4 h-4 mr-1" />
             )}
             {isExecuting ? "Executing..." : "Execute"}
-            <span className="hidden md:flex items-center ml-2 text-xs opacity-75">
-              <Command className="w-3 h-3 mr-1" />
-              Enter
-            </span>
+            {!isMobileViewport && (
+              <span className="hidden md:flex items-center ml-2 text-xs opacity-75">
+                {platform === "mac" ? (
+                  <>
+                    <Command className="w-3 h-3 mr-1" />
+                    Enter
+                  </>
+                ) : (
+                  <>Ctrl + Enter</>
+                )}
+              </span>
+            )}
           </button>
         </div>
         <div className="bg-amber-950">
