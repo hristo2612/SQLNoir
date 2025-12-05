@@ -1,18 +1,16 @@
-import { useState } from "react";
 import { CaseFile } from "./CaseFile";
-import { Lock, Github, Share2, Coffee } from "lucide-react";
-import { FaDiscord } from "react-icons/fa";
-import { UserMenu } from "./auth/UserMenu";
+import { Lock } from "lucide-react";
 import { cases, categories } from "../cases";
-import { SharePopup } from "./SharePopup";
 
 interface DashboardProps {
   onCaseSelect: (caseData: any) => void;
   userInfo: any;
 }
 
-export function Dashboard({ onCaseSelect, userInfo }: DashboardProps) {
-  const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
+export function Dashboard({
+  onCaseSelect,
+  userInfo,
+}: DashboardProps) {
   const currentXP = userInfo?.xp || 0;
   const solvedCases = userInfo?.completed_cases || [];
 
@@ -20,66 +18,12 @@ export function Dashboard({ onCaseSelect, userInfo }: DashboardProps) {
 
   return (
     <div className="min-h-screen bg-amber-50/50">
-      <SharePopup
-        isOpen={isSharePopupOpen}
-        onClose={() => setIsSharePopupOpen(false)}
-      />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8">
-          <h2 className="font-detective text-3xl text-amber-900">Case Files</h2>
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <div className="bg-amber-100 px-3 py-2 rounded-lg">
-              <span className="font-mono text-amber-900 text-sm sm:text-base">
-                XP: {currentXP}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 flex-1 sm:flex-initial">
-              <UserMenu user={userInfo} onSignOut={() => {}} />
-              <a
-                href="https://github.com/hristo2612/SQLNoir"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 
-                         text-amber-900 transition-colors duration-200"
-                title="Star on GitHub"
-              >
-                <Github className="w-5 h-5" />
-                <span className="hidden sm:inline">GitHub</span>
-              </a>
-              <a
-                href="https://www.buymeacoffee.com/hristobogoev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 
-                         text-amber-900 transition-colors duration-200"
-                title="Buy me a coffee"
-              >
-                <Coffee className="w-5 h-5" />
-                <span className="hidden sm:inline">Buy Coffee</span>
-              </a>
-              <a
-                href="https://discord.gg/rMQRwrRYHH"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 
-                         text-amber-900 transition-colors duration-200"
-                title="Join Discord"
-              >
-                <FaDiscord className="w-5 h-5" />
-                <span className="hidden sm:inline">Discord</span>
-              </a>
-              <button
-                onClick={() => setIsSharePopupOpen(true)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 
-                         text-amber-900 transition-colors duration-200"
-                title="Share SQL Noir"
-              >
-                <Share2 className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h2 className="font-detective text-3xl text-amber-900 leading-none">
+            Case Files
+          </h2>
         </div>
-
         <div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {categories.map((category) => {

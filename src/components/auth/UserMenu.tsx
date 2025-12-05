@@ -23,9 +23,9 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
 
   if (!user) {
     return (
-      <>
+      <div className="relative">
         <button
-          onClick={() => setShowAuthModal(true)}
+          onClick={() => setShowAuthModal(!showAuthModal)}
           className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 
                    text-amber-900 transition-colors duration-200"
         >
@@ -35,7 +35,7 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
           isOpen={showAuthModal}
           onClose={() => setShowAuthModal(false)}
         />
-      </>
+      </div>
     );
   }
 

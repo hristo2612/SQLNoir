@@ -1,13 +1,17 @@
-import { useState, useEffect } from "react";
-import { ChevronRight, Github, Coffee, Share2, BookOpen } from "lucide-react";
+/* eslint-disable @next/next/no-img-element */
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import { ChevronRight, Github, Share2, BookOpen } from "lucide-react";
 import { BsIncognito } from "react-icons/bs";
 import { FaDiscord } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Dashboard } from "./Dashboard";
 import { CaseSolver } from "./CaseSolver";
 import { UserMenu } from "./auth/UserMenu";
 import { SharePopup } from "./SharePopup";
 import { supabase } from "../lib/supabase";
+import type { Session } from "@supabase/supabase-js";
 
 const SQL_TIPS = [
   "Comment your complex SQL queries",
@@ -15,15 +19,22 @@ const SQL_TIPS = [
   "End your SQL statements with a semicolon (;)",
 ];
 
-export function GameApp() {
-  const [started, setStarted] = useState(false);
-  const [selectedCase, setSelectedCase] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
-  const [userInfo, setUserInfo] = useState<any>(null);
-  const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+interface GameAppProps {
+  initialSession?: Session | null;
+  initialUserInfo?: any;
+}
 
-  const fetchUserInfo = async (userId: string) => {
+export function GameApp({
+  initialSession = null,
+  initialUserInfo = null,
+}: GameAppProps) {
+  const [started, setStarted] = useState(Boolean(initialSession));
+  const [selectedCase, setSelectedCase] = useState<any>(null);
+  const [user, setUser] = useState<any>(initialSession?.user ?? null);
+  const [userInfo, setUserInfo] = useState<any>(initialUserInfo);
+  const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
+
+  const fetchUserInfo = useCallback(async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from("user_info")
@@ -36,27 +47,31 @@ export function GameApp() {
     } catch (error) {
       console.error("Error fetching user info:", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // Update document title for main game
     document.title =
       "SQL Noir - Interactive SQL Detective Game | Learn SQL Through Mystery Solving";
 
-    // Get initial session
-    setLoading(true);
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      if (currentUser) {
-        // Auto-start if user is logged in
-        setStarted(true);
-        fetchUserInfo(currentUser.id);
-      }
-      setLoading(false);
-    });
+    // Re-validate client session on mount for freshness
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        if (session?.user) {
+          setUser(session.user);
+          setStarted(true);
+          if (!initialUserInfo) fetchUserInfo(session.user.id);
+        } else {
+          setUser(null);
+          setUserInfo(null);
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking session:", error);
+      });
 
-    // Listen for auth changes
+    // Listen for auth changes to keep UI in sync
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -77,31 +92,13 @@ export function GameApp() {
       // Reset title when component unmounts
       document.title = "SQL Noir";
     };
-  }, []);
+  }, [fetchUserInfo, initialUserInfo]);
 
   const handleCaseSolved = async () => {
     if (user) {
       await fetchUserInfo(user.id);
     }
   };
-
-  // Show loading state while checking authentication
-  if (loading) {
-    const randomTip = SQL_TIPS[Math.floor(Math.random() * SQL_TIPS.length)];
-
-    return (
-      <div className="min-h-screen bg-amber-50/50 flex flex-col items-center justify-center space-y-8">
-        <h2 className="text-3xl font-detective text-amber-900">Loading...</h2>
-        <div className="w-12 h-12 border-4 border-amber-700 border-t-transparent rounded-full animate-spin"></div>
-        <div className="max-w-md text-center">
-          <p className="text-lg font-detective text-amber-800">
-            Detective's Tip:
-          </p>
-          <p className="text-amber-700 italic mt-2">{randomTip}</p>
-        </div>
-      </div>
-    );
-  }
 
   if (selectedCase) {
     return (
@@ -126,7 +123,10 @@ export function GameApp() {
           isOpen={isSharePopupOpen}
           onClose={() => setIsSharePopupOpen(false)}
         />
-        <Dashboard onCaseSelect={setSelectedCase} userInfo={userInfo} />
+        <Dashboard
+          onCaseSelect={setSelectedCase}
+          userInfo={userInfo}
+        />
       </>
     );
   }
@@ -140,7 +140,7 @@ export function GameApp() {
       <div className="absolute top-4 right-4 flex items-center gap-4">
         <UserMenu user={user} onSignOut={() => setUser(null)} />
         <Link
-          to="/blog"
+          href="/blog"
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-100/80 hover:bg-amber-200/80 
                    text-amber-900 transition-colors duration-200 backdrop-blur-sm"
           title="Read Detective's Journal"
@@ -207,6 +207,9 @@ export function GameApp() {
             Start Investigation
             <ChevronRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
           </button>
+          <p className="text-amber-700 italic">
+            Detective&apos;s Tip: {SQL_TIPS[0]}
+          </p>
         </div>
       </div>
     </div>

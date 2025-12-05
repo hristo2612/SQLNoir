@@ -1,7 +1,8 @@
-import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Calendar, Clock, ExternalLink } from "lucide-react";
-import { BsIncognito } from "react-icons/bs";
+import Link from "next/link";
+import { Calendar, Clock, ExternalLink } from "lucide-react";
 import { useEffect } from "react";
+import { BsIncognito } from "react-icons/bs";
+import { Navbar } from "@/components/Navbar";
 
 interface BlogPostData {
   id: string;
@@ -13,6 +14,10 @@ interface BlogPostData {
   author: string;
   slug: string;
   heroImage: string;
+}
+
+interface BlogPostProps {
+  slug: string;
 }
 
 const BLOG_POSTS: Record<string, BlogPostData> = {
@@ -29,12 +34,12 @@ const BLOG_POSTS: Record<string, BlogPostData> = {
       "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*6pp6SQWVUJREwSGgwRk6aA.png",
     content: (
       <div className="prose prose-lg max-w-none">
-        <p className="text-xl text-gray-700 leading-relaxed mb-8">
+        {/* <p className="text-xl text-gray-700 leading-relaxed mb-8">
           Learning SQL from textbooks is boring as hell. I've been there -
           staring at endless SELECT statements wondering when it'll actually
           click. But here's the thing: SQL games changed everything for me and
           thousands of other developers.
-        </p>
+        </p> */}
 
         <p className="text-gray-700 leading-relaxed mb-8">
           Instead of grinding through another dry tutorial, you can learn SQL by
@@ -1031,9 +1036,8 @@ AND population < (
   },
 };
 
-export function BlogPost() {
-  const { slug } = useParams();
-  const post = slug ? BLOG_POSTS[slug] : null;
+export function BlogPost({ slug }: BlogPostProps) {
+  const post = BLOG_POSTS[slug];
 
   useEffect(() => {
     if (post) {
@@ -1056,7 +1060,7 @@ export function BlogPost() {
           <h1 className="text-4xl font-detective text-amber-900 mb-4">
             Post Not Found
           </h1>
-          <Link to="/blog" className="text-amber-700 hover:text-amber-900">
+          <Link href="/blog" className="text-amber-700 hover:text-amber-900">
             Back to Blog
           </Link>
         </div>
@@ -1065,40 +1069,32 @@ export function BlogPost() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10 backdrop-blur-sm bg-white/95">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            to="/"
-            className="flex items-center gap-3 text-amber-900 hover:text-amber-700 transition-colors"
-          >
-            <BsIncognito className="w-6 h-6" />
-            <span className="text-lg font-detective">SQL Noir</span>
-          </Link>
-          <Link
-            to="/blog"
-            className="flex items-center gap-2 text-amber-900 hover:text-amber-700 transition-colors"
-          >
-            <span className="font-detective">Back to Blog</span>
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-amber-50/50">
+      <Navbar
+        title="Detective's Journal"
+        links={[
+          { label: "Home", href: "/", activeMatch: "/" },
+          { label: "Journal", href: "/blog", activeMatch: "/blog" },
+        ]}
+      />
 
-      {/* Hero Image */}
-      <div className="aspect-[3/1] overflow-hidden">
-        <img
-          src={post.heroImage}
-          alt={post.title}
-          className="w-full h-full object-cover"
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-4xl mx-auto overflow-hidden rounded-2xl border border-amber-100 shadow-sm bg-white">
+          <div className="relative aspect-[16/9] max-h-[420px]">
+            <img
+              src={post.heroImage}
+              alt={post.title}
+              className="w-full h-full object-cover scale-[1.02]"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Article */}
-      <article className="max-w-4xl mx-auto px-4 py-12">
+      <article className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-10 py-10 sm:py-12 bg-white rounded-2xl shadow-sm border border-amber-100 mt-6">
         {/* Meta */}
-        <div className="flex items-center gap-4 text-sm text-gray-600 mb-8">
-          <div className="flex items-center gap-1">
+        <div className="flex items-center gap-3 flex-wrap text-sm text-amber-700 mb-6">
+          <div className="flex items-center gap-1.5">
             <Calendar className="w-4 h-4" />
             <span>
               {new Date(post.date).toLocaleDateString("en-US", {
@@ -1108,25 +1104,30 @@ export function BlogPost() {
               })}
             </span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <Clock className="w-4 h-4" />
             <span>{post.readTime}</span>
           </div>
-          <span>By {post.author}</span>
+          <div className="flex items-center gap-2">
+            <BsIncognito className="w-4 h-4" />
+            <span>{post.author}</span>
+          </div>
         </div>
 
         {/* Title */}
-        <h1 className="text-5xl font-detective text-amber-900 mb-6 leading-tight">
+        <h1 className="text-3xl sm:text-4xl font-detective text-amber-900 mb-3 leading-snug sm:leading-tight">
           {post.title}
         </h1>
 
         {/* Excerpt */}
-        <p className="text-xl text-gray-600 mb-12 leading-relaxed">
+        <p className="text-lg sm:text-xl text-gray-600 mb-8 sm:mb-10 leading-relaxed">
           {post.excerpt}
         </p>
 
         {/* Content */}
-        <div className="prose prose-lg max-w-none">{post.content}</div>
+        <div className="prose prose-base sm:prose-lg max-w-none">
+          {post.content}
+        </div>
 
         {/* Call to Action */}
         <div className="mt-16 p-8 bg-amber-50 rounded-lg border border-amber-200 text-center">
@@ -1138,7 +1139,7 @@ export function BlogPost() {
             queries!
           </p>
           <Link
-            to="/"
+            href="/"
             className="inline-flex items-center gap-2 px-8 py-3 bg-amber-800/90 hover:bg-amber-700/90 
                      text-amber-100 rounded-lg font-detective text-lg transition-colors"
           >
@@ -1148,21 +1149,20 @@ export function BlogPost() {
         </div>
       </article>
 
-      {/* Footer */}
-      <footer className="bg-gray-50 border-t border-gray-200 mt-16">
+      <footer className="bg-amber-50/80 border-t border-amber-200 mt-16">
         <div className="max-w-4xl mx-auto px-4 py-8 text-center">
-          <p className="text-gray-600 mb-4">
+          <p className="text-amber-800 mb-4">
             Keep investigating with SQL Noir - where mysteries meet databases.
           </p>
           <div className="flex justify-center gap-4">
             <Link
-              to="/blog"
-              className="text-amber-700 hover:text-amber-900 transition-colors"
+              href="/blog"
+              className="text-amber-800 hover:text-amber-900 transition-colors"
             >
               Back to Blog
             </Link>
             <Link
-              to="/"
+              href="/"
               className="px-4 py-2 bg-amber-800/90 hover:bg-amber-700/90 
                        text-amber-100 rounded-lg transition-colors"
             >

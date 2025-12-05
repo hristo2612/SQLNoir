@@ -10,6 +10,9 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.next
+.turbo
+.vercel
 *.local
 .env
 

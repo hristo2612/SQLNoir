@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
-import { Calendar, Clock, Home } from "lucide-react";
+import Link from "next/link";
+import { Calendar, Clock } from "lucide-react";
 import { BsIncognito } from "react-icons/bs";
 import { useEffect } from "react";
+import { Navbar } from "@/components/Navbar";
 
 interface BlogPost {
   id: string;
@@ -43,54 +44,30 @@ export function BlogIndex() {
 
   return (
     <div className="min-h-screen bg-amber-50/50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10 backdrop-blur-sm bg-white/95">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            to="/"
-            className="flex items-center gap-3 text-amber-900 hover:text-amber-700 transition-colors"
-          >
-            <BsIncognito className="w-6 h-6" />
-            <span className="text-lg font-detective">SQL Noir</span>
-          </Link>
-          <h1 className="text-2xl font-detective text-amber-900">
-            Detective's Journal
-          </h1>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-detective text-amber-900 mb-4">
-            Detective's Journal
-          </h2>
-          <p className="text-xl text-amber-800 max-w-2xl mx-auto">
-            SQL tips, game reviews, and database tutorials.
-          </p>
-        </div>
-
-        <div className="space-y-8">
+      <Navbar
+        title="Detective's Journal"
+        links={[
+          { label: "Home", href: "/", activeMatch: "/" },
+          { label: "Journal", href: "/blog", activeMatch: "/blog" },
+        ]}
+      />
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {BLOG_POSTS.map((post) => (
             <article key={post.id} className="group">
-              <Link to={`/blog/${post.slug}`} className="block">
-                <div
-                  className="bg-white/90 rounded-lg overflow-hidden shadow-lg border border-amber-200 
-                              hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
-                >
-                  {/* Hero Image */}
-                  <div className="aspect-[2/1] overflow-hidden">
+              <Link href={`/blog/${post.slug}`} className="block h-full">
+                <div className="bg-white/90 rounded-2xl overflow-hidden shadow-lg border border-amber-200 h-full flex flex-col transition-colors duration-200 hover:border-amber-300">
+                  <div className="aspect-[16/9] overflow-hidden">
                     <img
                       src={post.heroImage}
                       alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover"
                     />
                   </div>
 
-                  {/* Content */}
-                  <div className="p-8">
-                    <div className="flex items-center gap-4 text-sm text-amber-700 mb-4">
-                      <div className="flex items-center gap-1">
+                  <div className="p-6 sm:p-7 space-y-4 flex-1 flex flex-col">
+                    <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3 text-xs sm:text-sm text-amber-700">
+                      <div className="flex items-center gap-1.5">
                         <Calendar className="w-4 h-4" />
                         <span>
                           {new Date(post.date).toLocaleDateString("en-US", {
@@ -100,29 +77,32 @@ export function BlogIndex() {
                           })}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         <Clock className="w-4 h-4" />
                         <span>{post.readTime}</span>
                       </div>
-                      <span>By {post.author}</span>
+                      <div className="flex items-center gap-2">
+                        <BsIncognito className="w-4 h-4" />
+                        <span className="text-amber-700 text-xs sm:text-sm">
+                          {post.author}
+                        </span>
+                      </div>
                     </div>
 
-                    <h3 className="text-2xl font-bold text-amber-900 mb-4 group-hover:text-amber-700 transition-colors">
+                    <h3 className="text-2xl font-detective text-amber-900 group-hover:text-amber-700 transition-colors">
                       {post.title}
                     </h3>
 
-                    <p className="text-amber-800 text-lg leading-relaxed">
+                    <p className="text-amber-800 text-base leading-relaxed flex-1">
                       {post.excerpt}
                     </p>
 
-                    <div className="mt-6">
-                      <span
-                        className="inline-flex items-center px-4 py-2 bg-amber-800/90 text-amber-100 
-                                     rounded-lg font-medium group-hover:bg-amber-700/90 transition-colors"
-                      >
-                        Read Full Article →
-                      </span>
-                    </div>
+                    <span
+                      className="inline-flex items-center w-full sm:w-auto justify-center px-5 py-3 bg-amber-800/90 text-amber-100 
+                                   rounded-lg font-detective group-hover:bg-amber-700/90 transition-colors"
+                    >
+                      Read full article
+                    </span>
                   </div>
                 </div>
               </Link>
@@ -130,23 +110,6 @@ export function BlogIndex() {
           ))}
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-amber-100/80 backdrop-blur-sm border-t border-amber-200 mt-16">
-        <div className="max-w-4xl mx-auto px-4 py-8 text-center">
-          <p className="text-amber-800 font-detective mb-4">
-            Keep investigating with SQL Noir - where mysteries meet databases.
-          </p>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800/90 hover:bg-amber-700/90 
-                     text-amber-100 rounded-lg font-detective transition-colors"
-          >
-            <Home className="w-4 h-4" />
-            Back to Game
-          </Link>
-        </div>
-      </footer>
     </div>
   );
 }

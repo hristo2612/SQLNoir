@@ -1,8 +1,8 @@
 // Template for creating new blog posts
 // Copy this file and rename it to your new post component
 
-import { Link } from "react-router-dom";
-import { ArrowLeft, Home, Calendar, Clock, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { Home, Calendar, Clock, ExternalLink } from "lucide-react";
 
 export function NewBlogPost() {
   const post = {
@@ -21,14 +21,14 @@ export function NewBlogPost() {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10 backdrop-blur-sm bg-white/95">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link
-            to="/"
+            href="/"
             className="flex items-center gap-2 text-amber-900 hover:text-amber-700 transition-colors"
           >
             <Home className="w-5 h-5" />
             <span className="text-lg font-detective">SQL Noir</span>
           </Link>
           <Link
-            to="/blog"
+            href="/blog"
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
           >
             <span>Back to Blog</span>
@@ -121,7 +121,7 @@ export function NewBlogPost() {
             queries!
           </p>
           <Link
-            to="/"
+            href="/"
             className="inline-flex items-center gap-2 px-8 py-3 bg-amber-800/90 hover:bg-amber-700/90 
                      text-amber-100 rounded-lg font-detective text-lg transition-colors"
           >
@@ -139,13 +139,13 @@ export function NewBlogPost() {
           </p>
           <div className="flex justify-center gap-4">
             <Link
-              to="/blog"
+              href="/blog"
               className="text-amber-700 hover:text-amber-900 transition-colors"
             >
               Back to Blog
             </Link>
             <Link
-              to="/"
+              href="/"
               className="px-4 py-2 bg-amber-800/90 hover:bg-amber-700/90 
                        text-amber-100 rounded-lg transition-colors"
             >

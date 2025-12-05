@@ -1,4 +1,7 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { supabase } from "../../lib/supabase";
@@ -22,10 +25,16 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       setGoogleLoading(true);
       setError("");
 
+      const redirectTo =
+        process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL ||
+        (typeof window !== "undefined"
+          ? window.location.origin
+          : process.env.NEXT_PUBLIC_SITE_URL || "https://sqlnoir.com");
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: redirectTo || undefined,
         },
       });
 
@@ -50,8 +59,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       setGoogleLoading(false);
     }
   }, [isOpen]);
-
-  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,29 +118,31 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-      <div className="bg-amber-50 rounded-lg shadow-xl w-full max-w-md relative overflow-hidden">
-        {/* Header with close button */}
-        <div className="px-6 py-4 border-b border-amber-200">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-detective text-amber-900">
-              {isLogin ? "Welcome Back, Detective" : "Join the Investigation"}
-            </h2>
-            <button
-              onClick={onClose}
-              className="text-amber-900 hover:text-amber-700 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div className="relative bg-amber-50 rounded-xl shadow-2xl border border-amber-200 w-full max-w-md overflow-hidden">
+        <div className="px-5 py-4 border-b border-amber-200 flex justify-between items-center">
+          <h2 className="text-xl font-detective text-amber-900">
+            {isLogin ? "Welcome Back, Detective" : "Join the Investigation"}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-amber-900 hover:text-amber-700 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
-        <div className="p-6">
-          {/* Error message - moved to top */}
+        <div className="p-5">
           {error && (
             <div
-              className={`px-4 py-3 rounded mb-6 ${
+              className={`px-4 py-3 rounded mb-5 ${
                 error.startsWith("success:")
                   ? "bg-green-100 border border-green-300 text-green-800"
                   : "bg-red-100 border border-red-300 text-red-800"
@@ -143,13 +152,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </div>
           )}
 
-          {/* Custom Google Sign-In Button */}
           <button
             type="button"
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
             className={`w-full flex items-center justify-center gap-2 py-3 px-4 bg-white rounded-lg 
-                     font-detective border-2 border-gray-300 hover:bg-gray-50 transition-colors mb-6
+                     font-detective border-2 border-gray-300 hover:bg-gray-50 transition-colors mb-5
                      ${
                        googleLoading
                          ? "opacity-70 cursor-not-allowed"
@@ -166,7 +174,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </span>
           </button>
 
-          <div className="relative mb-6">
+          <div className="relative mb-5">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-amber-300"></div>
             </div>
@@ -251,5 +259,5 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         </div>
       </div>
     </div>
-  );
+  , document.body);
 }
