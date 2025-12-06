@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Send, CheckCircle, XCircle, Loader2, Coffee } from "lucide-react";
+import { Send, CheckCircle, XCircle, Loader2, Share2 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import type { Case } from "../../types";
+import { SharePopup } from "../SharePopup";
 
 interface SolutionSubmissionProps {
   caseData: Case;
@@ -97,6 +98,8 @@ export function SolutionSubmission({
   const showSuccess = submitted && isCorrect;
   const showIncorrect = submitted && !isCorrect;
 
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
   if (showSuccess) {
     return (
       <div className="max-w-2xl mx-auto space-y-6">
@@ -131,26 +134,32 @@ export function SolutionSubmission({
             </div>
           )}
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3 sm:flex sm:items-center sm:justify-between sm:space-y-0">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3 sm:flex sm:items-center sm:justify-between sm:space-y-0 gap-4">
             <div>
               <p className="font-detective text-amber-900">
                 Enjoyed the mystery?
               </p>
               <p className="text-amber-700 text-sm">
-                Buy me a coffee and help fuel the next case.
+                Share SQLNoir with another detective and see if they can solve
+                it too.
               </p>
             </div>
-            <a
-              href="https://www.buymeacoffee.com/hristobogoev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2 rounded-lg bg-amber-700 text-amber-50 hover:bg-amber-600 transition-colors duration-200"
-            >
-              <Coffee className="w-4 h-4" />
-              <span>Buy me a coffee</span>
-            </a>
+            <div className="flex sm:block">
+              <button
+                type="button"
+                onClick={() => setIsShareOpen(true)}
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-amber-700 text-amber-50 hover:bg-amber-600 transition-colors duration-200 text-sm sm:text-base whitespace-nowrap"
+              >
+                <Share2 className="w-4 h-4" />
+                <span>Share SQLNoir</span>
+              </button>
+            </div>
           </div>
         </div>
+        <SharePopup
+          isOpen={isShareOpen}
+          onClose={() => setIsShareOpen(false)}
+        />
       </div>
     );
   }
