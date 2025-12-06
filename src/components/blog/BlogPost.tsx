@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ExternalLink } from "lucide-react";
-import { useEffect } from "react";
 import { BsIncognito } from "react-icons/bs";
 import { Navbar } from "@/components/Navbar";
 
@@ -23,15 +23,14 @@ interface BlogPostProps {
 const BLOG_POSTS: Record<string, BlogPostData> = {
   "games-to-learn-sql": {
     id: "1",
-    title: "5 Best SQL Games to Master Database Skills in 2025",
+    title: "5 SQL Games to Master Database Skills in 2025",
     excerpt:
       "Skip the boring textbooks. These 5 SQL games teach database queries through detective stories, island survival, and murder mysteries.",
     date: "2025-05-28",
     readTime: "12 min read",
     author: "Hristo Bogoev",
     slug: "games-to-learn-sql",
-    heroImage:
-      "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*6pp6SQWVUJREwSGgwRk6aA.png",
+    heroImage: "/blog/games-to-learn-sql-hero.jpeg",
     content: (
       <div className="prose prose-lg max-w-none">
         {/* <p className="text-xl text-gray-700 leading-relaxed mb-8">
@@ -94,17 +93,20 @@ const BLOG_POSTS: Record<string, BlogPostData> = {
         </h2>
 
         <div className="mb-8">
-          <img
+          <Image
             src="https://miro.medium.com/v2/resize:fit:1400/format:webp/0*PzS4hHajDcTcLtWr"
             alt="SQL Noir game interface showing detective case with SQL query editor and crime database"
-            className="w-full rounded-lg shadow-lg"
+            width={1400}
+            height={788}
+            className="w-full rounded-lg shadow-lg h-auto"
+            priority
           />
         </div>
 
         <p className="text-gray-700 leading-relaxed mb-6">
           <strong>
             <a
-              href="https://sqlnoir.com"
+              href="https://www.sqlnoir.com"
               className="text-amber-900 hover:text-amber-700 underline"
             >
               SQL Noir
@@ -193,7 +195,7 @@ AND i.alibi IS NOT NULL;`}
           </p>
           <div className="mt-4">
             <a
-              href="https://sqlnoir.com"
+              href="https://www.sqlnoir.com"
               className="inline-flex items-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm font-medium transition-colors"
             >
               Play SQL Noir →
@@ -209,10 +211,12 @@ AND i.alibi IS NOT NULL;`}
         </h2>
 
         <div className="mb-8">
-          <img
+          <Image
             src="https://miro.medium.com/v2/resize:fit:1400/format:webp/0*1nl6U643v-n-a8Vu"
             alt="SQL Island game interface screenshot showing adventure survival SQL learning game"
-            className="w-full rounded-lg shadow-lg"
+            width={1400}
+            height={788}
+            className="w-full rounded-lg shadow-lg h-auto"
           />
         </div>
 
@@ -324,10 +328,12 @@ LIMIT 1;`}
         </h2>
 
         <div className="mb-8">
-          <img
+          <Image
             src="https://miro.medium.com/v2/resize:fit:1400/format:webp/0*foI_PrQp9hmWhE9r"
             alt="SQL Murder Mystery game interface showing Northwestern University's detective SQL learning platform"
-            className="w-full rounded-lg shadow-lg"
+            width={1400}
+            height={788}
+            className="w-full rounded-lg shadow-lg h-auto"
           />
         </div>
 
@@ -451,10 +457,12 @@ WHERE dl.plate_number LIKE '%H42W%';`}
         </h2>
 
         <div className="mb-8">
-          <img
+          <Image
             src="https://miro.medium.com/v2/resize:fit:1400/format:webp/0*BT8lIzDDrdPhPyMl"
             alt="SQL Police Department (SQLPD) game interface showing premium detective SQL training platform"
-            className="w-full rounded-lg shadow-lg"
+            width={1400}
+            height={788}
+            className="w-full rounded-lg shadow-lg h-auto"
           />
         </div>
 
@@ -542,10 +550,12 @@ WHERE dl.plate_number LIKE '%H42W%';`}
         </h2>
 
         <div className="mb-8">
-          <img
+          <Image
             src="https://miro.medium.com/v2/resize:fit:1400/format:webp/0*WaOubGQPf431s8oR"
             alt="SQLZoo interactive SQL tutorial interface showing comprehensive database learning platform"
-            className="w-full rounded-lg shadow-lg"
+            width={1400}
+            height={788}
+            className="w-full rounded-lg shadow-lg h-auto"
           />
         </div>
 
@@ -727,7 +737,7 @@ AND population < (
               <li>
                 3.{" "}
                 <strong>
-                  <a href="https://sqlnoir.com" className="hover:underline">
+                  <a href="https://www.sqlnoir.com" className="hover:underline">
                     SQL Noir
                   </a>
                 </strong>{" "}
@@ -743,7 +753,7 @@ AND population < (
               <li>
                 1.{" "}
                 <strong>
-                  <a href="https://sqlnoir.com" className="hover:underline">
+                  <a href="https://www.sqlnoir.com" className="hover:underline">
                     SQL Noir
                   </a>
                 </strong>{" "}
@@ -815,7 +825,7 @@ AND population < (
               <li>
                 3.{" "}
                 <strong>
-                  <a href="https://sqlnoir.com" className="hover:underline">
+                  <a href="https://www.sqlnoir.com" className="hover:underline">
                     SQL Noir
                   </a>
                 </strong>{" "}
@@ -845,7 +855,7 @@ AND population < (
               <li>
                 2.{" "}
                 <strong>
-                  <a href="https://sqlnoir.com" className="hover:underline">
+                  <a href="https://www.sqlnoir.com" className="hover:underline">
                     SQL Noir
                   </a>
                 </strong>{" "}
@@ -979,7 +989,7 @@ AND population < (
           different people. If you like stories and don't mind a challenge,
           start with{" "}
           <a
-            href="https://sqlnoir.com"
+            href="https://www.sqlnoir.com"
             className="text-amber-700 hover:text-amber-900 underline"
           >
             SQL Noir
@@ -1039,20 +1049,6 @@ AND population < (
 export function BlogPost({ slug }: BlogPostProps) {
   const post = BLOG_POSTS[slug];
 
-  useEffect(() => {
-    if (post) {
-      // Update document title with the actual post title
-      document.title = `${post.title}`;
-    } else {
-      document.title = "Post Not Found | SQL Noir";
-    }
-
-    return () => {
-      // Reset title when component unmounts
-      document.title = "SQL Noir";
-    };
-  }, [post]);
-
   if (!post) {
     return (
       <div className="min-h-screen bg-amber-50/50 flex items-center justify-center">
@@ -1072,6 +1068,7 @@ export function BlogPost({ slug }: BlogPostProps) {
     <div className="min-h-screen bg-amber-50/50">
       <Navbar
         title="Detective's Journal"
+        titleHref="/blog"
         links={[
           { label: "Home", href: "/", activeMatch: "/" },
           { label: "Journal", href: "/blog", activeMatch: "/blog" },
@@ -1079,12 +1076,15 @@ export function BlogPost({ slug }: BlogPostProps) {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="max-w-4xl mx-auto overflow-hidden rounded-2xl border border-amber-100 shadow-sm bg-white">
-          <div className="relative aspect-[16/9] max-h-[420px]">
-            <img
+        <div className="max-w-4xl w-full mx-auto overflow-hidden rounded-2xl border border-amber-100 shadow-sm bg-white">
+          <div className="relative aspect-[16/9]">
+            <Image
               src={post.heroImage}
               alt={post.title}
-              className="w-full h-full object-cover scale-[1.02]"
+              fill
+              sizes="(min-width: 1280px) 1150px, (min-width: 1024px) 85vw, 100vw"
+              className="object-cover"
+              priority
             />
           </div>
         </div>
@@ -1132,20 +1132,27 @@ export function BlogPost({ slug }: BlogPostProps) {
         {/* Call to Action */}
         <div className="mt-16 p-8 bg-amber-50 rounded-lg border border-amber-200 text-center">
           <h3 className="text-2xl font-detective text-amber-900 mb-4">
-            Ready to Start Your SQL Detective Journey?
+            Ready to start your next investigation?
           </h3>
           <p className="text-amber-800 mb-6">
-            Jump into SQL Noir and solve your first mystery using database
-            queries!
+            Jump into the SQLNoir case files and put these tips to work.
           </p>
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-amber-800/90 hover:bg-amber-700/90 
-                     text-amber-100 rounded-lg font-detective text-lg transition-colors"
-          >
-            Start Playing SQL Noir
-            <ExternalLink className="w-5 h-5" />
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/cases"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-amber-800/90 hover:bg-amber-700/90 
+                       text-amber-100 rounded-lg font-detective text-lg transition-colors"
+            >
+              Explore Cases
+              <ExternalLink className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-amber-300 text-amber-900 rounded-lg font-detective text-base hover:bg-amber-100 transition-colors"
+            >
+              Back to Journal
+            </Link>
+          </div>
         </div>
       </article>
 

@@ -1,51 +1,16 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock } from "lucide-react";
 import { BsIncognito } from "react-icons/bs";
-import { useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
-
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  readTime: string;
-  author: string;
-  slug: string;
-  heroImage: string;
-}
-
-const BLOG_POSTS: BlogPost[] = [
-  {
-    id: "1",
-    title: "5 Best SQL Games to Master Database Skills in 2025",
-    excerpt:
-      "Skip the boring textbooks. These 5 SQL games teach database queries through detective stories, island survival, and murder mysteries.",
-    date: "2025-05-28",
-    readTime: "12 min read",
-    author: "Hristo Bogoev",
-    slug: "games-to-learn-sql",
-    heroImage:
-      "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*6pp6SQWVUJREwSGgwRk6aA.png",
-  },
-];
+import { blogPostsMeta } from "@/lib/blog-posts";
 
 export function BlogIndex() {
-  useEffect(() => {
-    // Update document title for blog index
-    document.title =
-      "SQL Game Tutorials & Tips - Detective's Journal | SQL Noir";
-
-    return () => {
-      // Reset title when component unmounts
-      document.title = "SQL Noir";
-    };
-  }, []);
-
   return (
     <div className="min-h-screen bg-amber-50/50">
       <Navbar
         title="Detective's Journal"
+        titleHref="/blog"
         links={[
           { label: "Home", href: "/", activeMatch: "/" },
           { label: "Journal", href: "/blog", activeMatch: "/blog" },
@@ -53,15 +18,18 @@ export function BlogIndex() {
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {BLOG_POSTS.map((post) => (
-            <article key={post.id} className="group">
+          {blogPostsMeta.map((post) => (
+            <article key={post.slug} className="group">
               <Link href={`/blog/${post.slug}`} className="block h-full">
                 <div className="bg-white/90 rounded-2xl overflow-hidden shadow-lg border border-amber-200 h-full flex flex-col transition-colors duration-200 hover:border-amber-300">
-                  <div className="aspect-[16/9] overflow-hidden">
-                    <img
+                  <div className="relative aspect-[16/9] overflow-hidden">
+                    <Image
                       src={post.heroImage}
                       alt={post.title}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-cover"
+                      priority
                     />
                   </div>
 

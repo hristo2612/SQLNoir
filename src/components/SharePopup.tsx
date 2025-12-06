@@ -10,7 +10,7 @@ interface SharePopupProps {
 export function SharePopup({ isOpen, onClose }: SharePopupProps) {
   const [copyStatus, setCopyStatus] = useState("");
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const shareUrl = "https://sqlnoir.com";
+  const shareUrl = "https://www.sqlnoir.com";
   const shareTitle = "SQL Noir - Learn SQL by solving crimes";
 
   const shareOptions = [
@@ -84,7 +84,10 @@ export function SharePopup({ isOpen, onClose }: SharePopupProps) {
 
   return createPortal(
     <>
-      <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50"
+        onClick={onClose}
+      />
       <div
         ref={dropdownRef}
         className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] max-w-[90vw] bg-amber-50 border border-amber-200 rounded-xl shadow-2xl p-5"

@@ -18,6 +18,7 @@ type NavLink = {
 interface NavbarProps {
   title: string;
   links: NavLink[];
+  titleHref?: string;
   showShare?: boolean;
 }
 
@@ -29,7 +30,12 @@ const matchesPath = (pathname: string, pattern: string) => {
   return pathname.startsWith(normalized);
 };
 
-export function Navbar({ title, links, showShare = false }: NavbarProps) {
+export function Navbar({
+  title,
+  links,
+  titleHref,
+  showShare = false,
+}: NavbarProps) {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -69,7 +75,16 @@ export function Navbar({ title, links, showShare = false }: NavbarProps) {
       <SharePopup isOpen={isShareOpen} onClose={() => setIsShareOpen(false)} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
-        <div className="text-amber-900 font-detective text-xl">{title}</div>
+        {titleHref ? (
+          <Link
+            href={titleHref}
+            className="text-amber-900 font-detective text-xl hover:text-amber-700 transition-colors"
+          >
+            {title}
+          </Link>
+        ) : (
+          <div className="text-amber-900 font-detective text-xl">{title}</div>
+        )}
 
         <div className="flex items-center gap-2 sm:hidden">
           <UserMenu user={user} onSignOut={() => setUser(null)} />

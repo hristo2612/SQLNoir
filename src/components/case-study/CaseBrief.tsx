@@ -18,10 +18,10 @@ export function CaseBrief({ caseData }: CaseBriefProps) {
   return (
     <div className="space-y-8">
       <div className="bg-amber-100/50 p-6 rounded-lg border border-amber-900/10">
-        <h2 className="font-detective text-2xl text-amber-900 mb-4 flex items-center">
+        <h1 className="font-detective text-2xl text-amber-900 mb-4 flex items-center">
           <FileText className="w-6 h-6 mr-2" />
           Case #{caseData.id.split("-")[1]}: {caseData.title}
-        </h2>
+        </h1>
         <div className="prose text-amber-800">
           <p className="mb-4">{caseData.brief}</p>
           {/* <p>{caseData.description}</p> */}

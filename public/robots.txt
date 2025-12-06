@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sqlnoir.com/sitemap.xml
+Sitemap: https://www.sqlnoir.com/sitemap.xml
 
 # Optimize crawling
 Crawl-delay: 1

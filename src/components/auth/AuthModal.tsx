@@ -29,7 +29,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL ||
         (typeof window !== "undefined"
           ? window.location.origin
-          : process.env.NEXT_PUBLIC_SITE_URL || "https://sqlnoir.com");
+          : process.env.NEXT_PUBLIC_SITE_URL || "https://www.sqlnoir.com");
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -258,6 +258,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           </form>
         </div>
       </div>
-    </div>
-  , document.body);
+    </div>,
+    document.body
+  );
 }

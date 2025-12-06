@@ -19,6 +19,14 @@ const nextConfig = {
     }
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "miro.medium.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

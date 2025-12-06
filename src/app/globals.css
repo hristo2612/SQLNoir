@@ -9,6 +9,11 @@
     font-family: "Special Elite", monospace;
   }
 
+  html {
+    min-height: 100%;
+    scroll-behavior: smooth;
+  }
+
   body {
     background-image: url("https://www.transparenttextures.com/patterns/paper.png");
     background-color: rgb(254 243 199 / 0.9); /* amber-50 with transparency */
