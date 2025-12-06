@@ -1,8 +1,8 @@
 import Script from "next/script";
-import Link from "next/link";
 import { Github, BookOpen } from "lucide-react";
 import { BsIncognito } from "react-icons/bs";
 import { Navbar } from "@/components/Navbar";
+import { TrackedLink } from "@/components/TrackedLink";
 
 export default function HomePage() {
   const faqItems = [
@@ -87,15 +87,27 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link
+              <TrackedLink
                 href="/cases"
+                event="cta_click"
+                eventProps={{
+                  cta_id: "hero-start-investigation",
+                  page: "/",
+                  source: "hero",
+                }}
                 className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-amber-800 hover:bg-amber-700 text-amber-50 font-detective text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Start Investigation
-              </Link>
+              </TrackedLink>
               <div className="flex items-center gap-3 text-amber-800">
-                <Link
+                <TrackedLink
                   href="/blog"
+                  event="cta_click"
+                  eventProps={{
+                    cta_id: "hero-blog",
+                    page: "/",
+                    source: "hero",
+                  }}
                   className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 transition-colors duration-200"
                 >
                   <BookOpen className="w-5 h-5" />
@@ -103,7 +115,7 @@ export default function HomePage() {
                   <span className="hidden lg:inline">
                     Detective&apos;s Journal
                   </span>
-                </Link>
+                </TrackedLink>
                 <a
                   href="https://github.com/hristo2612/SQLNoir"
                   target="_blank"
@@ -159,12 +171,18 @@ export default function HomePage() {
                   The city is buzzing. New evidence just landed on your desk.
                 </p>
               </div>
-              <Link
+              <TrackedLink
                 href="/cases"
+                event="cta_click"
+                eventProps={{
+                  cta_id: "hero-card-open-case-files",
+                  page: "/",
+                  source: "hero-card",
+                }}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-amber-900 text-amber-50 font-detective hover:bg-amber-800 transition-colors duration-200"
               >
                 Open the Case Files
-              </Link>
+              </TrackedLink>
             </div>
           </div>
         </div>
@@ -202,15 +220,21 @@ export default function HomePage() {
               </p>
               <p className="text-amber-800 leading-relaxed">
                 Ready to see it in action?
-              </p>
-              <div className="pt-4">
-                <Link
-                  href="/cases"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-amber-900 text-amber-50 font-detective text-lg transition-colors duration-200 hover:bg-amber-800 shadow-md"
-                >
-                  Start Solving Cases
-                </Link>
-              </div>
+            </p>
+            <div className="pt-4">
+              <TrackedLink
+                href="/cases"
+                event="cta_click"
+                eventProps={{
+                  cta_id: "how-it-works-start-solving",
+                  page: "/",
+                  source: "how-it-works",
+                }}
+                className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-amber-900 text-amber-50 font-detective text-lg transition-colors duration-200 hover:bg-amber-800 shadow-md"
+              >
+                Start Solving Cases
+              </TrackedLink>
+            </div>
             </div>
             <div className="space-y-4">
               <h2 className="font-detective text-3xl text-amber-900">
@@ -281,7 +305,7 @@ export default function HomePage() {
                 </h3>
                 <p className="text-amber-800 leading-relaxed">
                   Yes. Cases mimic realistic data puzzles you might see in data
-                  and engineering interviews. It's great for practicing under a
+                  and engineering interviews. It&apos;s great for practicing under a
                   narrative without rote question banks.
                 </p>
               </div>

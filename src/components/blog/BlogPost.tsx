@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ExternalLink } from "lucide-react";
+import { useEffect } from "react";
 import { BsIncognito } from "react-icons/bs";
 import { Navbar } from "@/components/Navbar";
+import { track } from "@vercel/analytics/react";
 
 interface BlogPostData {
   id: string;
@@ -153,11 +157,11 @@ AND i.alibi IS NOT NULL;`}
               actual schemas that make sense
             </li>
             <li>
-              • <strong>You know right away if you're wrong:</strong> No waiting
+              • <strong>You know right away if you&apos;re wrong:</strong> No waiting
               for a teacher to grade your work
             </li>
             <li>
-              • <strong>It's free:</strong> No paywall, no "premium features"
+              • <strong>It&apos;s free:</strong> No paywall, no &quot;premium features&quot;
             </li>
             <li>
               • <strong>No setup:</strong> Just open your browser and start
@@ -233,7 +237,7 @@ AND i.alibi IS NOT NULL;`}
           </strong>{" "}
           has a simple premise: you crash-land on an island and need SQL to
           survive. Want food? Query the database. Need a job? Better know how to
-          ORDER BY. It's cheesy but it works, especially if you're just starting
+          ORDER BY. It&apos;s cheesy but it works, especially if you&apos;re just starting
           out.
         </p>
 
@@ -349,9 +353,9 @@ LIMIT 1;`}
             </a>
           </strong>{" "}
           is the OG SQL game that started it all. Northwestern University made
-          this and it's just one case - solve a murder in SQL City. Simple
-          concept, but it's really well done and teaches you JOINs better than
-          any tutorial I've seen. P.S. SQL Noir was inspired by this game.
+          this and it&apos;s just one case - solve a murder in SQL City. Simple
+          concept, but it&apos;s really well done and teaches you JOINs better than
+          any tutorial I&apos;ve seen. P.S. SQL Noir was inspired by this game.
         </p>
 
         <div className="bg-gray-50 p-6 rounded-lg mb-6">
@@ -397,7 +401,7 @@ WHERE dl.plate_number LIKE '%H42W%';`}
 
           <div className="bg-red-100 p-4 rounded-lg mb-4">
             <h5 className="font-bold text-red-900 mb-2">
-              🎯 What You'll Learn:
+              🎯 What You&apos;ll Learn:
             </h5>
             <ul className="text-red-800 text-sm space-y-1">
               <li>• Advanced JOIN operations across multiple tables</li>
@@ -480,8 +484,8 @@ WHERE dl.plate_number LIKE '%H42W%';`}
           teaches you SQL by completing different missions ( or cases ) in a
           real-world police department. You will be briefed on different crimes
           and you will have to write SQL queries to solve them. The UI is a bit
-          more mobile leaning, but it's still a great way to learn SQL. You
-          don't have a traditional SQL editor but rather a set of buttons that
+          more mobile leaning, but it&apos;s still a great way to learn SQL. You
+          don&apos;t have a traditional SQL editor but rather a set of buttons that
           give you different keyword options to complete the query.
         </p>
 
@@ -985,8 +989,8 @@ AND population < (
         </h2>
 
         <p className="text-gray-700 leading-relaxed mb-6">
-          Here's the thing - all of these SQL games work, but they work for
-          different people. If you like stories and don't mind a challenge,
+          Here&apos;s the thing - all of these SQL games work, but they work for
+          different people. If you like stories and don&apos;t mind a challenge,
           start with{" "}
           <a
             href="https://www.sqlnoir.com"
@@ -994,7 +998,7 @@ AND population < (
           >
             SQL Noir
           </a>
-          . If you're completely new to SQL,{" "}
+          . If you&apos;re completely new to SQL,{" "}
           <a
             href="http://wwwlgis.informatik.uni-kl.de/extra/game/?lang=en"
             target="_blank"
@@ -1028,8 +1032,8 @@ AND population < (
           <ol className="space-y-2 text-amber-800">
             <li>1. Pick one game from this list (seriously, just pick one)</li>
             <li>2. Spend 30 minutes playing it today</li>
-            <li>3. If you get stuck, that's normal - keep going</li>
-            <li>4. Try a different game if the first one doesn't click</li>
+            <li>3. If you get stuck, that&apos;s normal - keep going</li>
+            <li>4. Try a different game if the first one doesn&apos;t click</li>
             <li>
               5. Once you finish one, try another with a different approach
             </li>
@@ -1037,7 +1041,7 @@ AND population < (
         </div>
 
         <p className="text-gray-700 leading-relaxed">
-          Don't overthink this. The best SQL game is the one you'll actually
+          Don&apos;t overthink this. The best SQL game is the one you&apos;ll actually
           play. Pick one, start today, and see how much more fun learning
           database queries can be.
         </p>
@@ -1048,6 +1052,31 @@ AND population < (
 
 export function BlogPost({ slug }: BlogPostProps) {
   const post = BLOG_POSTS[slug];
+
+  useEffect(() => {
+    if (!post) return;
+    track("blog_view", {
+      post_slug: post.slug,
+      title: post.title,
+    });
+
+    const depths = [25, 50, 75, 100];
+    const seen = new Set<number>();
+    const handler = () => {
+      const scrolled =
+        ((window.scrollY + window.innerHeight) /
+          document.documentElement.scrollHeight) *
+        100;
+      const hit = depths.find((d) => scrolled >= d && !seen.has(d));
+      if (hit !== undefined) {
+        seen.add(hit);
+        track("blog_read_depth", { post_slug: post.slug, depth: hit });
+      }
+    };
+    window.addEventListener("scroll", handler, { passive: true });
+    handler();
+    return () => window.removeEventListener("scroll", handler);
+  }, [post]);
 
   if (!post) {
     return (

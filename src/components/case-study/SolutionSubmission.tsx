@@ -3,6 +3,7 @@ import { Send, CheckCircle, XCircle, Loader2, Share2 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import type { Case } from "../../types";
 import { SharePopup } from "../SharePopup";
+import { track } from "@vercel/analytics/react";
 
 interface SolutionSubmissionProps {
   caseData: Case;
@@ -19,11 +20,15 @@ export function SolutionSubmission({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null); // Storing user data if logged in for conditional rendering XP reward message
+  const [attempts, setAttempts] = useState(0);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    const attemptsNext = attempts + 1;
+    setAttempts(attemptsNext);
 
     try {
       // Check if the answer matches the solution (case-insensitive)
@@ -74,6 +79,21 @@ export function SolutionSubmission({
 
       if (isAnswerCorrect) {
         onSolve();
+        track("case_solve_success", {
+          case_slug: caseData.id,
+          title: caseData.title,
+          difficulty: caseData.difficulty,
+          category: caseData.category,
+          xp_reward: caseData.xpReward,
+          attempts: attemptsNext,
+          auth: Boolean(user),
+        });
+      } else {
+        track("case_solve_failure", {
+          case_slug: caseData.id,
+          attempts: attemptsNext,
+          auth: Boolean(user),
+        });
       }
     } catch (err) {
       setError(
@@ -97,8 +117,6 @@ export function SolutionSubmission({
 
   const showSuccess = submitted && isCorrect;
   const showIncorrect = submitted && !isCorrect;
-
-  const [isShareOpen, setIsShareOpen] = useState(false);
 
   if (showSuccess) {
     return (
@@ -147,7 +165,10 @@ export function SolutionSubmission({
             <div className="flex sm:block">
               <button
                 type="button"
-                onClick={() => setIsShareOpen(true)}
+                onClick={() => {
+                  track("share_open", { context: "case-solved", case_slug: caseData.id });
+                  setIsShareOpen(true);
+                }}
                 className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-amber-700 text-amber-50 hover:bg-amber-600 transition-colors duration-200 text-sm sm:text-base whitespace-nowrap"
               >
                 <Share2 className="w-4 h-4" />

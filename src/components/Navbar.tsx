@@ -4,6 +4,7 @@ import { useEffect, useState, type ComponentType } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Home, FolderOpen, LifeBuoy, BookOpen } from "lucide-react";
+import { track } from "@vercel/analytics/react";
 import { supabase } from "@/lib/supabase";
 import { SharePopup } from "./SharePopup";
 import { UserMenu } from "./auth/UserMenu";
@@ -70,6 +71,10 @@ export function Navbar({
     return targets.some((target) => matchesPath(pathname, target));
   };
 
+  const handleNavClick = (target: string) => {
+    track("nav_click", { target, page: pathname });
+  };
+
   return (
     <div className="bg-amber-50/80 border-b border-amber-200 backdrop-blur-sm relative z-50">
       <SharePopup isOpen={isShareOpen} onClose={() => setIsShareOpen(false)} />
@@ -79,6 +84,7 @@ export function Navbar({
           <Link
             href={titleHref}
             className="text-amber-900 font-detective text-xl hover:text-amber-700 transition-colors"
+            onClick={() => handleNavClick("title")}
           >
             {title}
           </Link>
@@ -137,7 +143,12 @@ export function Navbar({
             }
 
             return (
-              <Link key={link.href} href={link.href} className={className}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={className}
+                onClick={() => handleNavClick(link.label.toLowerCase())}
+              >
                 {content}
               </Link>
             );
@@ -146,7 +157,10 @@ export function Navbar({
           {showShare && (
             <button
               type="button"
-              onClick={() => setIsShareOpen(true)}
+              onClick={() => {
+                setIsShareOpen(true);
+                track("share_open", { context: "navbar", page: pathname });
+              }}
               className="inline-flex items-center justify-center px-3 py-2 rounded-lg font-detective bg-amber-100 hover:bg-amber-200 text-amber-900 border border-transparent transition-colors duration-200"
               >
               <Share2 className="w-4 h-4" />
@@ -194,6 +208,7 @@ export function Navbar({
                     target="_blank"
                     rel="noopener noreferrer"
                     className={className}
+                    onClick={() => handleNavClick(link.label.toLowerCase())}
                   >
                     {content}
                   </a>
@@ -201,7 +216,12 @@ export function Navbar({
               }
 
               return (
-                <Link key={link.href} href={link.href} className={className}>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={className}
+                  onClick={() => handleNavClick(link.label.toLowerCase())}
+                >
                   {content}
                 </Link>
               );
@@ -210,7 +230,10 @@ export function Navbar({
             {showShare && (
               <button
                 type="button"
-                onClick={() => setIsShareOpen(true)}
+                onClick={() => {
+                  setIsShareOpen(true);
+                  track("share_open", { context: "navbar-mobile", page: pathname });
+                }}
                 className="w-full inline-flex items-center justify-between px-4 py-3 rounded-lg font-detective transition-colors duration-200 border shadow-sm bg-amber-100 text-amber-900 hover:bg-amber-200"
               >
                 <span className="inline-flex items-center gap-2">

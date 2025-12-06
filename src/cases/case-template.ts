@@ -11,6 +11,7 @@ const caseTemplate: Case = {
   description: "Brief description of the case.",
   xpReward: 50,
   completed: false,
+  isNew: false,
   category: "beginner",
   brief: "Detailed case brief explaining the scenario.",
   objectives: ["Objective 1", "Objective 2", "Objective 3"],

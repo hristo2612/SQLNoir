@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Book,
   Code,
@@ -15,6 +15,7 @@ import { SolutionSubmission } from "./case-study/SolutionSubmission";
 import { DatabaseSchema } from "./case-study/DatabaseSchema";
 import { CaseNotes } from "./case-study/CaseNotes";
 import type { Case } from "../types";
+import { track } from "@vercel/analytics/react";
 
 const tabs = [
   { id: "brief", label: "Case Brief", icon: Book },
@@ -36,6 +37,16 @@ export function CaseSolver({ caseData, onBack, onSolve }: CaseSolverProps) {
   const [isSideBySide, setIsSideBySide] = useState(false);
   const [secondaryTab, setSecondaryTab] = useState("schema");
   const [activeTabSelector, setActiveTabSelector] = useState<1 | 2>(1);
+
+  useEffect(() => {
+    track("case_start", {
+      case_slug: caseData.id,
+      title: caseData.title,
+      difficulty: caseData.difficulty,
+      category: caseData.category,
+      xp_reward: caseData.xpReward,
+    });
+  }, [caseData]);
 
   // Function to handle side-by-side toggle
   const handleSideBySideToggle = () => {
