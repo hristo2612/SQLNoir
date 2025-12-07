@@ -33,6 +33,7 @@ export function GameApp({
   const [user, setUser] = useState<any>(initialSession?.user ?? null);
   const [userInfo, setUserInfo] = useState<any>(initialUserInfo);
   const [isSharePopupOpen, setIsSharePopupOpen] = useState(false);
+  const [shareContext, setShareContext] = useState("game-app");
 
   const fetchUserInfo = useCallback(async (userId: string) => {
     try {
@@ -106,6 +107,7 @@ export function GameApp({
         <SharePopup
           isOpen={isSharePopupOpen}
           onClose={() => setIsSharePopupOpen(false)}
+          context={shareContext}
         />
         <CaseSolver
           caseData={selectedCase}
@@ -122,6 +124,7 @@ export function GameApp({
         <SharePopup
           isOpen={isSharePopupOpen}
           onClose={() => setIsSharePopupOpen(false)}
+          context={shareContext}
         />
         <Dashboard
           onCaseSelect={setSelectedCase}
@@ -136,6 +139,7 @@ export function GameApp({
       <SharePopup
         isOpen={isSharePopupOpen}
         onClose={() => setIsSharePopupOpen(false)}
+        context={shareContext}
       />
       <div className="absolute top-4 right-4 flex items-center gap-4">
         <UserMenu user={user} onSignOut={() => setUser(null)} />
@@ -149,7 +153,10 @@ export function GameApp({
           <span className="hidden sm:inline">Blog</span>
         </Link>
         <button
-          onClick={() => setIsSharePopupOpen(true)}
+          onClick={() => {
+            setShareContext("game-app");
+            setIsSharePopupOpen(true);
+          }}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-100/80 hover:bg-amber-200/80 
                    text-amber-900 transition-colors duration-200 backdrop-blur-sm"
           title="Share SQL Noir"

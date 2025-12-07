@@ -1,13 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Facebook, Linkedin, Link2, Twitter, X } from "lucide-react";
+import { track } from "@vercel/analytics/react";
 
 interface SharePopupProps {
   isOpen: boolean;
   onClose: () => void;
+  context?: string;
 }
 
-export function SharePopup({ isOpen, onClose }: SharePopupProps) {
+export function SharePopup({
+  isOpen,
+  onClose,
+  context = "unknown",
+}: SharePopupProps) {
   const [copyStatus, setCopyStatus] = useState("");
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const shareUrl = "https://www.sqlnoir.com";
@@ -18,6 +24,7 @@ export function SharePopup({ isOpen, onClose }: SharePopupProps) {
       name: "Twitter",
       icon: Twitter,
       onClick: () => {
+        track("share_option_click", { option: "twitter", context, url: shareUrl });
         window.open(
           `https://x.com/intent/tweet?text=${encodeURIComponent(
             shareTitle
@@ -30,6 +37,7 @@ export function SharePopup({ isOpen, onClose }: SharePopupProps) {
       name: "Facebook",
       icon: Facebook,
       onClick: () => {
+        track("share_option_click", { option: "facebook", context, url: shareUrl });
         window.open(
           `https://www.facebook.com/sharer.php?u=${encodeURIComponent(
             shareUrl
@@ -42,6 +50,7 @@ export function SharePopup({ isOpen, onClose }: SharePopupProps) {
       name: "LinkedIn",
       icon: Linkedin,
       onClick: () => {
+        track("share_option_click", { option: "linkedin", context, url: shareUrl });
         window.open(
           `https://www.linkedin.com/feed/?linkOrigin=LI_BADGE&shareActive=true&shareUrl=${encodeURIComponent(
             shareUrl
@@ -55,6 +64,11 @@ export function SharePopup({ isOpen, onClose }: SharePopupProps) {
       icon: Link2,
       onClick: async () => {
         await navigator.clipboard.writeText(shareUrl);
+        track("share_option_click", {
+          option: "copy_link",
+          context,
+          url: shareUrl,
+        });
         setCopyStatus("Link copied!");
         setTimeout(() => setCopyStatus(""), 2000);
       },

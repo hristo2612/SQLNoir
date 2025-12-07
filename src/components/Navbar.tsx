@@ -41,6 +41,7 @@ export function Navbar({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [shareContext, setShareContext] = useState("navbar");
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -77,7 +78,11 @@ export function Navbar({
 
   return (
     <div className="bg-amber-50/80 border-b border-amber-200 backdrop-blur-sm relative z-50">
-      <SharePopup isOpen={isShareOpen} onClose={() => setIsShareOpen(false)} />
+      <SharePopup
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        context={shareContext}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
         {titleHref ? (
@@ -158,6 +163,7 @@ export function Navbar({
             <button
               type="button"
               onClick={() => {
+                setShareContext("navbar");
                 setIsShareOpen(true);
                 track("share_open", { context: "navbar", page: pathname });
               }}
@@ -231,6 +237,7 @@ export function Navbar({
               <button
                 type="button"
                 onClick={() => {
+                  setShareContext("navbar-mobile");
                   setIsShareOpen(true);
                   track("share_open", { context: "navbar-mobile", page: pathname });
                 }}

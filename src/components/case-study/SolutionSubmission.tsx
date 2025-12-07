@@ -22,6 +22,7 @@ export function SolutionSubmission({
   const [user, setUser] = useState<any>(null); // Storing user data if logged in for conditional rendering XP reward message
   const [attempts, setAttempts] = useState(0);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [shareContext, setShareContext] = useState("case-solved");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -166,6 +167,7 @@ export function SolutionSubmission({
               <button
                 type="button"
                 onClick={() => {
+                  setShareContext("case-solved");
                   track("share_open", { context: "case-solved", case_slug: caseData.id });
                   setIsShareOpen(true);
                 }}
@@ -180,6 +182,7 @@ export function SolutionSubmission({
         <SharePopup
           isOpen={isShareOpen}
           onClose={() => setIsShareOpen(false)}
+          context={shareContext}
         />
       </div>
     );
