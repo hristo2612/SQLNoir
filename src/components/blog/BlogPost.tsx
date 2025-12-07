@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ExternalLink } from "lucide-react";
 import { useEffect } from "react";
 import { BsIncognito } from "react-icons/bs";
 import { Navbar } from "@/components/Navbar";
 import { track } from "@vercel/analytics/react";
+import gamesToLearnSqlHero from "../../../public/blog/games-to-learn-sql-hero.webp";
 
 interface BlogPostData {
   id: string;
@@ -17,7 +18,7 @@ interface BlogPostData {
   readTime: string;
   author: string;
   slug: string;
-  heroImage: string;
+  heroImage: StaticImageData;
 }
 
 interface BlogPostProps {
@@ -34,7 +35,7 @@ const BLOG_POSTS: Record<string, BlogPostData> = {
     readTime: "12 min read",
     author: "Hristo Bogoev",
     slug: "games-to-learn-sql",
-    heroImage: "/blog/games-to-learn-sql-hero.jpeg",
+    heroImage: gamesToLearnSqlHero,
     content: (
       <div className="prose prose-lg max-w-none">
         {/* <p className="text-xl text-gray-700 leading-relaxed mb-8">
@@ -1113,6 +1114,7 @@ export function BlogPost({ slug }: BlogPostProps) {
               fill
               sizes="(min-width: 1280px) 1150px, (min-width: 1024px) 85vw, 100vw"
               className="object-cover"
+              placeholder="blur"
               priority
             />
           </div>

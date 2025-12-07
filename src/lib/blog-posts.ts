@@ -1,3 +1,6 @@
+import type { StaticImageData } from "next/image";
+import gamesToLearnSqlHero from "../../public/blog/games-to-learn-sql-hero.webp";
+
 export interface BlogPostMeta {
   slug: string;
   title: string;
@@ -5,7 +8,7 @@ export interface BlogPostMeta {
   date: string;
   readTime: string;
   author: string;
-  heroImage: string;
+  heroImage: StaticImageData;
   lastModified?: string;
 }
 
@@ -18,7 +21,7 @@ export const blogPostsMeta: BlogPostMeta[] = [
     date: "2025-05-28",
     readTime: "12 min read",
     author: "Hristo Bogoev",
-    heroImage: "/blog/games-to-learn-sql-hero.jpeg",
+    heroImage: gamesToLearnSqlHero,
     lastModified: "2025-05-28",
   },
 ];

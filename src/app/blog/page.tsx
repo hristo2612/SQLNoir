@@ -37,6 +37,8 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
+  const baseUrl = "https://www.sqlnoir.com";
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -74,7 +76,7 @@ export default function BlogPage() {
             name: post.author,
           },
           mainEntityOfPage: `https://www.sqlnoir.com/blog/${post.slug}`,
-          image: post.heroImage,
+          image: `${baseUrl}${post.heroImage.src}`,
         })),
       },
     ],

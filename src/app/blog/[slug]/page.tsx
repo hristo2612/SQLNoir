@@ -8,6 +8,8 @@ interface BlogPostPageProps {
   params: { slug: string };
 }
 
+const BASE_URL = "https://www.sqlnoir.com";
+
 export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   const post = getBlogPostMeta(params.slug);
 
@@ -15,9 +17,8 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
     return { title: "Post Not Found | SQLNoir" };
   }
 
-  const baseUrl = "https://www.sqlnoir.com";
-  const heroPath = post.heroImage;
-  const ogImage = `${baseUrl}/_next/image?url=${encodeURIComponent(
+  const heroPath = post.heroImage.src;
+  const ogImage = `${BASE_URL}/_next/image?url=${encodeURIComponent(
     heroPath
   )}&w=1200&q=90`;
 
@@ -31,7 +32,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
       type: "article",
       title: post.title,
       description: post.excerpt,
-      url: `${baseUrl}/blog/${post.slug}`,
+      url: `${BASE_URL}/blog/${post.slug}`,
       publishedTime: post.date,
       modifiedTime: post.lastModified ?? post.date,
       authors: [post.author],
@@ -60,7 +61,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     return notFound();
   }
 
-  const url = `https://www.sqlnoir.com/blog/${post.slug}`;
+  const url = `${BASE_URL}/blog/${post.slug}`;
+  const heroUrl = `${BASE_URL}${post.heroImage.src}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -92,7 +94,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         "@type": "BlogPosting",
         headline: post.title,
         description: post.excerpt,
-        image: post.heroImage,
+        image: heroUrl,
         datePublished: post.date,
         dateModified: post.lastModified ?? post.date,
         author: {
