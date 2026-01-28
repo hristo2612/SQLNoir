@@ -48,6 +48,11 @@ export function Navbar({
   }, [pathname]);
 
   useEffect(() => {
+    if (!supabase) {
+      setUser(null);
+      return;
+    }
+
     supabase.auth
       .getSession()
       .then(({ data: { session } }) => setUser(session?.user ?? null))
