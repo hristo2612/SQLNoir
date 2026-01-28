@@ -22,6 +22,7 @@ export function CasesExplorer({
   const router = useRouter();
 
   const fetchUserInfo = useCallback(async (userId: string) => {
+    if (!supabase) return;
     try {
       const { data, error } = await supabase
         .from("user_info")
@@ -37,6 +38,7 @@ export function CasesExplorer({
   }, []);
 
   useEffect(() => {
+    if (!supabase) return;
     supabase.auth
       .getSession()
       .then(({ data: { session } }) => {

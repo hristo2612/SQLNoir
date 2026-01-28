@@ -36,6 +36,7 @@ export function GameApp({
   const [shareContext, setShareContext] = useState("game-app");
 
   const fetchUserInfo = useCallback(async (userId: string) => {
+    if (!supabase) return;
     try {
       const { data, error } = await supabase
         .from("user_info")
@@ -56,6 +57,7 @@ export function GameApp({
       "SQL Noir - Interactive SQL Detective Game | Learn SQL Through Mystery Solving";
 
     // Re-validate client session on mount for freshness
+    if (!supabase) return;
     supabase.auth
       .getSession()
       .then(({ data: { session } }) => {

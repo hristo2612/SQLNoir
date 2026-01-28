@@ -37,11 +37,9 @@ export function SolutionSubmission({
         answer.trim().toLowerCase() === caseData.solution.answer.toLowerCase();
 
       if (isAnswerCorrect) {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
+        const user = supabase ? (await supabase.auth.getUser()).data.user : null;
 
-        if (user) {
+        if (user && supabase) {
           // Get current user info to check if case was already solved
           const { data: userInfo, error: fetchError } = await supabase
             .from("user_info")
@@ -111,6 +109,7 @@ export function SolutionSubmission({
   // Storing the user data in state if user is logged in
   // This will allow us to show the XP reward message conditionally
   useEffect(() => {
+    if (!supabase) return;
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user);
     });

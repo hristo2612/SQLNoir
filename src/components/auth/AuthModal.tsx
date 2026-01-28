@@ -21,6 +21,11 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   // Much simpler implementation using a direct call to Supabase
   const handleGoogleSignIn = async () => {
+    if (!supabase) {
+      setError("Authentication is not available");
+      return;
+    }
+
     try {
       setGoogleLoading(true);
       setError("");
@@ -62,6 +67,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!supabase) {
+      setError("Authentication is not available");
+      return;
+    }
+
     setError("");
     setLoading(true);
 

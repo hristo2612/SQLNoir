@@ -33,7 +33,7 @@ export function ProfileMenu({
 
   useEffect(() => {
     async function fetchUserInfo() {
-      if (!user) return;
+      if (!user || !supabase) return;
 
       try {
         const { data, error } = await supabase

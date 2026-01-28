@@ -14,6 +14,7 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const handleSignOut = async () => {
+    if (!supabase) return;
     const { error } = await supabase.auth.signOut();
     if (!error) {
       onSignOut();
