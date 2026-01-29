@@ -2,6 +2,7 @@ import type { StaticImageData } from "next/image";
 import gamesToLearnSqlHero from "../../public/blog/games-to-learn-sql-hero.webp";
 import sqlJoinTypesExplainedHero from "../../public/blog/sql-join-types-explained-hero-new.png";
 import sqlForDataAnalystsHero from "../../public/blog/sql-for-data-analysts-hero-new.png";
+import sqlForBusinessAnalystsHero from "../../public/blog/sql-for-business-analysts-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -15,6 +16,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "sql-for-business-analysts",
+    title: "SQL for Business Analysts: Essential Skills and Queries for 2026",
+    excerpt:
+      "Master the 5 SQL skills every business analyst needs. From practical queries to interview prep, learn exactly what BAs need to know.",
+    date: "2026-01-29",
+    readTime: "14 min read",
+    author: "Hristo Bogoev",
+    heroImage: sqlForBusinessAnalystsHero,
+    lastModified: "2026-01-29",
+  },
   {
     slug: "sql-for-data-analysts",
     title: "SQL for Data Analysts: Essential Skills You Need to Land the Job (2026)",
