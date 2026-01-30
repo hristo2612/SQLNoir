@@ -20,6 +20,7 @@ const postComponents: Record<string, React.ComponentType> = {
   "sql-join-types-explained": dynamic(() => import("./posts/sql-join-types-explained")),
   "sql-for-data-analysts": dynamic(() => import("./posts/sql-for-data-analysts")),
   "sql-for-business-analysts": dynamic(() => import("./posts/sql-for-business-analysts")),
+  "sql-for-data-engineers": dynamic(() => import("./posts/sql-for-data-engineers")),
 };
 
 export function BlogPost({ slug }: BlogPostProps) {

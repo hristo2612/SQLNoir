@@ -3,6 +3,7 @@ import gamesToLearnSqlHero from "../../public/blog/games-to-learn-sql-hero.webp"
 import sqlJoinTypesExplainedHero from "../../public/blog/sql-join-types-explained-hero-new.png";
 import sqlForDataAnalystsHero from "../../public/blog/sql-for-data-analysts-hero-new.png";
 import sqlForBusinessAnalystsHero from "../../public/blog/sql-for-business-analysts-hero.png";
+import sqlForDataEngineersHero from "../../public/blog/sql-for-data-engineers-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -16,6 +17,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "sql-for-data-engineers",
+    title: "SQL for Data Engineers: The Complete Guide to Building Data Pipelines (2026)",
+    excerpt:
+      "Master the 7 SQL skills every data engineer needs. From CTEs and window functions to SCD patterns and pipeline optimization.",
+    date: "2026-01-30",
+    readTime: "15 min read",
+    author: "Hristo Bogoev",
+    heroImage: sqlForDataEngineersHero,
+    lastModified: "2026-01-30",
+  },
   {
     slug: "sql-for-business-analysts",
     title: "SQL for Business Analysts: Essential Skills and Queries for 2026",
