@@ -120,11 +120,11 @@ SELECT * FROM enriched_cases;`}
       </div>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        If you want to practice building multi-stage ETL pipelines hands-on,{" "}
+        The same CTE patterns you&apos;d use in production pipelines work perfectly in{" "}
         <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
           SQLNoir&apos;s detective cases
         </Link>{" "}
-        let you write real queries to solve mysteries — each case requires chaining CTEs to transform raw evidence into actionable insights.
+        — chain multi-stage queries to solve mysteries by transforming raw evidence tables (suspects, witnesses, surveillance_records) into actionable insights.
       </p>
 
       <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">2. Window Functions</h3>
@@ -356,10 +356,10 @@ CREATE TABLE cases_partitioned (
         <div className="text-4xl shrink-0">🔍</div>
         <div className="flex-1 text-center sm:text-left">
           <p className="text-amber-900 font-detective text-lg mb-1">
-            Put Window Functions & Deduplication into Practice
+            Practice Window Functions & Complex JOINs on Real Databases
           </p>
           <p className="text-amber-700 text-sm">
-            These seven SQL patterns form the backbone of production pipelines. SQLNoir cases challenge you to combine CTEs, window functions, and incremental loading logic to solve real detective mysteries—the same techniques you&apos;ll use daily building idempotent data pipelines.
+            The SQL patterns you just learned—CTEs, window functions, complex JOINs, aggregations—transfer directly to SQLNoir&apos;s detective cases. Query real databases with crime_scene, suspects, and interview tables to build the same muscle memory you need for production pipeline work.
           </p>
         </div>
         <Link
@@ -676,10 +676,10 @@ VALUES (
       {/* SQLNoir CTA - Tier 3 */}
       <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
         <p className="text-amber-900 font-detective text-xl mb-2">
-          Master Production SQL Patterns Through Detective Work
+          Sharpen Your SQL Skills Through Detective Work
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          You&apos;ve learned the theory—now apply SCD Type 2, incremental MERGE statements, and data quality checks to solve actual detective cases. Each investigation mirrors real pipeline challenges: handling duplicates, tracking historical changes, and writing queries that run reliably in production.
+          You&apos;ve learned the theory—CTEs, window functions, complex JOINs, and aggregations. Now drill those same SQL patterns by solving detective cases. Query multi-table databases (suspects, witnesses, surveillance_records, hotel_checkins) to build the query-writing muscle memory that transfers to any data engineering work.
         </p>
         <Link
           href="/cases"

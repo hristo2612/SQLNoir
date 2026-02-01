@@ -80,7 +80,7 @@ export default function SqlForFinanceContent() {
         <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
           SQLNoir&apos;s detective cases
         </Link>{" "}
-        let you write real queries to solve mysteries — every aggregation, join, and window function mirrors what you&apos;ll use analyzing revenue, portfolios, and budgets.
+        let you write real queries to solve mysteries — the same aggregations, JOINs, and window functions you&apos;d use in finance work, just applied to crime data instead of revenue tables.
       </p>
 
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
@@ -241,10 +241,10 @@ ORDER BY fiscal_quarter;`}
         <div className="text-4xl shrink-0">🔍</div>
         <div className="flex-1 text-center sm:text-left">
           <p className="text-amber-900 font-detective text-lg mb-1">
-            Master these patterns with financial data mysteries
+            Practice these SQL patterns by solving detective mysteries
           </p>
           <p className="text-amber-700 text-sm">
-            Each SQLNoir case gives you transaction tables, account ledgers, and portfolio data. You&apos;ll write JOINs to connect customers to their spending, window functions to track revenue trends, and aggregations to catch budget anomalies — the exact skills finance teams need.
+            SQLNoir cases teach you the same skills — write JOINs to connect witnesses to crime scenes, window functions to track patterns over time, and aggregations to spot anomalies. The SQL muscle memory transfers directly to financial analysis work.
           </p>
         </div>
         <Link
@@ -605,10 +605,10 @@ ORDER BY trade_date DESC;`}
       {/* SQLNoir CTA - Tier 3 */}
       <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
         <p className="text-amber-900 font-detective text-xl mb-2">
-          Put Your Finance SQL Skills to the Test
+          Build Your SQL Muscle Memory by Solving Mysteries
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          You&apos;ve learned the syntax. Now practice with realistic financial scenarios. SQLNoir cases simulate the exact queries analysts write daily — tracking quarterly revenue variance, identifying high-value customer segments, reconciling ledger discrepancies. Learn SQL by solving mysteries, and you&apos;ll remember it forever.
+          You&apos;ve learned the syntax. Now drill the patterns with real database queries. SQLNoir cases make you write the same JOINs, window functions, aggregations, and date logic you&apos;d use for revenue variance, customer segmentation, and reconciliation — just with detective data instead of financial tables. The skills transfer completely.
         </p>
         <Link
           href="/cases"

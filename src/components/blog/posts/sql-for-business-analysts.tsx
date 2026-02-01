@@ -79,11 +79,11 @@ export default function SqlForBusinessAnalystsContent() {
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        If you want to practice these business-focused SQL queries hands-on,{" "}
+        If you want to practice these SQL patterns hands-on,{" "}
         <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
           SQLNoir&apos;s detective cases
         </Link>{" "}
-        let you write real queries to solve mysteries — each scenario mirrors the stakeholder questions and data exploration tasks you&apos;ll face as a BA.
+        let you write the same JOINs, aggregations, and multi-table queries by solving crime mysteries — the SQL skills transfer directly to the stakeholder questions and data exploration tasks you&apos;ll face as a BA.
       </p>
 
       <h2 id="five-sql-skills" className="text-3xl font-detective text-amber-900 mt-12 mb-6">The 5 SQL Skills Every Business Analyst Needs</h2>
@@ -308,10 +308,10 @@ ORDER BY total_revenue DESC;`}
         <div className="text-4xl shrink-0">🔍</div>
         <div className="flex-1 text-center sm:text-left">
           <p className="text-amber-900 font-detective text-lg mb-1">
-            Put These Business Queries Into Practice
+            Practice the Same SQL Patterns with Detective Cases
           </p>
           <p className="text-amber-700 text-sm">
-            Each SQLNoir case gives you a realistic database with revenue tables, customer cohorts, and transaction histories. Write the exact JOINs and aggregations you just learned to uncover insights and crack the mystery.
+            The JOINs, GROUP BY, and aggregations you just learned work identically whether you&apos;re analyzing business data or solving crimes. SQLNoir gives you real databases to query — you&apos;ll write multi-table queries, find patterns, and build the SQL muscle memory every BA needs.
           </p>
         </div>
         <Link
@@ -511,10 +511,10 @@ WHERE created_date >= CURRENT_DATE - INTERVAL '7 days';`}
       {/* SQLNoir CTA - Tier 3 */}
       <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
         <p className="text-amber-900 font-detective text-xl mb-2">
-          Turn SQL Knowledge Into Business Analyst Skills
+          Build SQL Muscle Memory with Detective Cases
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          You&apos;ve learned the syntax — JOINs, aggregations, date functions, and subqueries. Now it&apos;s time to apply them to realistic business scenarios. SQLNoir&apos;s cases simulate the data challenges you&apos;ll face in stakeholder meetings, KPI reports, and cohort analysis projects.
+          You&apos;ve learned the syntax — JOINs, aggregations, date functions, and subqueries. Now practice those exact same patterns by querying real databases. The SQL skills you drill solving mysteries in SQLNoir transfer directly to stakeholder meetings, KPI reports, and business analysis work.
         </p>
         <Link
           href="/cases"

@@ -171,7 +171,7 @@ INNER JOIN interviews i ON s.id = i.suspect_id;`}
         <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
           SQLNoir&apos;s detective cases
         </Link>{" "}
-        let you write real queries to solve mysteries — every case gives you multi-table databases where you&apos;ll need to join suspects, evidence, and witness interviews to crack the case.
+        require you to JOIN multiple tables to solve crimes: suspects with interviews, witnesses with crime scenes, hotel check-ins with surveillance records. Each case has 3-7 related tables that need JOINs to crack.
       </p>
 
       <h2
@@ -387,10 +387,10 @@ RIGHT JOIN interviews i ON s.id = i.suspect_id;`}
         <div className="text-4xl shrink-0">🔍</div>
         <div className="flex-1 text-center sm:text-left">
           <p className="text-amber-900 font-detective text-lg mb-1">
-            Ready to Join Tables in a Real Investigation?
+            Practice JOINs in SQLNoir&apos;s Detective Cases
           </p>
           <p className="text-amber-700 text-sm">
-            You&apos;ve learned INNER, LEFT, RIGHT, and FULL OUTER JOINs. Now put them to work. SQLNoir cases give you multi-table crime databases where you&apos;ll write INNER JOINs to connect suspects with alibis, LEFT JOINs to find witnesses who haven&apos;t been interviewed, and self-joins to track relationships between suspects.
+            Each of SQLNoir&apos;s 6 cases gives you real multi-table crime databases. You&apos;ll write INNER JOINs to match suspects with interviews, LEFT JOINs to find witnesses without statements, and complex joins across crime_scene, surveillance_records, and hotel_checkins tables. Every query brings you closer to solving the case.
           </p>
         </div>
         <Link
@@ -493,10 +493,10 @@ RIGHT JOIN interviews i ON s.id = i.suspect_id;`}
       {/* SQLNoir CTA - Tier 3 */}
       <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
         <p className="text-amber-900 font-detective text-xl mb-2">
-          Master JOINs By Solving Crime Scenes
+          Apply Your JOIN Skills to Real Detective Cases
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          You know the theory — INNER JOIN for matches, LEFT JOIN to keep your primary table, FULL OUTER to see everything. Now it&apos;s time to apply them. SQLNoir gives you detective cases with realistic multi-table databases where every JOIN type matters. Write queries to cross-reference suspects, evidence, and alibis until you crack the case.
+          SQLNoir&apos;s 6 detective cases require extensive JOINs: connect suspects with witness_statements, cross-reference hotel_checkins with surveillance_records, link employee_records with keycard_access_logs. Each case has 3-7 related tables. Practice INNER JOINs, LEFT JOINs, and multi-table queries while solving crimes. This is exactly what you just learned — but applied to actual investigations.
         </p>
         <Link
           href="/cases"

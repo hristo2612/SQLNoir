@@ -110,7 +110,7 @@ WHERE DATEDIFF(day, a1.discharge_date, a2.admission_date) BETWEEN 1 AND 30;`}
         <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
           SQLNoir&apos;s detective cases
         </Link>{" "}
-        let you write real queries to solve mysteries — building the exact muscle memory you need for patient cohort analysis and readmission tracking.
+        let you write real queries to solve mysteries — building the same SQL muscle memory you need for patient cohort analysis and readmission tracking.
       </p>
 
       {/* 5 Essential SQL Skills for Healthcare Analytics */}
@@ -370,10 +370,10 @@ ORDER BY total_cases DESC;`}
         <div className="text-4xl shrink-0">🔍</div>
         <div className="flex-1 text-center sm:text-left">
           <p className="text-amber-900 font-detective text-lg mb-1">
-            Master Healthcare Analytics Through Real Query Practice
+            Master These SQL Patterns Through Real Query Practice
           </p>
           <p className="text-amber-700 text-sm">
-            The queries you just learned — JOINs, window functions, CTEs for readmission tracking — are exactly what you&apos;ll write analyzing patient cohorts and clinical outcomes. SQLNoir cases let you build these skills by solving mysteries with hospital databases, prescription records, and patient timelines.
+            The queries you just learned — JOINs, window functions, CTEs for readmission tracking — use SQL patterns that transfer directly to healthcare analytics. SQLNoir cases let you practice these same techniques on detective mystery databases: multi-table JOINs across suspects and witnesses, date calculations on crime timelines, window functions tracking surveillance records.
           </p>
         </div>
         <Link
@@ -583,10 +583,10 @@ ORDER BY visit_count DESC;`}
       {/* SQLNoir CTA - Tier 3 */}
       <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
         <p className="text-amber-900 font-detective text-xl mb-2">
-          Put Your Healthcare SQL Skills to the Test
+          Put Your SQL Skills to the Test
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          You&apos;ve learned the fundamentals — filtering patient records, aggregating clinical metrics, joining diagnosis and medication tables, tracking readmissions with window functions. Now it&apos;s time to apply them. SQLNoir&apos;s detective cases give you real datasets to query, just like the hospital databases you&apos;ll work with in your healthcare analytics career.
+          You&apos;ve learned the fundamentals — filtering patient records, aggregating clinical metrics, joining diagnosis and medication tables, tracking readmissions with window functions. Now practice those same SQL patterns on real databases. SQLNoir&apos;s detective cases let you write JOINs, subqueries, aggregations, and window functions to solve mysteries — building the muscle memory you&apos;ll use every day in healthcare analytics.
         </p>
         <Link
           href="/cases"

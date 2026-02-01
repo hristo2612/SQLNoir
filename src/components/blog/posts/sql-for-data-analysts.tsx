@@ -264,10 +264,10 @@ FROM sales;`}
         <div className="text-4xl shrink-0">🔍</div>
         <div className="flex-1 text-center sm:text-left">
           <p className="text-amber-900 font-detective text-lg mb-1">
-            Practice JOINs and Window Functions on Real Data
+            Practice the Same JOIN and Window Function Patterns
           </p>
           <p className="text-amber-700 text-sm">
-            These advanced SQL patterns make or break data analyst interviews. SQLNoir cases let you practice multi-table analysis, running totals, and ranking queries in realistic scenarios where getting the right answer actually matters.
+            The multi-table JOINs, running totals, and ranking queries used in data analysis work exactly the same way in detective cases. SQLNoir lets you drill these critical SQL patterns until they become second nature — perfect prep for analyst interviews.
           </p>
         </div>
         <Link
@@ -505,10 +505,10 @@ ORDER BY 1, 2;`}
       {/* SQLNoir CTA - Tier 3 */}
       <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
         <p className="text-amber-900 font-detective text-xl mb-2">
-          Put Your Data Analyst SQL Skills to the Test
+          Build SQL Muscle Memory for Data Analysis
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          You&apos;ve learned the concepts — aggregations, JOINs, subqueries, window functions. Now apply them to solve realistic database mysteries. SQLNoir gives you actual business scenarios where your queries uncover insights, just like the exploratory analysis and trend reporting you&apos;ll do on the job.
+          You&apos;ve learned aggregations, JOINs, subqueries, and window functions — now drill them until they stick. SQLNoir&apos;s detective cases use the exact same SQL patterns you need for dashboards and reports, just applied to crime databases instead of business tables. Same skills, different context.
         </p>
         <Link
           href="/cases"
