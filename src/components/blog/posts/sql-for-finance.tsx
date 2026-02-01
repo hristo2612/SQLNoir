@@ -75,6 +75,14 @@ export default function SqlForFinanceContent() {
         The ideal workflow: Use SQL to extract and transform your data, then export to Excel for final formatting and presentation. SQL does the heavy lifting. Excel makes it pretty.
       </p>
 
+      <p className="text-gray-700 leading-relaxed mb-6">
+        If you want to practice writing financial queries hands-on,{" "}
+        <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
+          SQLNoir&apos;s detective cases
+        </Link>{" "}
+        let you write real queries to solve mysteries — every aggregation, join, and window function mirrors what you&apos;ll use analyzing revenue, portfolios, and budgets.
+      </p>
+
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
         <h4 className="font-bold text-gray-900 mb-3">Example: 10 Minutes in Excel vs 3 Lines of SQL</h4>
         <p className="text-gray-600 text-sm mb-3">Find the average transaction amount by customer type for Q4 2024:</p>
@@ -228,15 +236,23 @@ ORDER BY fiscal_quarter;`}
         <p className="text-gray-600 text-sm mt-2">Custom fiscal quarters with CASE statements. Works for any fiscal year start date.</p>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <h3 className="text-xl font-bold text-blue-900 mb-3">💡 Pro Tip</h3>
-        <p className="text-blue-800">
-          Practice these patterns hands-on with{" "}
-          <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-semibold">
-            SQLNoir&apos;s detective cases
-          </Link>
-          . Each case file uses real SQL patterns you&apos;ll encounter in finance roles.
-        </p>
+      {/* SQLNoir CTA - Tier 2 */}
+      <div className="not-prose my-10 p-6 bg-amber-50/70 border border-amber-200 rounded-xl flex flex-col sm:flex-row items-center gap-4">
+        <div className="text-4xl shrink-0">🔍</div>
+        <div className="flex-1 text-center sm:text-left">
+          <p className="text-amber-900 font-detective text-lg mb-1">
+            Master these patterns with financial data mysteries
+          </p>
+          <p className="text-amber-700 text-sm">
+            Each SQLNoir case gives you transaction tables, account ledgers, and portfolio data. You&apos;ll write JOINs to connect customers to their spending, window functions to track revenue trends, and aggregations to catch budget anomalies — the exact skills finance teams need.
+          </p>
+        </div>
+        <Link
+          href="/cases"
+          className="shrink-0 px-5 py-2.5 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective transition-colors whitespace-nowrap"
+        >
+          Try a Case →
+        </Link>
       </div>
 
       <h2 id="real-world-queries" className="text-3xl font-detective text-amber-900 mt-12 mb-6">Real-World Finance SQL Queries You Can Use Today</h2>
@@ -526,17 +542,6 @@ ORDER BY trade_date DESC;`}
         <p className="text-gray-600 text-sm mt-2">Tests window frames. &quot;ROWS BETWEEN 89 PRECEDING AND CURRENT ROW&quot; gives you a 90-day (roughly 3-month) moving average.</p>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <h3 className="text-xl font-bold text-blue-900 mb-3">💡 Pro Tip</h3>
-        <p className="text-blue-800">
-          These interview patterns show up in{" "}
-          <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-semibold">
-            SQLNoir case files
-          </Link>
-          . Practice solving them in a detective story format, and you&apos;ll remember the patterns forever.
-        </p>
-      </div>
-
       <h2 id="learning-roadmap" className="text-3xl font-detective text-amber-900 mt-12 mb-6">Your 6-Week SQL Learning Roadmap</h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -597,6 +602,22 @@ ORDER BY trade_date DESC;`}
         <strong>What you&apos;ll be able to do:</strong> Everything in this guide. Build production-ready financial reports, answer complex business questions, impress hiring managers.
       </p>
 
+      {/* SQLNoir CTA - Tier 3 */}
+      <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
+        <p className="text-amber-900 font-detective text-xl mb-2">
+          Put Your Finance SQL Skills to the Test
+        </p>
+        <p className="text-amber-700 mb-5 max-w-lg mx-auto">
+          You&apos;ve learned the syntax. Now practice with realistic financial scenarios. SQLNoir cases simulate the exact queries analysts write daily — tracking quarterly revenue variance, identifying high-value customer segments, reconciling ledger discrepancies. Learn SQL by solving mysteries, and you&apos;ll remember it forever.
+        </p>
+        <Link
+          href="/cases"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective text-lg transition-colors"
+        >
+          Start Your Investigation →
+        </Link>
+      </div>
+
       <h2 id="faq" className="text-3xl font-detective text-amber-900 mt-12 mb-6">FAQ</h2>
 
       <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Do I need SQL if I already know Excel?</h3>
@@ -640,17 +661,8 @@ ORDER BY trade_date DESC;`}
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Want to practice SQL for finance in a way that actually sticks? Try solving detective cases where every query teaches you patterns you&apos;ll use in real finance roles. Much more interesting than fake datasets about imaginary companies.
+        Want to practice SQL for finance in a way that actually sticks? You need hands-on experience with queries that mirror real financial analysis patterns.
       </p>
-
-      <div className="bg-amber-50 border-l-4 border-amber-400 p-6 mb-8">
-        <p className="text-gray-700">
-          <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-semibold">
-            Start with Case #1 on SQLNoir
-          </Link>{" "}
-          and see how SQL detective work translates directly to financial analysis.
-        </p>
-      </div>
     </div>
   );
 }

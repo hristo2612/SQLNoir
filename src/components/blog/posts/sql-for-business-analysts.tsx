@@ -78,6 +78,14 @@ export default function SqlForBusinessAnalystsContent() {
         <strong>What BAs must master:</strong> SELECT statements, WHERE clauses, JOINs (especially INNER and LEFT), GROUP BY with aggregations, and basic date functions. These five areas will handle 90% of your queries.
       </p>
 
+      <p className="text-gray-700 leading-relaxed mb-6">
+        If you want to practice these business-focused SQL queries hands-on,{" "}
+        <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
+          SQLNoir&apos;s detective cases
+        </Link>{" "}
+        let you write real queries to solve mysteries — each scenario mirrors the stakeholder questions and data exploration tasks you&apos;ll face as a BA.
+      </p>
+
       <h2 id="five-sql-skills" className="text-3xl font-detective text-amber-900 mt-12 mb-6">The 5 SQL Skills Every Business Analyst Needs</h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -183,12 +191,6 @@ WHERE total_spent > (
 );`}
         </pre>
         <p className="text-gray-600 text-sm mt-2">The inner query calculates the average, then the outer query uses that value to filter results.</p>
-      </div>
-
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 my-8">
-        <p className="text-amber-900">
-          <strong>Want to practice these skills?</strong> SQLNoir&apos;s detective cases let you apply real SQL queries to solve mysteries. Each case builds on these exact skills with progressively challenging scenarios. <a href="/" className="text-amber-700 underline hover:text-amber-900">Try SQLNoir free →</a>
-        </p>
       </div>
 
       <h2 id="real-queries" className="text-3xl font-detective text-amber-900 mt-12 mb-6">Real Business Analyst Queries You&apos;ll Use at Work</h2>
@@ -299,6 +301,25 @@ GROUP BY r.region_id, r.region_name
 ORDER BY total_revenue DESC;`}
         </pre>
         <p className="text-gray-600 text-sm mt-2">COUNT(DISTINCT customer_id) prevents counting the same customer multiple times when they have multiple orders. LEFT JOIN ensures regions appear even if they have customers with no orders.</p>
+      </div>
+
+      {/* SQLNoir CTA - Tier 2 */}
+      <div className="not-prose my-10 p-6 bg-amber-50/70 border border-amber-200 rounded-xl flex flex-col sm:flex-row items-center gap-4">
+        <div className="text-4xl shrink-0">🔍</div>
+        <div className="flex-1 text-center sm:text-left">
+          <p className="text-amber-900 font-detective text-lg mb-1">
+            Put These Business Queries Into Practice
+          </p>
+          <p className="text-amber-700 text-sm">
+            Each SQLNoir case gives you a realistic database with revenue tables, customer cohorts, and transaction histories. Write the exact JOINs and aggregations you just learned to uncover insights and crack the mystery.
+          </p>
+        </div>
+        <Link
+          href="/cases"
+          className="shrink-0 px-5 py-2.5 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective transition-colors whitespace-nowrap"
+        >
+          Try a Case →
+        </Link>
       </div>
 
       <h2 id="interview-questions" className="text-3xl font-detective text-amber-900 mt-12 mb-6">SQL Interview Questions for Business Analysts</h2>
@@ -418,12 +439,6 @@ WHERE YEAR(o.order_date) = 2023
         <li>Time yourself to build speed for interviews</li>
       </ul>
 
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 my-8">
-        <p className="text-amber-900">
-          <strong>Practice makes permanent.</strong> SQLNoir turns learning into investigation. Each case gives you a database, a mystery, and the freedom to query your way to the answer. It&apos;s the kind of hands-on practice that makes SQL skills stick. <a href="/" className="text-amber-700 underline hover:text-amber-900">Start your first case →</a>
-        </p>
-      </div>
-
       <h2 id="common-mistakes" className="text-3xl font-detective text-amber-900 mt-12 mb-6">Common Mistakes Business Analysts Make with SQL</h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -493,6 +508,22 @@ WHERE created_date >= CURRENT_DATE - INTERVAL '7 days';`}
         Always confirm how dates are stored in your database, whether as UTC, local time, or timestamp with time zone. When in doubt, ask your data engineering team.
       </p>
 
+      {/* SQLNoir CTA - Tier 3 */}
+      <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
+        <p className="text-amber-900 font-detective text-xl mb-2">
+          Turn SQL Knowledge Into Business Analyst Skills
+        </p>
+        <p className="text-amber-700 mb-5 max-w-lg mx-auto">
+          You&apos;ve learned the syntax — JOINs, aggregations, date functions, and subqueries. Now it&apos;s time to apply them to realistic business scenarios. SQLNoir&apos;s cases simulate the data challenges you&apos;ll face in stakeholder meetings, KPI reports, and cohort analysis projects.
+        </p>
+        <Link
+          href="/cases"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective text-lg transition-colors"
+        >
+          Start Your Investigation →
+        </Link>
+      </div>
+
       <h2 className="text-3xl font-detective text-amber-900 mt-12 mb-6">Start Querying Today</h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -502,12 +533,6 @@ WHERE created_date >= CURRENT_DATE - INTERVAL '7 days';`}
       <p className="text-gray-700 leading-relaxed mb-6">
         The best time to learn SQL was five years ago. The second best time is now. Start with simple queries, build toward complex ones, and practice consistently.
       </p>
-
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 my-8">
-        <p className="text-amber-900">
-          <strong>Ready to put these skills to work?</strong> SQLNoir gives you real databases with real mysteries to solve. No tutorials, just cases that need cracking. <a href="/" className="text-amber-700 underline hover:text-amber-900">Start your investigation →</a>
-        </p>
-      </div>
     </div>
   );
 }

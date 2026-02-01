@@ -119,6 +119,14 @@ SELECT * FROM enriched_cases;`}
         </p>
       </div>
 
+      <p className="text-gray-700 leading-relaxed mb-6">
+        If you want to practice building multi-stage ETL pipelines hands-on,{" "}
+        <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
+          SQLNoir&apos;s detective cases
+        </Link>{" "}
+        let you write real queries to solve mysteries — each case requires chaining CTEs to transform raw evidence into actionable insights.
+      </p>
+
       <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">2. Window Functions</h3>
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -343,6 +351,25 @@ CREATE TABLE cases_partitioned (
         </p>
       </div>
 
+      {/* SQLNoir CTA - Tier 2 */}
+      <div className="not-prose my-10 p-6 bg-amber-50/70 border border-amber-200 rounded-xl flex flex-col sm:flex-row items-center gap-4">
+        <div className="text-4xl shrink-0">🔍</div>
+        <div className="flex-1 text-center sm:text-left">
+          <p className="text-amber-900 font-detective text-lg mb-1">
+            Put Window Functions & Deduplication into Practice
+          </p>
+          <p className="text-amber-700 text-sm">
+            These seven SQL patterns form the backbone of production pipelines. SQLNoir cases challenge you to combine CTEs, window functions, and incremental loading logic to solve real detective mysteries—the same techniques you&apos;ll use daily building idempotent data pipelines.
+          </p>
+        </div>
+        <Link
+          href="/cases"
+          className="shrink-0 px-5 py-2.5 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective transition-colors whitespace-nowrap"
+        >
+          Try a Case →
+        </Link>
+      </div>
+
       <h2 id="modern-data-stack" className="text-3xl font-detective text-amber-900 mt-12 mb-6">
         SQL in the Modern Data Stack
       </h2>
@@ -540,7 +567,7 @@ VALUES (
       </div>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Practice these patterns on <Link href="/" className="text-amber-700 hover:text-amber-900 underline">SQLNoir</Link> with realistic detective-themed datasets. The muscle memory you build solving these problems will carry directly into production pipeline work.
+        Practice these patterns with realistic datasets. The muscle memory you build solving these problems will carry directly into production pipeline work.
       </p>
 
       <h2 id="learning-roadmap" className="text-3xl font-detective text-amber-900 mt-12 mb-6">
@@ -646,6 +673,22 @@ VALUES (
         <p className="text-gray-700 font-semibold">Fix: Always EXPLAIN before deploying expensive queries to production.</p>
       </div>
 
+      {/* SQLNoir CTA - Tier 3 */}
+      <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
+        <p className="text-amber-900 font-detective text-xl mb-2">
+          Master Production SQL Patterns Through Detective Work
+        </p>
+        <p className="text-amber-700 mb-5 max-w-lg mx-auto">
+          You&apos;ve learned the theory—now apply SCD Type 2, incremental MERGE statements, and data quality checks to solve actual detective cases. Each investigation mirrors real pipeline challenges: handling duplicates, tracking historical changes, and writing queries that run reliably in production.
+        </p>
+        <Link
+          href="/cases"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective text-lg transition-colors"
+        >
+          Start Your Investigation →
+        </Link>
+      </div>
+
       <h2 id="faq" className="text-3xl font-detective text-amber-900 mt-12 mb-6">
         Frequently Asked Questions
       </h2>
@@ -674,14 +717,14 @@ VALUES (
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
         <h4 className="font-bold text-gray-900 mb-3">What&apos;s the best way to practice SQL for data engineering?</h4>
         <p className="text-gray-700">
-          Practice on realistic, large datasets with production patterns. Build an end-to-end pipeline: load data incrementally, deduplicate, track history with SCD, add quality checks, optimize performance. <Link href="/" className="text-amber-700 hover:text-amber-900 underline">SQLNoir</Link> provides detective-themed scenarios designed specifically for data engineering practice, not just syntax puzzles.
+          Practice on realistic, large datasets with production patterns. Build an end-to-end pipeline: load data incrementally, deduplicate, track history with SCD, add quality checks, optimize performance. Focus on scenarios designed specifically for data engineering practice, not just syntax puzzles.
         </p>
       </div>
 
       <div className="bg-amber-50 border-l-4 border-amber-400 p-6 mb-8">
         <h4 className="font-bold text-amber-900 mb-3">Ready to Master SQL for Data Engineering?</h4>
         <p className="text-gray-700">
-          SQL for data engineering is different from analytics SQL. You need production patterns, pipeline reliability, and performance optimization. Start practicing with real scenarios on <Link href="/" className="text-amber-700 hover:text-amber-900 underline">SQLNoir</Link>, where you&apos;ll build the exact skills data engineers use in production every day.
+          SQL for data engineering is different from analytics SQL. You need production patterns, pipeline reliability, and performance optimization to build the exact skills data engineers use in production every day.
         </p>
       </div>
     </div>

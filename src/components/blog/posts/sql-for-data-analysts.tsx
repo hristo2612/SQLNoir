@@ -118,6 +118,14 @@ ORDER BY total_revenue DESC;`}
         </p>
       </div>
 
+      <p className="text-gray-700 leading-relaxed mb-6">
+        If you want to practice writing aggregation queries hands-on,{" "}
+        <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
+          SQLNoir&apos;s detective cases
+        </Link>{" "}
+        let you write real queries to solve mysteries — perfect for building muscle memory with GROUP BY, SUM, and COUNT patterns that show up in every dashboard.
+      </p>
+
       <h2
         id="five-concepts"
         className="text-3xl font-detective text-amber-900 mt-12 mb-6"
@@ -251,6 +259,25 @@ FROM sales;`}
         </p>
       </div>
 
+      {/* SQLNoir CTA - Tier 2 */}
+      <div className="not-prose my-10 p-6 bg-amber-50/70 border border-amber-200 rounded-xl flex flex-col sm:flex-row items-center gap-4">
+        <div className="text-4xl shrink-0">🔍</div>
+        <div className="flex-1 text-center sm:text-left">
+          <p className="text-amber-900 font-detective text-lg mb-1">
+            Practice JOINs and Window Functions on Real Data
+          </p>
+          <p className="text-amber-700 text-sm">
+            These advanced SQL patterns make or break data analyst interviews. SQLNoir cases let you practice multi-table analysis, running totals, and ranking queries in realistic scenarios where getting the right answer actually matters.
+          </p>
+        </div>
+        <Link
+          href="/cases"
+          className="shrink-0 px-5 py-2.5 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective transition-colors whitespace-nowrap"
+        >
+          Try a Case →
+        </Link>
+      </div>
+
       <h2
         id="real-scenarios"
         className="text-3xl font-detective text-amber-900 mt-12 mb-6"
@@ -339,13 +366,6 @@ ORDER BY 1, 2;`}
         </p>
       </div>
 
-      <div className="bg-amber-50 border-l-4 border-amber-400 p-6 mb-8">
-        <h4 className="font-bold text-amber-900 mb-3">💡 Practice Tip</h4>
-        <p className="text-gray-700">
-          Want to practice these exact patterns with realistic data? <a href="https://www.sqlnoir.com" className="text-amber-900 underline hover:text-amber-700">SQL Noir</a> lets you write queries against detective case databases. It&apos;s way more engaging than dry tutorials, and the patterns transfer directly to business analysis.
-        </p>
-      </div>
-
       <h2
         id="interview-skills"
         className="text-3xl font-detective text-amber-900 mt-12 mb-6"
@@ -405,7 +425,6 @@ ORDER BY 1, 2;`}
         <ul className="space-y-2 text-blue-800">
           <li>• <strong>DataLemur</strong>: Company-specific interview questions from FAANG companies</li>
           <li>• <strong>LeetCode SQL</strong>: Ranked difficulty problems with solutions</li>
-          <li>• <strong>SQL Noir</strong>: Realistic database scenarios in an engaging game format</li>
           <li>• <strong>StrataScratch</strong>: Real interview questions from top companies</li>
         </ul>
       </div>
@@ -483,6 +502,22 @@ ORDER BY 1, 2;`}
         </div>
       </div>
 
+      {/* SQLNoir CTA - Tier 3 */}
+      <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
+        <p className="text-amber-900 font-detective text-xl mb-2">
+          Put Your Data Analyst SQL Skills to the Test
+        </p>
+        <p className="text-amber-700 mb-5 max-w-lg mx-auto">
+          You&apos;ve learned the concepts — aggregations, JOINs, subqueries, window functions. Now apply them to solve realistic database mysteries. SQLNoir gives you actual business scenarios where your queries uncover insights, just like the exploratory analysis and trend reporting you&apos;ll do on the job.
+        </p>
+        <Link
+          href="/cases"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective text-lg transition-colors"
+        >
+          Start Your Investigation →
+        </Link>
+      </div>
+
       <h2 className="text-3xl font-detective text-amber-900 mt-12 mb-6">
         Start Practicing Today
       </h2>
@@ -494,19 +529,6 @@ ORDER BY 1, 2;`}
       <p className="text-gray-700 leading-relaxed mb-6">
         Pick a learning resource. Write your first query. Then write a hundred more. In two months, you&apos;ll be solving business problems that seemed impossible today.
       </p>
-
-      <div className="bg-amber-100 border border-amber-300 rounded-lg p-6 mt-8">
-        <h4 className="font-bold text-amber-900 mb-3">🔍 Ready to Practice?</h4>
-        <p className="text-gray-700 mb-4">
-          If you want SQL practice that doesn&apos;t feel like homework, try <a href="https://www.sqlnoir.com" className="text-amber-900 underline hover:text-amber-700 font-bold">SQL Noir</a>. Solve detective cases by writing queries against realistic databases. It&apos;s free, requires no setup, and covers everything from basic SELECTs to complex JOINs and subqueries.
-        </p>
-        <a
-          href="https://www.sqlnoir.com"
-          className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-amber-700 transition-colors"
-        >
-          Start Solving Cases →
-        </a>
-      </div>
     </div>
   );
 }

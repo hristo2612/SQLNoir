@@ -105,6 +105,14 @@ WHERE DATEDIFF(day, a1.discharge_date, a2.admission_date) BETWEEN 1 AND 30;`}
         </p>
       </div>
 
+      <p className="text-gray-700 leading-relaxed mb-6">
+        If you want to practice writing multi-table joins and date calculations hands-on,{" "}
+        <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
+          SQLNoir&apos;s detective cases
+        </Link>{" "}
+        let you write real queries to solve mysteries — building the exact muscle memory you need for patient cohort analysis and readmission tracking.
+      </p>
+
       {/* 5 Essential SQL Skills for Healthcare Analytics */}
       <h2 id="essential-skills" className="text-3xl font-detective text-amber-900 mt-12 mb-6">
         5 Essential SQL Skills for Healthcare Analytics
@@ -357,9 +365,24 @@ ORDER BY total_cases DESC;`}
         </p>
       </div>
 
-      <p className="text-gray-700 leading-relaxed mb-6">
-        If you want to practice these patterns in a fun way, <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">SQLNoir&apos;s detective cases</Link> let you write real SQL queries to solve mysteries, building the muscle memory you need for healthcare analytics.
-      </p>
+      {/* SQLNoir CTA - Tier 2 */}
+      <div className="not-prose my-10 p-6 bg-amber-50/70 border border-amber-200 rounded-xl flex flex-col sm:flex-row items-center gap-4">
+        <div className="text-4xl shrink-0">🔍</div>
+        <div className="flex-1 text-center sm:text-left">
+          <p className="text-amber-900 font-detective text-lg mb-1">
+            Master Healthcare Analytics Through Real Query Practice
+          </p>
+          <p className="text-amber-700 text-sm">
+            The queries you just learned — JOINs, window functions, CTEs for readmission tracking — are exactly what you&apos;ll write analyzing patient cohorts and clinical outcomes. SQLNoir cases let you build these skills by solving mysteries with hospital databases, prescription records, and patient timelines.
+          </p>
+        </div>
+        <Link
+          href="/cases"
+          className="shrink-0 px-5 py-2.5 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective transition-colors whitespace-nowrap"
+        >
+          Try a Case →
+        </Link>
+      </div>
 
       {/* HIPAA Considerations */}
       <h2 id="hipaa" className="text-3xl font-detective text-amber-900 mt-12 mb-6">
@@ -557,11 +580,20 @@ ORDER BY visit_count DESC;`}
         <li>Use subqueries to find above-average or outlier cases</li>
       </ul>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <h3 className="text-xl font-bold text-blue-900 mb-3">💡 Pro Tip</h3>
-        <p className="text-blue-800">
-          Practice SQL with detective-themed cases on <Link href="/" className="text-amber-700 hover:text-amber-900 underline font-medium">SQLNoir</Link> to build muscle memory before tackling real healthcare datasets. The pattern-matching skills transfer directly.
+      {/* SQLNoir CTA - Tier 3 */}
+      <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
+        <p className="text-amber-900 font-detective text-xl mb-2">
+          Put Your Healthcare SQL Skills to the Test
         </p>
+        <p className="text-amber-700 mb-5 max-w-lg mx-auto">
+          You&apos;ve learned the fundamentals — filtering patient records, aggregating clinical metrics, joining diagnosis and medication tables, tracking readmissions with window functions. Now it&apos;s time to apply them. SQLNoir&apos;s detective cases give you real datasets to query, just like the hospital databases you&apos;ll work with in your healthcare analytics career.
+        </p>
+        <Link
+          href="/cases"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective text-lg transition-colors"
+        >
+          Start Your Investigation →
+        </Link>
       </div>
 
       {/* FAQ */}
@@ -610,10 +642,6 @@ ORDER BY visit_count DESC;`}
 
       <p className="text-gray-700 leading-relaxed mb-6">
         The healthcare industry needs more data-literate professionals. Clinicians who understand SQL can bridge the gap between bedside care and population health management. Administrators with SQL skills can make data-driven decisions about resource allocation and quality improvement.
-      </p>
-
-      <p className="text-gray-700 leading-relaxed mb-6">
-        Ready to practice? <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">Try SQLNoir&apos;s interactive detective cases</Link> to build your SQL skills through storytelling and real queries. The patterns you learn solving fictional mysteries transfer directly to solving real healthcare analytics challenges.
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">

@@ -166,6 +166,14 @@ INNER JOIN interviews i ON s.id = i.suspect_id;`}
         </ul>
       </div>
 
+      <p className="text-gray-700 leading-relaxed mb-6">
+        If you want to practice INNER JOIN and LEFT JOIN hands-on,{" "}
+        <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
+          SQLNoir&apos;s detective cases
+        </Link>{" "}
+        let you write real queries to solve mysteries — every case gives you multi-table databases where you&apos;ll need to join suspects, evidence, and witness interviews to crack the case.
+      </p>
+
       <h2
         id="left-join"
         className="text-3xl font-detective text-amber-900 mt-12 mb-6"
@@ -374,6 +382,25 @@ RIGHT JOIN interviews i ON s.id = i.suspect_id;`}
         </ul>
       </div>
 
+      {/* SQLNoir CTA - Tier 2 */}
+      <div className="not-prose my-10 p-6 bg-amber-50/70 border border-amber-200 rounded-xl flex flex-col sm:flex-row items-center gap-4">
+        <div className="text-4xl shrink-0">🔍</div>
+        <div className="flex-1 text-center sm:text-left">
+          <p className="text-amber-900 font-detective text-lg mb-1">
+            Ready to Join Tables in a Real Investigation?
+          </p>
+          <p className="text-amber-700 text-sm">
+            You&apos;ve learned INNER, LEFT, RIGHT, and FULL OUTER JOINs. Now put them to work. SQLNoir cases give you multi-table crime databases where you&apos;ll write INNER JOINs to connect suspects with alibis, LEFT JOINs to find witnesses who haven&apos;t been interviewed, and self-joins to track relationships between suspects.
+          </p>
+        </div>
+        <Link
+          href="/cases"
+          className="shrink-0 px-5 py-2.5 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective transition-colors whitespace-nowrap"
+        >
+          Try a Case →
+        </Link>
+      </div>
+
       <h2
         id="which-join-when"
         className="text-3xl font-detective text-amber-900 mt-12 mb-6"
@@ -422,19 +449,6 @@ RIGHT JOIN interviews i ON s.id = i.suspect_id;`}
         </p>
       </div>
 
-      <div className="bg-amber-100 border border-amber-300 rounded-lg p-6 mb-8">
-        <h4 className="font-bold text-amber-900 mb-3">🔍 Practice These Patterns</h4>
-        <p className="text-gray-700 mb-4">
-          Want to practice JOINs on realistic data? <a href="https://www.sqlnoir.com" className="text-amber-900 underline hover:text-amber-700 font-bold">SQL Noir</a> cases are built around multi-table databases: suspects, evidence, interviews, locations. Every case requires JOINs to solve. It&apos;s free and runs in your browser.
-        </p>
-        <a
-          href="https://www.sqlnoir.com"
-          className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-amber-700 transition-colors"
-        >
-          Start Investigating →
-        </a>
-      </div>
-
       <h2
         id="interview-tips"
         className="text-3xl font-detective text-amber-900 mt-12 mb-6"
@@ -474,6 +488,22 @@ RIGHT JOIN interviews i ON s.id = i.suspect_id;`}
             If one table has multiple matches per row in the other, your result set expands. Always mention this in interviews: &quot;If a customer has multiple orders, they&apos;ll appear multiple times in the output.&quot;
           </p>
         </div>
+      </div>
+
+      {/* SQLNoir CTA - Tier 3 */}
+      <div className="not-prose my-10 p-8 bg-gradient-to-br from-amber-50 to-amber-100/80 border border-amber-200 rounded-xl text-center">
+        <p className="text-amber-900 font-detective text-xl mb-2">
+          Master JOINs By Solving Crime Scenes
+        </p>
+        <p className="text-amber-700 mb-5 max-w-lg mx-auto">
+          You know the theory — INNER JOIN for matches, LEFT JOIN to keep your primary table, FULL OUTER to see everything. Now it&apos;s time to apply them. SQLNoir gives you detective cases with realistic multi-table databases where every JOIN type matters. Write queries to cross-reference suspects, evidence, and alibis until you crack the case.
+        </p>
+        <Link
+          href="/cases"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-amber-800/90 hover:bg-amber-700/90 text-amber-100 rounded-lg font-detective text-lg transition-colors"
+        >
+          Start Your Investigation →
+        </Link>
       </div>
 
       <h2
@@ -521,19 +551,6 @@ RIGHT JOIN interviews i ON s.id = i.suspect_id;`}
       <p className="text-gray-700 leading-relaxed mb-6">
         Start with LEFT JOIN. It&apos;s the most useful and forgiving. Get comfortable with INNER JOIN for when you need strict matches. And remember: you can always visualize it as a Venn diagram.
       </p>
-
-      <div className="bg-amber-100 border border-amber-300 rounded-lg p-6 mt-8">
-        <h4 className="font-bold text-amber-900 mb-3">🔍 Ready to Practice?</h4>
-        <p className="text-gray-700 mb-4">
-          The best way to master JOINs is to use them on real data. <a href="https://www.sqlnoir.com" className="text-amber-900 underline hover:text-amber-700 font-bold">SQL Noir</a> gives you detective cases with multi-table databases: suspects, evidence, alibis, locations. Every case requires JOINs to crack. It&apos;s free, no setup required, and way more engaging than textbook exercises.
-        </p>
-        <a
-          href="https://www.sqlnoir.com"
-          className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-amber-700 transition-colors"
-        >
-          Start Solving Cases →
-        </a>
-      </div>
     </div>
   );
 }
