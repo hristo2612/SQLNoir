@@ -22,6 +22,7 @@ const postComponents: Record<string, React.ComponentType> = {
   "sql-for-business-analysts": dynamic(() => import("./posts/sql-for-business-analysts")),
   "sql-for-data-engineers": dynamic(() => import("./posts/sql-for-data-engineers")),
   "sql-for-finance": dynamic(() => import("./posts/sql-for-finance")),
+  "sql-for-healthcare": dynamic(() => import("./posts/sql-for-healthcare")),
 };
 
 export function BlogPost({ slug }: BlogPostProps) {
