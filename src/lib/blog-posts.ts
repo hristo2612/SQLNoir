@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image";
 import gamesToLearnSqlHero from "../../public/blog/games-to-learn-sql-hero.webp";
 import sqlJoinTypesExplainedHero from "../../public/blog/sql-join-types-explained-hero.png";
-import sqlForDataAnalystsHero from "../../public/blog/sql-for-data-analysts-hero-new.png";
+import sqlForDataAnalystsHero from "../../public/blog/sql-for-data-analysts-hero.png";
 import sqlForBusinessAnalystsHero from "../../public/blog/sql-for-business-analysts-hero.png";
 import sqlForDataEngineersHero from "../../public/blog/sql-for-data-engineers-hero.png";
 import sqlForFinanceHero from "../../public/blog/sql-for-finance-hero.png";
@@ -89,14 +89,14 @@ export const blogPostsMeta: BlogPostMeta[] = [
   },
   {
     slug: "sql-for-data-analysts",
-    title: "SQL for Data Analysts: Essential Skills You Need to Land the Job (2026)",
+    title: "SQL for Data Analysts: The Complete Guide to Getting Hired (2026)",
     excerpt:
-      "Master the 5 SQL concepts every data analyst needs. From basic queries to window functions, these are the practical skills that get you hired.",
+      "Master SQL for data analysts with real business queries, visual guides, and interview prep. From SELECT to window functions, the skills that get you hired.",
     date: "2026-01-28",
-    readTime: "12 min read",
+    readTime: "14 min read",
     author: "Hristo Bogoev",
     heroImage: sqlForDataAnalystsHero,
-    lastModified: "2026-01-28",
+    lastModified: "2026-02-03",
   },
   {
     slug: "sql-join-types-explained",
