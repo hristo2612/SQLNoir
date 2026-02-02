@@ -1,6 +1,6 @@
 import type { StaticImageData } from "next/image";
 import gamesToLearnSqlHero from "../../public/blog/games-to-learn-sql-hero.webp";
-import sqlJoinTypesExplainedHero from "../../public/blog/sql-join-types-explained-hero-new.png";
+import sqlJoinTypesExplainedHero from "../../public/blog/sql-join-types-explained-hero.png";
 import sqlForDataAnalystsHero from "../../public/blog/sql-for-data-analysts-hero-new.png";
 import sqlForBusinessAnalystsHero from "../../public/blog/sql-for-business-analysts-hero.png";
 import sqlForDataEngineersHero from "../../public/blog/sql-for-data-engineers-hero.png";
@@ -100,14 +100,14 @@ export const blogPostsMeta: BlogPostMeta[] = [
   },
   {
     slug: "sql-join-types-explained",
-    title: "SQL Join Types Explained: A Visual Guide to INNER, LEFT, RIGHT & FULL Joins (2026)",
+    title: "SQL Join Types Explained: All 6 Types With Visual Examples (2026)",
     excerpt:
-      "Master all 4 SQL join types with visual diagrams and practical examples. Learn when to use INNER, LEFT, RIGHT, and FULL OUTER JOINs.",
+      "SQL join types explained with Venn diagrams, code examples, and results for all 6 types: INNER, LEFT, RIGHT, FULL OUTER, CROSS, and SELF JOIN.",
     date: "2026-01-26",
-    readTime: "10 min read",
+    readTime: "14 min read",
     author: "Hristo Bogoev",
     heroImage: sqlJoinTypesExplainedHero,
-    lastModified: "2026-01-26",
+    lastModified: "2026-02-03",
   },
   {
     slug: "games-to-learn-sql",
