@@ -69,12 +69,12 @@ export const blogPostsMeta: BlogPostMeta[] = [
     slug: "sql-for-data-engineers",
     title: "SQL for Data Engineers: The Complete Guide to Building Data Pipelines (2026)",
     excerpt:
-      "Master the 7 SQL skills every data engineer needs. From CTEs and window functions to SCD patterns and pipeline optimization.",
+      "Master the 7 SQL skills every data engineer needs. From CTEs and window functions to SCD patterns, pipeline optimization, and interview prep.",
     date: "2026-01-30",
-    readTime: "15 min read",
+    readTime: "16 min read",
     author: "Hristo Bogoev",
     heroImage: sqlForDataEngineersHero,
-    lastModified: "2026-01-30",
+    lastModified: "2026-02-03",
   },
   {
     slug: "sql-for-business-analysts",
