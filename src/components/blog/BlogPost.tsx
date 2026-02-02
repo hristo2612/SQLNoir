@@ -16,6 +16,7 @@ interface BlogPostProps {
 
 // Dynamically import post content components
 const postComponents: Record<string, React.ComponentType> = {
+  "is-sql-hard-to-learn": dynamic(() => import("./posts/is-sql-hard-to-learn")),
   "games-to-learn-sql": dynamic(() => import("./posts/games-to-learn-sql")),
   "sql-join-types-explained": dynamic(() => import("./posts/sql-join-types-explained")),
   "sql-for-data-analysts": dynamic(() => import("./posts/sql-for-data-analysts")),

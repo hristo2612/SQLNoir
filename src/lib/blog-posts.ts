@@ -7,6 +7,7 @@ import sqlForDataEngineersHero from "../../public/blog/sql-for-data-engineers-he
 import sqlForFinanceHero from "../../public/blog/sql-for-finance-hero.png";
 import sqlForHealthcareHero from "../../public/blog/sql-for-healthcare-hero.png";
 import sqlForMarketingHero from "../../public/blog/sql-for-marketing-hero.png";
+import isSqlHardToLearnHero from "../../public/blog/is-sql-hard-to-learn-hero.jpg";
 
 export interface BlogPostMeta {
   slug: string;
@@ -20,6 +21,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "is-sql-hard-to-learn",
+    title: "Is SQL Hard to Learn? What to Actually Expect in 2026",
+    excerpt:
+      "Is SQL hard to learn? Here's what SQL actually looks like at every level, with real code examples, honest timelines, and a role-by-role difficulty breakdown.",
+    date: "2026-02-03",
+    readTime: "12 min read",
+    author: "Hristo Bogoev",
+    heroImage: isSqlHardToLearnHero,
+    lastModified: "2026-02-03",
+  },
   {
     slug: "sql-for-marketing",
     title: "SQL for Marketing: Essential Queries Every Marketing Professional Needs (2026)",
