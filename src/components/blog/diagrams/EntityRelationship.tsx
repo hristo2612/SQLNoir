@@ -51,7 +51,7 @@ function TableCard({ table }: { table: ERTable }) {
   return (
     <div
       data-er-table={table.name}
-      className="bg-white border-2 border-amber-200 rounded-xl shadow-sm overflow-hidden min-w-[160px] w-full"
+      className="bg-white border-2 border-amber-200 rounded-xl shadow-sm overflow-hidden min-w-[160px]"
     >
       {/* Table header */}
       <div className="bg-amber-800 text-amber-50 px-4 py-2.5 font-detective text-sm tracking-wide font-bold">
@@ -274,7 +274,7 @@ export function EntityRelationship({
     <div className="not-prose my-8">
       {/* Desktop: tables + SVG overlay */}
       <div ref={containerRef} className="relative hidden md:block">
-        <div className="flex flex-wrap gap-6 justify-center items-start py-4 px-8">
+        <div className="flex flex-nowrap gap-12 justify-center items-start py-4 px-8">
           {tables.map((table) => (
             <TableCard key={table.name} table={table} />
           ))}
