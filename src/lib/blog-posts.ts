@@ -6,6 +6,7 @@ import sqlForBusinessAnalystsHero from "../../public/blog/sql-for-business-analy
 import sqlForDataEngineersHero from "../../public/blog/sql-for-data-engineers-hero.png";
 import sqlForFinanceHero from "../../public/blog/sql-for-finance-hero.png";
 import sqlForHealthcareHero from "../../public/blog/sql-for-healthcare-hero.png";
+import sqlForMarketingHero from "../../public/blog/sql-for-marketing-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -19,6 +20,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "sql-for-marketing",
+    title: "SQL for Marketing: Essential Queries Every Marketing Professional Needs (2026)",
+    excerpt:
+      "Master SQL for marketing analytics. Practical queries for campaign ROI, email performance, funnel analysis, and interview prep for marketing analyst roles.",
+    date: "2026-02-02",
+    readTime: "15 min read",
+    author: "Hristo Bogoev",
+    heroImage: sqlForMarketingHero,
+    lastModified: "2026-02-02",
+  },
   {
     slug: "sql-for-healthcare",
     title: "SQL for Healthcare: Essential Queries Every Healthcare Professional Needs (2026)",
