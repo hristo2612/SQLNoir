@@ -8,6 +8,7 @@ import sqlForFinanceHero from "../../public/blog/sql-for-finance-hero.png";
 import sqlForHealthcareHero from "../../public/blog/sql-for-healthcare-hero.png";
 import sqlForMarketingHero from "../../public/blog/sql-for-marketing-hero.png";
 import isSqlHardToLearnHero from "../../public/blog/is-sql-hard-to-learn-hero.jpg";
+import havingVsWhereSqlHero from "../../public/blog/having-vs-where-sql-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -21,6 +22,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "having-vs-where-sql",
+    title: "HAVING vs WHERE in SQL: What's the Difference? (Visual Guide)",
+    excerpt:
+      "Learn the difference between HAVING and WHERE in SQL with visual execution diagrams, code examples, and a quick decision guide. WHERE filters rows, HAVING filters groups.",
+    date: "2026-02-05",
+    readTime: "10 min read",
+    author: "Hristo Bogoev",
+    heroImage: havingVsWhereSqlHero,
+    lastModified: "2026-02-05",
+  },
   {
     slug: "is-sql-hard-to-learn",
     title: "Is SQL Hard to Learn? What to Actually Expect in 2026",
