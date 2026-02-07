@@ -9,6 +9,7 @@ import sqlForHealthcareHero from "../../public/blog/sql-for-healthcare-hero.png"
 import sqlForMarketingHero from "../../public/blog/sql-for-marketing-hero.png";
 import isSqlHardToLearnHero from "../../public/blog/is-sql-hard-to-learn-hero.jpg";
 import havingVsWhereSqlHero from "../../public/blog/having-vs-where-sql-hero.png";
+import unionVsUnionAllHero from "../../public/blog/union-vs-union-all-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -22,6 +23,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "union-vs-union-all",
+    title: "SQL UNION vs UNION ALL: When to Use Each (With Visual Examples)",
+    excerpt:
+      "Learn the key differences between UNION and UNION ALL in SQL. Visual examples showing when duplicates matter, performance tips, and a decision flowchart.",
+    date: "2026-02-07",
+    readTime: "11 min read",
+    author: "Hristo Bogoev",
+    heroImage: unionVsUnionAllHero,
+    lastModified: "2026-02-07",
+  },
   {
     slug: "having-vs-where-sql",
     title: "HAVING vs WHERE in SQL: What's the Difference? (Visual Guide)",
