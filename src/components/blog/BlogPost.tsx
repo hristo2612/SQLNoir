@@ -16,6 +16,7 @@ interface BlogPostProps {
 
 // Dynamically import post content components
 const postComponents: Record<string, React.ComponentType> = {
+  "delete-vs-truncate": dynamic(() => import("./posts/delete-vs-truncate")),
   "union-vs-union-all": dynamic(() => import("./posts/union-vs-union-all")),
   "having-vs-where-sql": dynamic(() => import("./posts/having-vs-where-sql")),
   "is-sql-hard-to-learn": dynamic(() => import("./posts/is-sql-hard-to-learn")),

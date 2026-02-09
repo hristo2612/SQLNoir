@@ -10,6 +10,7 @@ import sqlForMarketingHero from "../../public/blog/sql-for-marketing-hero.png";
 import isSqlHardToLearnHero from "../../public/blog/is-sql-hard-to-learn-hero.jpg";
 import havingVsWhereSqlHero from "../../public/blog/having-vs-where-sql-hero.png";
 import unionVsUnionAllHero from "../../public/blog/union-vs-union-all-hero.png";
+import deleteVsTruncateHero from "../../public/blog/delete-vs-truncate-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -23,6 +24,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "delete-vs-truncate",
+    title: "DELETE vs TRUNCATE in SQL: When to Use Each (Visual Guide)",
+    excerpt:
+      "Learn the key differences between DELETE and TRUNCATE in SQL with visual examples, decision flowcharts, and common mistakes to avoid.",
+    date: "2026-02-09",
+    readTime: "12 min read",
+    author: "Hristo Bogoev",
+    heroImage: deleteVsTruncateHero,
+    lastModified: "2026-02-09",
+  },
   {
     slug: "union-vs-union-all",
     title: "SQL UNION vs UNION ALL: When to Use Each (With Visual Examples)",
