@@ -11,6 +11,7 @@ import isSqlHardToLearnHero from "../../public/blog/is-sql-hard-to-learn-hero.jp
 import havingVsWhereSqlHero from "../../public/blog/having-vs-where-sql-hero.png";
 import unionVsUnionAllHero from "../../public/blog/union-vs-union-all-hero.png";
 import deleteVsTruncateHero from "../../public/blog/delete-vs-truncate-hero.png";
+import sqlWindowFunctionsHero from "../../public/blog/sql-window-functions-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -24,6 +25,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "sql-window-functions",
+    title: "SQL Window Functions Explained: The Complete Visual Guide (2026)",
+    excerpt:
+      "Master SQL window functions with visual examples. Learn ROW_NUMBER, RANK, LAG, LEAD, and more with before/after diagrams and interactive quizzes.",
+    date: "2026-02-12",
+    readTime: "14 min read",
+    author: "Hristo Bogoev",
+    heroImage: sqlWindowFunctionsHero,
+    lastModified: "2026-02-12",
+  },
   {
     slug: "delete-vs-truncate",
     title: "DELETE vs TRUNCATE in SQL: When to Use Each (Visual Guide)",
