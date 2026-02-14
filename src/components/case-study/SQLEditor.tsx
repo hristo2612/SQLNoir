@@ -173,8 +173,7 @@ export function SQLEditor({
     if (!textarea || !highlight) return;
 
     const handleScroll = () => {
-      highlight.scrollTop = textarea.scrollTop;
-      highlight.scrollLeft = textarea.scrollLeft;
+      highlight.style.transform = `translate(${-textarea.scrollLeft}px, ${-textarea.scrollTop}px)`;
     };
 
     textarea.addEventListener("scroll", handleScroll);
@@ -355,44 +354,48 @@ export function SQLEditor({
   return (
     <div className="relative font-mono text-sm">
       <div
-        ref={highlightRef}
-        className="absolute top-0 left-0 right-0 bottom-0 p-4 overflow-auto whitespace-pre-wrap break-words pointer-events-none text-amber-100"
+        className="absolute top-0 left-0 right-0 bottom-0 overflow-hidden pointer-events-none"
         aria-hidden="true"
       >
-        {query ? (
-          tokenize(query).map((token, i) => {
-            switch (token.type) {
-              case "keyword":
-                return (
-                  <span key={i} className="sql-keyword">
-                    {token.value}
-                  </span>
-                );
-              case "string":
-                return (
-                  <span key={i} className="sql-string">
-                    {token.value}
-                  </span>
-                );
-              case "number":
-                return (
-                  <span key={i} className="sql-number">
-                    {token.value}
-                  </span>
-                );
-              case "comment":
-                return (
-                  <span key={i} className="sql-comment">
-                    {token.value}
-                  </span>
-                );
-              default:
-                return <span key={i}>{token.value}</span>;
-            }
-          })
-        ) : (
-          <span className="sql-placeholder">{placeholder}</span>
-        )}
+        <div
+          ref={highlightRef}
+          className="p-4 whitespace-pre-wrap break-words text-amber-100 will-change-transform"
+        >
+          {query ? (
+            tokenize(query).map((token, i) => {
+              switch (token.type) {
+                case "keyword":
+                  return (
+                    <span key={i} className="sql-keyword">
+                      {token.value}
+                    </span>
+                  );
+                case "string":
+                  return (
+                    <span key={i} className="sql-string">
+                      {token.value}
+                    </span>
+                  );
+                case "number":
+                  return (
+                    <span key={i} className="sql-number">
+                      {token.value}
+                    </span>
+                  );
+                case "comment":
+                  return (
+                    <span key={i} className="sql-comment">
+                      {token.value}
+                    </span>
+                  );
+                default:
+                  return <span key={i}>{token.value}</span>;
+              }
+            })
+          ) : (
+            <span className="sql-placeholder">{placeholder}</span>
+          )}
+        </div>
       </div>
       <textarea
         ref={textareaRef}
