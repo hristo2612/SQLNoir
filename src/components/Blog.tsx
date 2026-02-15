@@ -1,5 +1,18 @@
 import { BlogIndex } from "./blog/BlogIndex";
+import { type BlogPostMeta } from "@/lib/blog-posts";
 
-export function Blog() {
-  return <BlogIndex />;
+interface BlogProps {
+  posts: BlogPostMeta[];
+  currentPage: number;
+  totalPages: number;
+}
+
+export function Blog({ posts, currentPage, totalPages }: BlogProps) {
+  return (
+    <BlogIndex
+      posts={posts}
+      currentPage={currentPage}
+      totalPages={totalPages}
+    />
+  );
 }

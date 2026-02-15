@@ -3,9 +3,16 @@ import Link from "next/link";
 import { Calendar, Clock } from "lucide-react";
 import { BsIncognito } from "react-icons/bs";
 import { Navbar } from "@/components/Navbar";
-import { blogPostsMeta } from "@/lib/blog-posts";
+import { type BlogPostMeta } from "@/lib/blog-posts";
+import { Pagination } from "./Pagination";
 
-export function BlogIndex() {
+interface BlogIndexProps {
+  posts: BlogPostMeta[];
+  currentPage: number;
+  totalPages: number;
+}
+
+export function BlogIndex({ posts, currentPage, totalPages }: BlogIndexProps) {
   return (
     <div className="min-h-screen bg-amber-50/50">
       <Navbar
@@ -18,7 +25,7 @@ export function BlogIndex() {
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {blogPostsMeta.map((post) => (
+          {posts.map((post) => (
             <article key={post.slug} className="group">
               <Link href={`/blog/${post.slug}`} className="block h-full">
                 <div className="bg-white/90 rounded-2xl overflow-hidden shadow-lg border border-amber-200 h-full flex flex-col transition-colors duration-200 hover:border-amber-300">
@@ -77,6 +84,7 @@ export function BlogIndex() {
             </article>
           ))}
         </div>
+        <Pagination currentPage={currentPage} totalPages={totalPages} />
       </main>
     </div>
   );

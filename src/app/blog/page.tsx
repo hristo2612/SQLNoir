@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Blog } from "@/components/Blog";
 import { blogPostsMeta } from "@/lib/blog-posts";
+import { getPostsForPage, getTotalPages } from "@/lib/pagination";
 
 export const metadata: Metadata = {
   title: "Detective's Journal | SQL Blog",
@@ -38,6 +39,8 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   const baseUrl = "https://www.sqlnoir.com";
+  const posts = getPostsForPage(1);
+  const totalPages = getTotalPages();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -84,7 +87,7 @@ export default function BlogPage() {
 
   return (
     <>
-      <Blog />
+      <Blog posts={posts} currentPage={1} totalPages={totalPages} />
       {/* JSON-LD script injected here */}
       <script
         id="blog-index-json-ld"
