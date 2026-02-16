@@ -12,6 +12,7 @@ import havingVsWhereSqlHero from "../../public/blog/having-vs-where-sql-hero.png
 import unionVsUnionAllHero from "../../public/blog/union-vs-union-all-hero.png";
 import deleteVsTruncateHero from "../../public/blog/delete-vs-truncate-hero.png";
 import sqlWindowFunctionsHero from "../../public/blog/sql-window-functions-hero.png";
+import sqlVsExcelHero from "../../public/blog/sql-vs-excel-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -25,6 +26,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "sql-vs-excel",
+    title: "SQL vs Excel: When to Use Each (With Side-by-Side Examples)",
+    excerpt:
+      "SQL vs Excel: which should you learn? Visual comparison with side-by-side code examples, decision flowchart, and practical use cases for every role.",
+    date: "2026-02-16",
+    readTime: "12 min read",
+    author: "Hristo Bogoev",
+    heroImage: sqlVsExcelHero,
+    lastModified: "2026-02-16",
+  },
   {
     slug: "sql-window-functions",
     title: "SQL Window Functions Explained: The Complete Visual Guide (2026)",
