@@ -24,6 +24,7 @@ export function BlogIndex({ posts, currentPage, totalPages }: BlogIndexProps) {
         ]}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+        <h1 className="font-detective text-3xl text-amber-900 mb-8">Detective&apos;s Journal</h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {posts.map((post) => (
             <article key={post.slug} className="group">

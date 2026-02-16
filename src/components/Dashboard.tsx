@@ -17,9 +17,9 @@ export function Dashboard({ onCaseSelect, userInfo }: DashboardProps) {
     <div className="min-h-screen bg-amber-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="font-detective text-3xl text-amber-900 leading-none">
+          <h1 className="font-detective text-3xl text-amber-900 leading-none">
             Case Files
-          </h2>
+          </h1>
         </div>
         <div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
