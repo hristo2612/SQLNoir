@@ -13,6 +13,7 @@ import unionVsUnionAllHero from "../../public/blog/union-vs-union-all-hero.png";
 import deleteVsTruncateHero from "../../public/blog/delete-vs-truncate-hero.png";
 import sqlWindowFunctionsHero from "../../public/blog/sql-window-functions-hero.png";
 import sqlVsExcelHero from "../../public/blog/sql-vs-excel-hero.png";
+import primaryKeyVsForeignKeyHero from "../../public/blog/primary-key-vs-foreign-key-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -26,6 +27,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "primary-key-vs-foreign-key",
+    title: "Primary Key vs Foreign Key: The Complete Visual Guide (2026)",
+    excerpt:
+      "Learn the difference between primary key and foreign key in SQL with visual diagrams, code examples, and practical detective-themed scenarios.",
+    date: "2026-02-19",
+    readTime: "11 min read",
+    author: "Hristo Bogoev",
+    heroImage: primaryKeyVsForeignKeyHero,
+    lastModified: "2026-02-19",
+  },
   {
     slug: "sql-vs-excel",
     title: "SQL vs Excel: When to Use Each (With Side-by-Side Examples)",
