@@ -14,6 +14,7 @@ import deleteVsTruncateHero from "../../public/blog/delete-vs-truncate-hero.png"
 import sqlWindowFunctionsHero from "../../public/blog/sql-window-functions-hero.png";
 import sqlVsExcelHero from "../../public/blog/sql-vs-excel-hero.png";
 import primaryKeyVsForeignKeyHero from "../../public/blog/primary-key-vs-foreign-key-hero.png";
+import dmlVsDdlHero from "../../public/blog/dml-vs-ddl-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -27,6 +28,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "dml-vs-ddl",
+    title: "DDL vs DML: Understanding SQL Command Types (With Visual Examples)",
+    excerpt:
+      "Learn the difference between DDL and DML in SQL. Visual guide covering CREATE, ALTER, DROP vs SELECT, INSERT, UPDATE, DELETE with examples and quiz.",
+    date: "2026-02-21",
+    readTime: "11 min read",
+    author: "Hristo Bogoev",
+    heroImage: dmlVsDdlHero,
+    lastModified: "2026-02-21",
+  },
   {
     slug: "primary-key-vs-foreign-key",
     title: "Primary Key vs Foreign Key: The Complete Visual Guide (2026)",
