@@ -15,6 +15,7 @@ import sqlWindowFunctionsHero from "../../public/blog/sql-window-functions-hero.
 import sqlVsExcelHero from "../../public/blog/sql-vs-excel-hero.png";
 import primaryKeyVsForeignKeyHero from "../../public/blog/primary-key-vs-foreign-key-hero.png";
 import dmlVsDdlHero from "../../public/blog/dml-vs-ddl-hero.png";
+import clusteredVsNonclusteredIndexHero from "../../public/blog/clustered-vs-nonclustered-index-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -28,6 +29,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "clustered-vs-nonclustered-index",
+    title: "Clustered vs Nonclustered Index: When to Use Each (With Visual Examples)",
+    excerpt:
+      "Learn the key differences between clustered and nonclustered indexes in SQL. Visual diagrams, performance comparisons, and practical examples for better database design.",
+    date: "2026-02-23",
+    readTime: "12 min read",
+    author: "Hristo Bogoev",
+    heroImage: clusteredVsNonclusteredIndexHero,
+    lastModified: "2026-02-23",
+  },
   {
     slug: "dml-vs-ddl",
     title: "DDL vs DML: Understanding SQL Command Types (With Visual Examples)",

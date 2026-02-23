@@ -16,6 +16,7 @@ interface BlogPostProps {
 
 // Dynamically import post content components
 const postComponents: Record<string, React.ComponentType> = {
+  "clustered-vs-nonclustered-index": dynamic(() => import("./posts/clustered-vs-nonclustered-index")),
   "dml-vs-ddl": dynamic(() => import("./posts/dml-vs-ddl")),
   "primary-key-vs-foreign-key": dynamic(() => import("./posts/primary-key-vs-foreign-key")),
   "sql-vs-excel": dynamic(() => import("./posts/sql-vs-excel")),
