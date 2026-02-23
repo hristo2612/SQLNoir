@@ -23,6 +23,8 @@ export function SolutionSubmission({
   const [attempts, setAttempts] = useState(0);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [shareContext, setShareContext] = useState("case-solved");
+  const [alreadySolved, setAlreadySolved] = useState(false);
+  const [checkingSolved, setCheckingSolved] = useState(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,14 +111,58 @@ export function SolutionSubmission({
   // Storing the user data in state if user is logged in
   // This will allow us to show the XP reward message conditionally
   useEffect(() => {
-    if (!supabase) return;
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-    });
-  }, []);
+    const checkSolvedStatus = async () => {
+      if (!supabase) {
+        setCheckingSolved(false);
+        return;
+      }
+
+      const { data } = await supabase.auth.getUser();
+      const currentUser = data.user;
+
+      setUser(currentUser);
+
+      // If not logged in → no need to check DB
+      if (!currentUser) {
+        setCheckingSolved(false);
+        return;
+      }
+
+      // Fetch completed cases
+      const { data: userInfo, error } = await supabase
+        .from("user_info")
+        .select("completed_cases")
+        .eq("id", currentUser.id)
+        .single();
+
+      if (!error) {
+        const completedCases = Array.isArray(userInfo?.completed_cases)
+          ? userInfo.completed_cases
+          : [];
+
+        if (completedCases.includes(caseData.id)) {
+          setAlreadySolved(true);
+          setSubmitted(true);
+          setIsCorrect(true);
+        }
+      }
+
+      setCheckingSolved(false);
+    };
+
+    checkSolvedStatus();
+  }, [caseData.id]);
 
   const showSuccess = submitted && isCorrect;
   const showIncorrect = submitted && !isCorrect;
+
+  if (checkingSolved) {
+    return (
+      <div className="flex justify-center items-center py-10">
+        <Loader2 className="w-6 h-6 animate-spin text-amber-700" />
+      </div>
+    );
+  }
 
   if (showSuccess) {
     return (
