@@ -15,6 +15,7 @@ import sqlWindowFunctionsHero from "../../public/blog/sql-window-functions-hero.
 import sqlVsExcelHero from "../../public/blog/sql-vs-excel-hero.png";
 import primaryKeyVsForeignKeyHero from "../../public/blog/primary-key-vs-foreign-key-hero.png";
 import dmlVsDdlHero from "../../public/blog/dml-vs-ddl-hero.png";
+import whatIsCteSqlHero from "../../public/blog/what-is-cte-in-sql-hero.png";
 import clusteredVsNonclusteredIndexHero from "../../public/blog/clustered-vs-nonclustered-index-hero.png";
 
 export interface BlogPostMeta {
@@ -29,6 +30,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "what-is-cte-in-sql",
+    title: "What Is a CTE in SQL? A Visual Guide with Examples (2026)",
+    excerpt:
+      "Learn what CTEs (Common Table Expressions) are in SQL, when to use them, and master the WITH clause with visual examples. Includes recursive CTEs.",
+    date: "2026-02-26",
+    readTime: "12 min read",
+    author: "Hristo Bogoev",
+    heroImage: whatIsCteSqlHero,
+    lastModified: "2026-02-26",
+  },
   {
     slug: "clustered-vs-nonclustered-index",
     title: "Clustered vs Nonclustered Index: When to Use Each (With Visual Examples)",
