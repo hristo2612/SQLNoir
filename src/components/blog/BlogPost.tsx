@@ -16,6 +16,7 @@ interface BlogPostProps {
 
 // Dynamically import post content components
 const postComponents: Record<string, React.ComponentType> = {
+  "sql-case-when": dynamic(() => import("./posts/sql-case-when")),
   "what-is-cte-in-sql": dynamic(() => import("./posts/what-is-cte-in-sql")),
   "clustered-vs-nonclustered-index": dynamic(() => import("./posts/clustered-vs-nonclustered-index")),
   "dml-vs-ddl": dynamic(() => import("./posts/dml-vs-ddl")),

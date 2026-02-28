@@ -16,6 +16,7 @@ import sqlVsExcelHero from "../../public/blog/sql-vs-excel-hero.png";
 import primaryKeyVsForeignKeyHero from "../../public/blog/primary-key-vs-foreign-key-hero.png";
 import dmlVsDdlHero from "../../public/blog/dml-vs-ddl-hero.png";
 import whatIsCteSqlHero from "../../public/blog/what-is-cte-in-sql-hero.png";
+import sqlCaseWhenHero from "../../public/blog/sql-case-when-hero.png";
 import clusteredVsNonclusteredIndexHero from "../../public/blog/clustered-vs-nonclustered-index-hero.png";
 
 export interface BlogPostMeta {
@@ -30,6 +31,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "sql-case-when",
+    title: "SQL CASE WHEN: The Complete Guide With Examples (2026)",
+    excerpt:
+      "Learn SQL CASE WHEN with practical examples. Master simple CASE, searched CASE, CASE with aggregates, and common patterns every SQL developer needs.",
+    date: "2026-02-28",
+    readTime: "11 min read",
+    author: "Hristo Bogoev",
+    heroImage: sqlCaseWhenHero,
+    lastModified: "2026-02-28",
+  },
   {
     slug: "what-is-cte-in-sql",
     title: "What Is a CTE in SQL? A Visual Guide with Examples (2026)",
