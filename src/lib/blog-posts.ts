@@ -18,6 +18,7 @@ import dmlVsDdlHero from "../../public/blog/dml-vs-ddl-hero.png";
 import whatIsCteSqlHero from "../../public/blog/what-is-cte-in-sql-hero.png";
 import sqlCaseWhenHero from "../../public/blog/sql-case-when-hero.png";
 import clusteredVsNonclusteredIndexHero from "../../public/blog/clustered-vs-nonclustered-index-hero.png";
+import viewVsMaterializedViewHero from "../../public/blog/view-vs-materialized-view-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -31,6 +32,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "view-vs-materialized-view",
+    title: "View vs Materialized View: What's the Difference? (With Examples)",
+    excerpt:
+      "Learn the key differences between views and materialized views in SQL. Visual comparison, code examples, decision guide, and when to use each.",
+    date: "2026-03-02",
+    readTime: "10 min read",
+    author: "Hristo Bogoev",
+    heroImage: viewVsMaterializedViewHero,
+    lastModified: "2026-03-02",
+  },
   {
     slug: "sql-case-when",
     title: "SQL CASE WHEN: The Complete Guide With Examples (2026)",
