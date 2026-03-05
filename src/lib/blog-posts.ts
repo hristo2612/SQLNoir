@@ -18,6 +18,7 @@ import dmlVsDdlHero from "../../public/blog/dml-vs-ddl-hero.png";
 import whatIsCteSqlHero from "../../public/blog/what-is-cte-in-sql-hero.png";
 import sqlCaseWhenHero from "../../public/blog/sql-case-when-hero.png";
 import clusteredVsNonclusteredIndexHero from "../../public/blog/clustered-vs-nonclustered-index-hero.png";
+import sqlViewsHero from "../../public/blog/sql-views-hero.png";
 import viewVsMaterializedViewHero from "../../public/blog/view-vs-materialized-view-hero.png";
 
 export interface BlogPostMeta {
@@ -32,6 +33,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "sql-views",
+    title: "SQL Views Explained: What They Are, How They Work, and When to Use Them",
+    excerpt:
+      "Learn what SQL views are, how they work internally, and when to use them. Includes visual diagrams, practical examples, views vs tables comparison, and common mistakes.",
+    date: "2026-03-05",
+    readTime: "11 min read",
+    author: "Hristo Bogoev",
+    heroImage: sqlViewsHero,
+    lastModified: "2026-03-05",
+  },
   {
     slug: "view-vs-materialized-view",
     title: "View vs Materialized View: What's the Difference? (With Examples)",
