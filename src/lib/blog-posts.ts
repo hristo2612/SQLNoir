@@ -20,6 +20,7 @@ import sqlCaseWhenHero from "../../public/blog/sql-case-when-hero.png";
 import clusteredVsNonclusteredIndexHero from "../../public/blog/clustered-vs-nonclustered-index-hero.png";
 import sqlViewsHero from "../../public/blog/sql-views-hero.png";
 import viewVsMaterializedViewHero from "../../public/blog/view-vs-materialized-view-hero.png";
+import coalesceSqlHero from "../../public/blog/coalesce-sql-hero.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -33,6 +34,17 @@ export interface BlogPostMeta {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "coalesce-sql",
+    title: "SQL COALESCE Explained: Handle NULL Values Like a Pro",
+    excerpt:
+      "Learn how SQL COALESCE works with practical examples. Handle NULL values, set defaults, and master COALESCE vs ISNULL vs IFNULL across all databases.",
+    date: "2026-03-09",
+    readTime: "11 min read",
+    author: "Hristo Bogoev",
+    heroImage: coalesceSqlHero,
+    lastModified: "2026-03-09",
+  },
   {
     slug: "sql-views",
     title: "SQL Views Explained: What They Are, How They Work, and When to Use Them",

@@ -16,6 +16,7 @@ interface BlogPostProps {
 
 // Dynamically import post content components
 const postComponents: Record<string, React.ComponentType> = {
+  "coalesce-sql": dynamic(() => import("./posts/coalesce-sql")),
   "sql-views": dynamic(() => import("./posts/sql-views")),
   "view-vs-materialized-view": dynamic(() => import("./posts/view-vs-materialized-view")),
   "sql-case-when": dynamic(() => import("./posts/sql-case-when")),
