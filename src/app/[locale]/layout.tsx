@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Noto_Sans_SC } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react";
 import { CookieConsent } from "@/components/CookieConsent";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { routing } from "@/i18n/routing";
+
+const notoSansSC = Noto_Sans_SC({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-noto-sans-sc",
+  display: "swap",
+  preload: false,
+});
 
 const siteUrl = "https://www.sqlnoir.com";
 const defaultTitle =
@@ -23,6 +32,11 @@ const localeMeta: Record<string, { title: string; description: string; keywords:
     title: "Jogo Interativo de SQL | Aprenda SQL Resolvendo Casos de Detetive | SQLNoir",
     description: "SQLNoir é um jogo interativo de SQL onde você soluciona crimes e mistérios usando consultas SQL. Aprenda SQL sendo detetive neste envolvente jogo de aprendizado.",
     keywords: ["jogo de SQL", "aprender SQL", "tutorial interativo de SQL", "praticar SQL", "jogo de detetive SQL"],
+  },
+  "zh-CN": {
+    title: "互动 SQL 游戏 | 通过侦破案件学习 SQL | SQLNoir",
+    description: "SQLNoir 是一款互动 SQL 游戏，你将使用 SQL 查询语句侦破犯罪和神秘案件。在这款引人入胜的 SQL 学习游戏中扮演侦探，轻松掌握 SQL。",
+    keywords: ["SQL 游戏", "学习 SQL", "SQL 互动教程", "SQL 练习", "SQL 侦探游戏"],
   },
 };
 
@@ -44,6 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       languages: {
         en: "/",
         "pt-br": "/pt-br",
+        "zh-CN": "/zh-CN",
       },
       types: {
         "application/rss+xml": "/blog/rss.xml",
@@ -156,7 +171,7 @@ export default async function LocaleLayout({
   }, meta.description);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={locale === "zh-CN" ? notoSansSC.variable : ""}>
       <head>
         <Script
           id="seo-json-ld"
@@ -165,7 +180,7 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>
+      <body className={locale === "zh-CN" ? "font-cjk" : ""}>
         <PostHogProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             {children}

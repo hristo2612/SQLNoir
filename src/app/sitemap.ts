@@ -3,7 +3,7 @@ import { blogPostsMeta } from "@/lib/blog-posts";
 import { getAllCases, getCaseSlug } from "@/lib/case-utils";
 
 const baseUrl = "https://www.sqlnoir.com";
-const alternateLocales = ["pt-br"] as const;
+const alternateLocales = ["pt-br", "zh-CN"] as const;
 
 function withAlternates(url: string) {
   return {
