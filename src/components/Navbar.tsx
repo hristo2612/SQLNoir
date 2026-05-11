@@ -89,7 +89,7 @@ export function Navbar({
 
   const switchLocale = (newLocale: string) => {
     track("locale_switch", { from: currentLocale, to: newLocale });
-    router.replace(pathname, { locale: newLocale as "en" | "pt-br" });
+    router.replace(pathname, { locale: newLocale as "en" | "pt-br" | "zh-CN" });
   };
 
   const [isLocaleOpen, setIsLocaleOpen] = useState(false);
@@ -226,6 +226,13 @@ export function Navbar({
                   className={`w-full text-left px-3 py-2 text-sm font-detective transition-colors ${currentLocale === "pt-br" ? "bg-amber-200 text-amber-900" : "text-amber-800 hover:bg-amber-100"}`}
                 >
                   {t('localeSwitcher.portuguese')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { switchLocale("zh-CN"); setIsLocaleOpen(false); }}
+                  className={`w-full text-left px-3 py-2 text-sm font-detective transition-colors ${currentLocale === "zh-CN" ? "bg-amber-200 text-amber-900" : "text-amber-800 hover:bg-amber-100"}`}
+                >
+                  {t('localeSwitcher.chinese')}
                 </button>
               </div>
             )}

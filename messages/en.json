@@ -331,7 +331,8 @@
     "switchToEnglish": "Switch to English",
     "changeLanguage": "Change language",
     "portuguese": "Português (BR)",
-    "english": "English"
+    "english": "English",
+    "chinese": "Chinese"
   },
   "footer": {
     "copyright": "© {year} SQLNoir",
