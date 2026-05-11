@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { X, Lock, Sparkles } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import posthog from "posthog-js";
 import {
   trackPaywallShown,
   trackPaywallCtaClicked,
   trackPaywallDismissed,
 } from "@/lib/posthog";
+import { getPriceForLocale } from "@/lib/ppp-prices";
 
 const PRICING_MAP: Record<string, string> = {
   "9-99": "$9.99",
@@ -24,16 +25,22 @@ interface PaywallProps {
 
 export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
   const t = useTranslations("paywall");
-  const [price, setPrice] = useState("$14.99");
+  const locale = useLocale();
+  const [price, setPrice] = useState(() => getPriceForLocale(locale).display);
 
   useEffect(() => {
+    // zh-CN bills in CNY — skip the USD-only PostHog price-display experiment.
+    if (locale === "zh-CN") {
+      setPrice(getPriceForLocale(locale).display);
+      return;
+    }
     posthog.onFeatureFlags(() => {
       const flag = posthog.getFeatureFlag("pricing-display");
       if (typeof flag === "string" && PRICING_MAP[flag]) {
         setPrice(PRICING_MAP[flag]);
       }
     });
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     if (isOpen) {
