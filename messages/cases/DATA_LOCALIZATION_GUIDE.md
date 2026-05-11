@@ -154,3 +154,21 @@ For each translated case, the entire case must be play-tested to verify:
 2. The correct answer can still be found through logical deduction
 3. SQL queries using translated values return expected results
 4. No clue text is ambiguous in the target language
+
+---
+
+## CJK Locales (zh-CN, future zh-TW, zh-HK)
+
+For East-Asian locales, the rules above are inverted:
+- Table names ARE translated (e.g. `crime_scene` → `犯罪现场`).
+- Column names ARE translated (e.g. `description` → `描述`).
+- Person names ARE translated (e.g. `Vincent Malone` → `赵俊豪`).
+- `solution.answer` is overridden per-locale in `messages/cases/{locale}/case-NNN.json`.
+
+Rationale: CEO decision (2026-05-11). Native names and full immersion drive
+conversion in CJK markets. The trade-off — that students write SQL with
+non-ASCII identifiers — is deliberate and pedagogically supported in Lloyd
+Hasson's classroom-tested original.
+
+pt-br and other Romance/Germanic locales continue to follow the original
+"keep identifiers English, translate values" rule.
