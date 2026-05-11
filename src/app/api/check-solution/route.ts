@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { getAllCases } from "@/lib/case-utils";
+import { getAllCases, getLocalizedCase } from "@/lib/case-utils";
 import { isCaseFree } from "@/lib/license";
 
 export async function POST(req: NextRequest) {
-  let body: { caseId?: string; answer?: string };
+  let body: { caseId?: string; answer?: string; locale?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { caseId, answer } = body;
+  const { caseId, answer, locale = "en" } = body;
 
   if (!caseId || !answer) {
     return NextResponse.json(
@@ -72,15 +72,18 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const localizedCase = await getLocalizedCase(caseData, locale);
+
   const isCorrect =
-    answer.trim().toLowerCase() === caseData.solution.answer.toLowerCase();
+    answer.trim().toLowerCase() ===
+    localizedCase.solution.answer.toLowerCase();
 
   return NextResponse.json({
     correct: isCorrect,
     ...(isCorrect
       ? {
-          explanation: caseData.solution.explanation,
-          successMessage: caseData.solution.successMessage,
+          explanation: localizedCase.solution.explanation,
+          successMessage: localizedCase.solution.successMessage,
         }
       : {}),
   });

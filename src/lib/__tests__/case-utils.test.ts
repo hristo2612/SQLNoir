@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { getCaseSlug, findCaseBySlug, getAllCases } from "../case-utils";
+import {
+  getCaseSlug,
+  findCaseBySlug,
+  getAllCases,
+  getLocalizedCase,
+} from "../case-utils";
 import type { Case } from "@/types";
 
 // Create a mock case with Portuguese title to simulate localized case data
@@ -91,5 +96,44 @@ describe("getAllCases", () => {
     const all = getAllCases();
     const slugs = all.map((c) => getCaseSlug(c));
     expect(new Set(slugs).size).toBe(slugs.length);
+  });
+});
+
+describe("getLocalizedCase", () => {
+  it("returns the original case unchanged for 'en' locale", async () => {
+    const c = makeMockCase();
+    const result = await getLocalizedCase(c, "en");
+    expect(result).toBe(c);
+    expect(result.solution.answer).toBe("test");
+  });
+
+  it("falls back to English answer when locale JSON does not provide one (pt-br pattern)", async () => {
+    // Use case-001's real id — pt-br/case-001.json exists but has no solution.answer
+    const all = getAllCases();
+    const c001 = all.find((c) => c.id === "case-001");
+    expect(c001).toBeDefined();
+    const englishAnswer = c001!.solution.answer;
+    const result = await getLocalizedCase(c001!, "pt-br");
+    expect(result.solution.answer).toBe(englishAnswer);
+    // Other fields should be localized (sanity check)
+    expect(result.title).not.toBe(c001!.title);
+  });
+
+  it("falls back to English answer when no locale JSON exists at all", async () => {
+    const c = makeMockCase({ id: "case-001" });
+    // 'no-such-locale' has no JSON files, so import throws and we return caseData
+    const result = await getLocalizedCase(c, "no-such-locale");
+    expect(result.solution.answer).toBe("test");
+  });
+
+  it("uses locale JSON answer when provided (zh-CN pattern)", async () => {
+    // Uses fixture at messages/cases/__test__/case-001.json which provides
+    // a Chinese solution.answer override — simulates Phase 4 zh-CN data.
+    const c = makeMockCase({ id: "case-001" });
+    const result = await getLocalizedCase(c, "__test__");
+    expect(result.solution.answer).toBe("赵俊豪");
+    expect(result.title).toBe("案件零");
+    expect(result.solution.successMessage).toBe("成功！");
+    expect(result.solution.explanation).toBe("解释。");
   });
 });

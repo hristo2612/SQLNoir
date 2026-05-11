@@ -9,7 +9,7 @@ import { Paywall } from "../Paywall";
 import { track } from "@vercel/analytics/react";
 import { trackCaseCompleted, trackCaseAbandoned } from "../../lib/posthog-events";
 import { posthog } from "../../lib/posthog";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { isCaseFree } from "../../lib/license";
 
 interface SolutionSubmissionProps {
@@ -24,6 +24,7 @@ export function SolutionSubmission({
   caseStartTime,
 }: SolutionSubmissionProps) {
   const t = useTranslations();
+  const locale = useLocale();
   const [answer, setAnswer] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -61,7 +62,7 @@ export function SolutionSubmission({
             "Content-Type": "application/json",
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
-          body: JSON.stringify({ caseId: caseData.id, answer: answer.trim() }),
+          body: JSON.stringify({ caseId: caseData.id, answer: answer.trim(), locale }),
         });
 
         const data = await res.json();

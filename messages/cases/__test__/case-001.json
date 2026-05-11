@@ -1,0 +1,12 @@
+{
+  "id": "case-001",
+  "title": "案件零",
+  "description": "中文描述",
+  "brief": "简介",
+  "objectives": ["目标一"],
+  "solution": {
+    "answer": "赵俊豪",
+    "successMessage": "成功！",
+    "explanation": "解释。"
+  }
+}
