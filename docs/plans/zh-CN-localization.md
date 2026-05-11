@@ -1,9 +1,26 @@
 # zh-CN Localization Implementation Plan
 
-**Status**: Draft, pending CEO sign-off
+**Status**: Active — Phase 2 complete, Phase 3 in progress
 **Author**: SQLNoir Lead (Jinn)
 **Last updated**: 2026-05-11
 **Source recon**: see `~/Projects/SQLNoir-zh-CN-fork/` (Lloyd Hasson's donated fork) and `~/.jinn/knowledge/sqlnoir-educator-answer-key-zh-CN.md` (internal-only bilingual answer key, not committed)
+
+---
+
+## ⚠️ TOP-LEVEL OPERATIONAL CONSTRAINT — DO NOT VIOLATE
+
+**SQLNoir is currently FREE in production. The paywall is NOT yet active.** All 6 cases are unlocked for every user. Hristo has not flipped the monetization switch yet.
+
+**Implications for every phase of this work:**
+
+- DO NOT enable the paywall in any code change.
+- DO NOT modify feature flags, license gate variables, `requiresLicense` flags, free-cases lists, or any check that locks content.
+- DO NOT change which cases require a license or remove any "free for all" defaults.
+- Translating paywall copy is fine — that does not activate the gate. The gate is controlled separately.
+- Phase 5 will stand up CNY Stripe checkout and translate paywall strings, but the gate stays OFF until the CEO explicitly flips it.
+- If you encounter a paywall flag, license-gate variable, or anything monetization-adjacent during any task, **flag it in your report and do not toggle**.
+
+This constraint propagates to all agents working in this epic. Lead enforces.
 
 ---
 
