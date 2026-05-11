@@ -1277,7 +1277,7 @@ export default [
     (199, 199,'那天我在上钢琴课。我创造音乐，而不是制造混乱。')
   ;`,
 
- /* // 8. Vehicle Registry Table (with noise; key: Lamborghini Countach entry)
+  // 8. Vehicle Registry Table (with noise; key: Lamborghini Countach entry)
   `CREATE TABLE 车辆登记 (
     id INTEGER PRIMARY KEY,
     人员id INTEGER,
@@ -1604,5 +1604,5 @@ export default [
     (98, 71, 19871030,'银耳汤', 1),
     (99, 45, 19871030,'薏米水', 2),
     (100, 89, 19871030,'茅根水', 1)
-  ;`,                                    */
+  ;`,
 ];
