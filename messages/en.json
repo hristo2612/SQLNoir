@@ -61,7 +61,13 @@
     "faqInterviewQ": "Will this help with interviews?",
     "faqInterviewA": "Yes. Cases mimic realistic data puzzles you might see in data and engineering interviews. It's great for practicing under a narrative without rote question banks.",
     "faqHintsQ": "Can I get hints if I'm stuck?",
-    "faqHintsA": "Each case includes a schema view and objectives. If you need more help, join the community Discord or check the help page for guidance."
+    "faqHintsA": "Each case includes a schema view and objectives. If you need more help, join the community Discord or check the help page for guidance.",
+    "cta": {
+      "default": "Start Investigation",
+      "startInvestigating": "Start Investigating",
+      "solveFirstCase": "Solve Your First Case",
+      "beginMystery": "Begin the Mystery"
+    }
   },
   "cases": {
     "caseFiles": "Case Files",
@@ -326,6 +332,28 @@
     "changeLanguage": "Change language",
     "portuguese": "Português (BR)",
     "english": "English"
+  },
+  "footer": {
+    "copyright": "© {year} SQLNoir",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact"
+  },
+  "cookieConsent": {
+    "message": "We use cookies for analytics. DNT is respected.",
+    "privacyLink": "Privacy Policy",
+    "accept": "OK"
+  },
+  "paywall": {
+    "title": "Unlock All Cases",
+    "subtitle": "You've proven your detective skills. Upgrade to access intermediate and advanced cases, plus future investigations.",
+    "tierName": "Detective Pro",
+    "perMonth": "per month",
+    "feature1": "All intermediate & advanced cases",
+    "feature2": "New cases as they launch",
+    "feature3": "Detailed solution explanations",
+    "ctaUpgrade": "Upgrade Now",
+    "ctaMaybeLater": "Maybe later"
   },
   "privacy": {
     "metadata": {

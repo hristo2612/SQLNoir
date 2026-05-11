@@ -61,7 +61,13 @@
     "faqInterviewQ": "Isso ajuda em entrevistas?",
     "faqInterviewA": "Sim. Os casos simulam puzzles de dados realistas que você pode encontrar em entrevistas de dados e engenharia. É ótimo para praticar com narrativa sem bancos de questões repetitivas.",
     "faqHintsQ": "Posso receber dicas se estiver travado?",
-    "faqHintsA": "Cada caso inclui uma visualização do esquema e objetivos. Se precisar de mais ajuda, junte-se à comunidade no Discord ou confira a página de ajuda."
+    "faqHintsA": "Cada caso inclui uma visualização do esquema e objetivos. Se precisar de mais ajuda, junte-se à comunidade no Discord ou confira a página de ajuda.",
+    "cta": {
+      "default": "Iniciar Investigação",
+      "startInvestigating": "Começar a Investigar",
+      "solveFirstCase": "Resolva Seu Primeiro Caso",
+      "beginMystery": "Desvende o Mistério"
+    }
   },
   "cases": {
     "caseFiles": "Arquivos de Caso",
@@ -326,6 +332,28 @@
     "changeLanguage": "Mudar idioma",
     "portuguese": "Português (BR)",
     "english": "English"
+  },
+  "footer": {
+    "copyright": "© {year} SQLNoir",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Serviço",
+    "contact": "Contato"
+  },
+  "cookieConsent": {
+    "message": "Usamos cookies para análises. O sinal DNT (Do Not Track) é respeitado.",
+    "privacyLink": "Política de Privacidade",
+    "accept": "OK"
+  },
+  "paywall": {
+    "title": "Desbloqueie Todos os Casos",
+    "subtitle": "Você provou suas habilidades de detetive. Faça upgrade para acessar casos intermediários e avançados, além de futuras investigações.",
+    "tierName": "Detective Pro",
+    "perMonth": "por mês",
+    "feature1": "Todos os casos intermediários e avançados",
+    "feature2": "Novos casos assim que forem lançados",
+    "feature3": "Explicações detalhadas das soluções",
+    "ctaUpgrade": "Fazer Upgrade",
+    "ctaMaybeLater": "Talvez depois"
   },
   "privacy": {
     "metadata": {

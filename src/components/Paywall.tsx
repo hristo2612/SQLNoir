@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { X, Lock, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import posthog from "posthog-js";
 import {
   trackPaywallShown,
@@ -22,6 +23,7 @@ interface PaywallProps {
 }
 
 export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
+  const t = useTranslations("paywall");
   const [price, setPrice] = useState("$14.99");
 
   useEffect(() => {
@@ -71,34 +73,33 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
             <Sparkles className="w-7 h-7 text-amber-700" />
           </div>
           <h2 className="font-detective text-2xl text-amber-900">
-            Unlock All Cases
+            {t("title")}
           </h2>
           <p className="text-amber-700">
-            You&apos;ve proven your detective skills. Upgrade to access
-            intermediate and advanced cases, plus future investigations.
+            {t("subtitle")}
           </p>
         </div>
 
         <div className="bg-white border border-amber-200 rounded-xl p-6 text-center space-y-2">
           <p className="text-amber-600 text-sm font-medium uppercase tracking-wide">
-            Detective Pro
+            {t("tierName")}
           </p>
           <p className="font-detective text-4xl text-amber-900">{price}</p>
-          <p className="text-amber-600 text-sm">per month</p>
+          <p className="text-amber-600 text-sm">{t("perMonth")}</p>
         </div>
 
         <ul className="space-y-2 text-amber-800 text-sm">
           <li className="flex items-center gap-2">
             <Lock className="w-4 h-4 text-amber-600" />
-            All intermediate &amp; advanced cases
+            {t("feature1")}
           </li>
           <li className="flex items-center gap-2">
             <Lock className="w-4 h-4 text-amber-600" />
-            New cases as they launch
+            {t("feature2")}
           </li>
           <li className="flex items-center gap-2">
             <Lock className="w-4 h-4 text-amber-600" />
-            Detailed solution explanations
+            {t("feature3")}
           </li>
         </ul>
 
@@ -106,14 +107,14 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
           onClick={handleCtaClick}
           className="w-full py-3 rounded-lg bg-amber-800 hover:bg-amber-700 text-amber-50 font-detective text-lg transition-colors duration-200 shadow-lg"
         >
-          Upgrade Now
+          {t("ctaUpgrade")}
         </button>
 
         <button
           onClick={handleDismiss}
           className="w-full text-center text-amber-600 hover:text-amber-800 text-sm"
         >
-          Maybe later
+          {t("ctaMaybeLater")}
         </button>
       </div>
     </div>
