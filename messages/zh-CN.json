@@ -290,7 +290,7 @@
     }
   },
   "license": {
-    "upgradeTitle": "升级侦探执照",
+    "upgradeTitle": "升级侦探证",
     "upgradeSubtitle": "更深的谜案在前方等你，侦探……",
     "unlockCases": "解锁 4 个高阶案件",
     "unlockCasesDesc": "中级与高级调查，带来更复杂的 SQL 挑战",
@@ -301,23 +301,23 @@
     "oneTimePayment": "一次付费，永久持有",
     "getYourLicense": "领取执照",
     "continueWithFree": "继续玩免费案件",
-    "getLicense": "获得侦探执照",
+    "getLicense": "获得侦探证",
     "redirecting": "跳转中...",
     "somethingWentWrong": "出了点小问题，请重试。",
     "checkingCredentials": "正在验证凭据...",
     "caseClassified": "案件已加密",
-    "caseClassifiedDesc": "这桩调查需要侦探执照。升级后即可解锁全部中级与高级案件。",
+    "caseClassifiedDesc": "这桩调查需要侦探证。升级后即可解锁全部中级与高级案件。",
     "backToCaseFiles": "返回案件档案",
     "licenseRequired": "需要执照",
-    "unlockAllCases": "使用侦探执照解锁全部案件",
+    "unlockAllCases": "使用侦探证解锁全部案件",
     "unlockAllCasesDesc": "一次性购买。完整解锁所有案件、所有难度，无限练习。"
   },
   "checkout": {
     "paymentReceived": "付款已收到！",
     "welcomeDetective": "欢迎回来，侦探",
-    "signInToActivate": "登录以激活你的侦探执照并解锁全部案件。",
+    "signInToActivate": "登录以激活你的侦探证并解锁全部案件。",
     "activatingLicense": "正在激活你的执照...",
-    "licenseActive": "你的侦探执照已激活。全部 6 桩案件都已解锁，等你来破。",
+    "licenseActive": "你的侦探证已激活。全部 6 桩案件都已解锁，等你来破。",
     "signInButton": "登录以激活执照",
     "whatYouGet": "你将获得：",
     "accessAllCases": "解锁全部 6 桩侦探案件",
@@ -377,7 +377,7 @@
   "checkoutSuccess": {
     "metadata": {
       "title": "购买完成",
-      "description": "你的侦探执照购买已完成。请登录以激活执照并解锁全部 SQLNoir 案件。"
+      "description": "你的侦探证购买已完成。请登录以激活执照并解锁全部 SQLNoir 案件。"
     }
   },
   "metadata": {
