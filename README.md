@@ -4,6 +4,21 @@
 
 Step into the shoes of a real detective and solve crimes using SQL! SQL Noir is an interactive mystery-solving game where you crack cases by writing SQL queries.
 
+## Localizations
+
+SQLNoir is available in:
+
+- **English** — original
+- **Português (Brasil)** — community contribution
+- **简体中文 (Simplified Chinese)** — adapted and culturally localized by
+  [Lloyd Hasson](https://github.com/SatyrFrost). Lloyd is a teacher in
+  China who built a complete Chinese SQLNoir from scratch for his
+  classroom — translating every case into immersive Mandarin (with
+  localized character names, Shanghai settings, and even Chinese-named
+  SQL tables and columns) — then generously donated the work to the
+  official project. The zh-CN version exists thanks to his pedagogical
+  care and creative adaptation. 谢谢你，Lloyd！
+
 ## About
 
 Welcome to SQL Noir, where you're a data detective solving criminal cases through the power of SQL. Each case file presents you with a unique crime scenario and a database full of evidence. Your mission is to:
