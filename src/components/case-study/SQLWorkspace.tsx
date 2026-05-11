@@ -13,6 +13,7 @@ import { SQLEditor } from "./SQLEditor";
 import { useDatabase } from "../../hooks/useDatabase";
 import type { QueryResult } from "../../services/DatabaseService";
 import { trackSqlQuerySubmitted } from "../../lib/posthog-events";
+import { translateSqlError } from "../../lib/translateSqlError";
 import { useTranslations, useLocale } from "next-intl";
 
 interface SQLWorkspaceProps {
@@ -95,7 +96,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
       });
 
       if (result.error) {
-        setError(result.error);
+        setError(translateSqlError(result.error, locale));
         setResults({ columns: [], values: [] });
       } else {
         // Validate that the number of columns matches the data
@@ -115,7 +116,8 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
         });
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      const rawMsg = err instanceof Error ? err.message : "An error occurred";
+      setError(translateSqlError(rawMsg, locale));
       setResults({ columns: [], values: [] });
     } finally {
       setIsExecuting(false);
