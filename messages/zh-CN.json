@@ -360,18 +360,87 @@
     "metadata": {
       "title": "隐私政策",
       "description": "SQLNoir 隐私政策 — 我们如何在你玩这款互动式 SQL 侦探游戏时收集、使用与保护你的数据。"
+    },
+    "body": {
+      "title": "隐私政策",
+      "lastUpdated": "最后更新：2026 年 3 月 15 日",
+      "collectionTitle": "我们收集的信息",
+      "collectionIntro": "当你使用 SQLNoir 时，我们可能会收集以下信息：",
+      "collectionAccount": "<strong>账户数据：</strong>当你使用 Google OAuth（通过 Supabase）登录时，我们会保存你的电子邮箱地址和用户 ID。",
+      "collectionAnalytics": "<strong>分析数据：</strong>我们使用 PostHog 与 Vercel Analytics 收集匿名化的页面浏览数据和功能使用数据。",
+      "collectionCookies": "<strong>Cookie：</strong>身份验证会话 Cookie（Supabase）以及分析 Cookie（PostHog）。",
+      "useTitle": "我们如何使用这些信息",
+      "useItem1": "用于提供和改进 SQLNoir 的功能与内容。",
+      "useItem2": "用于记录你的学习进度、经验值（XP）以及已破解的案件（仅在登录状态下）。",
+      "useItem3": "用于了解用户如何与网站互动，以便我们持续优化产品。",
+      "cookiesTitle": "Cookie",
+      "cookiesIntro": "SQLNoir 使用以下 Cookie：",
+      "cookiesAuth": "<strong>身份验证 Cookie</strong>（Supabase）——用于在多次会话间保持你的登录状态。",
+      "cookiesAnalytics": "<strong>分析 Cookie</strong>（PostHog）——用于收集匿名化的使用数据。",
+      "cookiesDisable": "你可以在浏览器设置中禁用 Cookie。禁用身份验证 Cookie 后，每次访问都需要重新登录。",
+      "thirdPartyTitle": "第三方服务",
+      "thirdPartyPosthog": "<strong>PostHog</strong>（<posthog>posthog.com</posthog>）——产品分析。",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong>——页面浏览分析。",
+      "thirdPartySupabase": "<strong>Supabase</strong>——身份验证与数据库。",
+      "thirdPartyStripe": "<strong>Stripe</strong>——为侦探证购买提供支付处理。",
+      "thirdPartyNoSell": "我们不会向任何第三方出售你的数据。",
+      "retentionTitle": "数据保留",
+      "retentionBody": "账户数据将在你的账户处于活跃状态期间予以保留。分析数据以匿名化形式保存，并根据 PostHog 与 Vercel 的保留策略自动过期。",
+      "rightsTitle": "你的权利",
+      "rightsIntro": "根据 GDPR 及其他适用的隐私法规，你有权：",
+      "rightsItem1": "访问我们持有的与你有关的个人数据。",
+      "rightsItem2": "请求更正不准确的数据。",
+      "rightsItem3": "请求删除你的数据。",
+      "rightsItem4": "通过在浏览器中启用 <strong>Do Not Track</strong> 设置来拒绝分析跟踪。PostHog 会遵守 DNT 信号。",
+      "rightsExercise": "如需行使上述任何权利，请通过下方邮箱与我们联系。",
+      "contactTitle": "联系我们",
+      "contactBody": "如对本隐私政策有任何疑问，或希望请求删除数据，请通过 <email>hristoapps@gmail.com</email> 与我们联系。"
     }
   },
   "terms": {
     "metadata": {
       "title": "服务条款",
       "description": "SQLNoir 服务条款 — 使用我们互动式 SQL 学习平台与侦探案件时所需遵守的规则与条件。"
+    },
+    "body": {
+      "title": "服务条款",
+      "lastUpdated": "最后更新：2026 年 3 月 15 日",
+      "overviewTitle": "概述",
+      "overviewBody": "SQLNoir 是一款互动式 SQL 学习平台，你可以通过编写 SQL 查询来破解侦探案件。使用 SQLNoir 即表示你同意本条款。SQLNoir 按\"现状\"提供，不附带任何形式的担保。",
+      "accountsTitle": "账户与访问",
+      "accountsIntro": "无需创建账户即可使用 SQLNoir。使用 Google OAuth 登录可在多台设备间同步你的学习进度。",
+      "accountsFreeTier": "<strong>免费版：</strong>可访问 2 个入门案件。",
+      "accountsLicense": "<strong>侦探证：</strong>一次性购买，售价 14.99 美元，解锁全部案件。",
+      "paymentsTitle": "付款",
+      "paymentsBody": "付款由 <stripe>Stripe</stripe> 安全处理。侦探证为一次性数字商品购买。由于其为可立即使用的数字产品，原则上不予退款。如遇到任何问题，请联系我们，我们将尽力协助解决。",
+      "ugcTitle": "用户生成内容",
+      "ugcBody": "你在 SQLNoir 中编写的 SQL 查询将通过 SQL.js 在你的浏览器本地执行。我们不会存储、收集或分享你的查询内容。",
+      "acceptableUseTitle": "可接受使用",
+      "acceptableUseIntro": "你同意不会：",
+      "acceptableUseItem1": "使用自动化工具抓取或爬取 SQLNoir 的内容。",
+      "acceptableUseItem2": "尝试干扰或滥用本服务。",
+      "acceptableUseItem3": "未经许可重新分发或转售案件内容。",
+      "ipTitle": "知识产权",
+      "ipBody": "SQLNoir 上的所有案件、故事、角色与代码版权均归 SQLNoir 及其创作者所有。未经书面许可，你不得复制或重新分发上述内容。",
+      "terminationTitle": "终止",
+      "terminationBody": "我们保留对违反本条款的账户予以暂停或终止的权利。账户被终止后，你将失去对已购买内容的访问权限。",
+      "changesTitle": "条款变更",
+      "changesBody": "我们可能会不定期更新本条款。条款变更后继续使用 SQLNoir 即视为你接受更新后的条款。",
+      "contactTitle": "联系我们",
+      "contactBody": "对本条款有任何疑问？请通过 <email>hristoapps@gmail.com</email> 联系我们。"
     }
   },
   "contact": {
     "metadata": {
       "title": "联系我们",
       "description": "联系 SQLNoir 团队。反馈 Bug、提议新功能，或加入我们的 Discord 社区，与 SQL 侦探爱好者们交流。"
+    },
+    "body": {
+      "title": "联系我们",
+      "intro": "有问题、发现了 Bug，或者只是想打个招呼？欢迎随时联系我们！",
+      "emailLabel": "邮箱",
+      "githubLabel": "GitHub",
+      "discordLabel": "Discord"
     }
   },
   "checkoutSuccess": {

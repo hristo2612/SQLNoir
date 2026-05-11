@@ -360,18 +360,87 @@
     "metadata": {
       "title": "Privacy Policy",
       "description": "SQLNoir privacy policy — how we collect, use, and protect your data when you play our interactive SQL detective game."
+    },
+    "body": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: March 15, 2026",
+      "collectionTitle": "What We Collect",
+      "collectionIntro": "When you use SQLNoir, we may collect the following information:",
+      "collectionAccount": "<strong>Account data:</strong> If you sign in with Google OAuth (via Supabase), we store your email address and a user ID.",
+      "collectionAnalytics": "<strong>Analytics data:</strong> We use PostHog and Vercel Analytics to collect anonymized page views and feature usage data.",
+      "collectionCookies": "<strong>Cookies:</strong> Authentication session cookies (Supabase) and analytics cookies (PostHog).",
+      "useTitle": "How We Use It",
+      "useItem1": "To provide and improve SQLNoir's features and content.",
+      "useItem2": "To track your progress, XP, and solved cases (if signed in).",
+      "useItem3": "To understand how users interact with the site so we can make it better.",
+      "cookiesTitle": "Cookies",
+      "cookiesIntro": "SQLNoir uses the following cookies:",
+      "cookiesAuth": "<strong>Authentication cookies</strong> (Supabase) — to keep you signed in across sessions.",
+      "cookiesAnalytics": "<strong>Analytics cookies</strong> (PostHog) — to collect anonymized usage data.",
+      "cookiesDisable": "You can disable cookies in your browser settings. Disabling authentication cookies will require you to sign in again on each visit.",
+      "thirdPartyTitle": "Third-Party Services",
+      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) — product analytics.",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong> — page view analytics.",
+      "thirdPartySupabase": "<strong>Supabase</strong> — authentication and database.",
+      "thirdPartyStripe": "<strong>Stripe</strong> — payment processing for Detective License purchases.",
+      "thirdPartyNoSell": "We do not sell your data to any third parties.",
+      "retentionTitle": "Data Retention",
+      "retentionBody": "Account data is retained for as long as your account is active. Analytics data is retained in anonymized form and automatically expires based on PostHog and Vercel's retention policies.",
+      "rightsTitle": "Your Rights",
+      "rightsIntro": "Under GDPR and other applicable privacy regulations, you have the right to:",
+      "rightsItem1": "Access the personal data we hold about you.",
+      "rightsItem2": "Request correction of inaccurate data.",
+      "rightsItem3": "Request deletion of your data.",
+      "rightsItem4": "Opt out of analytics tracking by enabling the <strong>Do Not Track</strong> setting in your browser. PostHog respects the DNT signal.",
+      "rightsExercise": "To exercise any of these rights, contact us at the email below.",
+      "contactTitle": "Contact",
+      "contactBody": "If you have any questions about this privacy policy or want to request data deletion, contact us at <email>hristoapps@gmail.com</email>."
     }
   },
   "terms": {
     "metadata": {
       "title": "Terms of Service",
       "description": "SQLNoir terms of service — rules and conditions for using our interactive SQL learning platform and detective cases."
+    },
+    "body": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: March 15, 2026",
+      "overviewTitle": "Overview",
+      "overviewBody": "SQLNoir is an interactive SQL learning platform where you solve detective cases using SQL queries. By using SQLNoir, you agree to these terms. SQLNoir is provided \"as is\" without warranty of any kind.",
+      "accountsTitle": "Accounts and Access",
+      "accountsIntro": "You can use SQLNoir without creating an account. Signing in with Google OAuth allows you to track progress across devices.",
+      "accountsFreeTier": "<strong>Free tier:</strong> Access to 2 introductory cases.",
+      "accountsLicense": "<strong>Detective License:</strong> A one-time purchase of $14.99 that unlocks all cases.",
+      "paymentsTitle": "Payments",
+      "paymentsBody": "Payments are processed securely by <stripe>Stripe</stripe>. The Detective License is a one-time digital purchase. Because it is a digital product with immediate access, refunds are generally not offered. If you experience any issues, please contact us and we'll do our best to help.",
+      "ugcTitle": "User-Generated Content",
+      "ugcBody": "SQL queries you write in SQLNoir are executed locally in your browser using SQL.js. We do not store, collect, or share your queries.",
+      "acceptableUseTitle": "Acceptable Use",
+      "acceptableUseIntro": "You agree not to:",
+      "acceptableUseItem1": "Use automated tools to scrape or crawl SQLNoir content.",
+      "acceptableUseItem2": "Attempt to disrupt or abuse the service.",
+      "acceptableUseItem3": "Redistribute or resell case content without permission.",
+      "ipTitle": "Intellectual Property",
+      "ipBody": "All cases, stories, characters, and code on SQLNoir are copyright of SQLNoir and its creator. You may not reproduce or redistribute this content without written permission.",
+      "terminationTitle": "Termination",
+      "terminationBody": "We reserve the right to suspend or terminate accounts that violate these terms. If your account is terminated, you will lose access to any purchased content.",
+      "changesTitle": "Changes to These Terms",
+      "changesBody": "We may update these terms from time to time. Continued use of SQLNoir after changes constitutes acceptance of the updated terms.",
+      "contactTitle": "Contact",
+      "contactBody": "Questions about these terms? Contact us at <email>hristoapps@gmail.com</email>."
     }
   },
   "contact": {
     "metadata": {
       "title": "Contact",
       "description": "Get in touch with the SQLNoir team. Report bugs, suggest features, or join our Discord community for SQL detective enthusiasts."
+    },
+    "body": {
+      "title": "Contact",
+      "intro": "Have a question, found a bug, or want to say hi? Reach out!",
+      "emailLabel": "Email",
+      "githubLabel": "GitHub",
+      "discordLabel": "Discord"
     }
   },
   "checkoutSuccess": {
