@@ -128,10 +128,9 @@
     "column": "字段名",
     "type": "类型",
     "key": "键类型",
-    "placeholder": "SELECT * FROM crime_scene WHERE...",
     "executesSelection": "仅执行选中的文本",
     "executesAll": "执行编辑器中的全部内容",
-    "editorPlaceholder": "SELECT * FROM crime_scene WHERE..."
+    "editorPlaceholder": "SELECT * FROM 犯罪现场 WHERE..."
   },
   "solution": {
     "caseSolved": "案件已侦破！",

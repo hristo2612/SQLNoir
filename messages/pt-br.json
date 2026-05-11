@@ -130,7 +130,6 @@
     "column": "Coluna",
     "type": "Tipo",
     "key": "Chave",
-    "placeholder": "SELECT * FROM crime_scene WHERE...",
     "editorPlaceholder": "SELECT * FROM crime_scene WHERE..."
   },
   "solution": {

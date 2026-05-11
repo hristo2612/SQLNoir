@@ -128,7 +128,6 @@
     "column": "Column",
     "type": "Type",
     "key": "Key",
-    "placeholder": "SELECT * FROM crime_scene WHERE...",
     "executesSelection": "Executes only the highlighted text",
     "executesAll": "Executes the full editor contents",
     "editorPlaceholder": "SELECT * FROM crime_scene WHERE..."
