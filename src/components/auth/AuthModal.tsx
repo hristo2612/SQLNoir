@@ -25,7 +25,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   // Much simpler implementation using a direct call to Supabase
   const handleGoogleSignIn = async () => {
     if (!supabase) {
-      setError("Authentication is not available");
+      setError(t('auth.authNotAvailable'));
       return;
     }
 
@@ -54,7 +54,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       setError(
         err instanceof Error
           ? err.message
-          : "An error occurred during Google sign-in"
+          : t('auth.googleSignInError')
       );
       setGoogleLoading(false);
     }
@@ -72,7 +72,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     e.preventDefault();
 
     if (!supabase) {
-      setError("Authentication is not available");
+      setError(t('auth.authNotAvailable'));
       return;
     }
 
@@ -89,11 +89,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           // Handle specific error cases
           switch (error.message) {
             case "Invalid login credentials":
-              throw new Error("Invalid email or password. Please try again.");
+              throw new Error(t('auth.invalidCredentials'));
             case "Email not confirmed":
-              throw new Error(
-                "Please confirm your email address before signing in."
-              );
+              throw new Error(t('auth.emailNotConfirmed'));
             default:
               throw error;
           }
@@ -107,18 +105,16 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           // Handle signup specific errors
           switch (error.message) {
             case "User already registered":
-              throw new Error(
-                "An account with this email already exists. Please sign in instead."
-              );
+              throw new Error(t('auth.accountExists'));
             case "Password should be at least 6 characters":
-              throw new Error("Password must be at least 6 characters long.");
+              throw new Error(t('auth.weakPassword'));
             default:
               throw error;
           }
         } else {
           // Show success message for sign up
           trackSignUpCompleted();
-          setError("success:Account created! You can now sign in.");
+          setError("success:" + t('auth.accountCreated'));
           setIsLogin(true);
           setPassword("");
           setLoading(false);
@@ -127,7 +123,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       }
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setError(err instanceof Error ? err.message : t('auth.genericError'));
     } finally {
       setLoading(false);
     }
