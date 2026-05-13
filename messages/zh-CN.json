@@ -250,6 +250,7 @@
     "starOnGitHub": "在 GitHub 上点星",
     "joinDiscord": "加入 Discord",
     "readDetectivesJournal": "阅读侦探手记",
+    "shareSqlNoir": "分享 SQL Noir",
     "sqlTips": {
       "tip1": "为复杂的 SQL 查询写好注释",
       "tip2": "字符串值请用单引号：WHERE name = 'John'",

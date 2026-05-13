@@ -250,6 +250,7 @@
     "starOnGitHub": "Star on GitHub",
     "joinDiscord": "Join Discord",
     "readDetectivesJournal": "Read Detective's Journal",
+    "shareSqlNoir": "Share SQL Noir",
     "sqlTips": {
       "tip1": "Comment your complex SQL queries",
       "tip2": "Use single quotes for text values: WHERE name = 'John'",

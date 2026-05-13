@@ -250,6 +250,7 @@
     "starOnGitHub": "Estrela no GitHub",
     "joinDiscord": "Entrar no Discord",
     "readDetectivesJournal": "Ler o Diário do Detetive",
+    "shareSqlNoir": "Compartilhar SQL Noir",
     "sqlTips": {
       "tip1": "Comente suas consultas SQL complexas",
       "tip2": "Use aspas simples para valores de texto: WHERE name = 'John'",
