@@ -104,7 +104,7 @@ export function SQLWorkspace({ caseId }: SQLWorkspaceProps) {
           (row) => row.length === result.columns.length
         );
         if (!isValid) {
-          setError("Query result structure is invalid");
+          setError(t('caseStudy.queryResultInvalid'));
           setResults({ columns: [], values: [] });
           return;
         }
