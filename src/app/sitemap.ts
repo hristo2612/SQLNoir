@@ -3,14 +3,22 @@ import { blogPostsMeta } from "@/lib/blog-posts";
 import { getAllCases, getCaseSlug } from "@/lib/case-utils";
 
 const baseUrl = "https://www.sqlnoir.com";
-const alternateLocales = ["pt-br", "zh-CN"] as const;
+const prefixedLocales = ["pt-br", "zh-CN"] as const;
 
 function withAlternates(url: string) {
+  // Every URL in an hreflang cluster must reference all versions including
+  // itself (en) and an x-default. `path` is the locale-agnostic path segment.
+  const path = url === baseUrl ? "" : url.replace(baseUrl, "");
+  const languages: Record<string, string> = {
+    en: url,
+    "x-default": url,
+  };
+  for (const locale of prefixedLocales) {
+    languages[locale] = `${baseUrl}/${locale}${path}`;
+  }
   return {
     alternates: {
-      languages: Object.fromEntries(
-        alternateLocales.map((locale) => [locale, `${baseUrl}/${locale}${url === baseUrl ? "" : url.replace(baseUrl, "")}`])
-      ),
+      languages,
     },
   };
 }
