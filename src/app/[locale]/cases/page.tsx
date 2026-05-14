@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { getAllCases, getCaseSlug, getAllLocalizedCases } from "@/lib/case-utils";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { getTranslations, getLocale } from "next-intl/server";
-import { localeAlternates } from "@/lib/seo";
+import { localeAlternates, localePrefix, siteUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title: t("ogTitle"),
       description: t("ogDescription"),
-      url: "https://www.sqlnoir.com/cases",
+      url: `${siteUrl}${localePrefix(locale)}/cases`,
       images: [
         {
           url: "/open-graph-image.png",
@@ -78,7 +78,7 @@ export default async function CasesPage() {
       <Script
         id="cases-json-ld"
         type="application/ld+json"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",

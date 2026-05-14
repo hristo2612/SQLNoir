@@ -136,4 +136,24 @@ describe("getLocalizedCase", () => {
     expect(result.solution.successMessage).toBe("成功！");
     expect(result.solution.explanation).toBe("解释。");
   });
+
+  // The case-detail page's generateMetadata feeds title/description through
+  // getLocalizedCase before building <title>, OG, and Twitter tags. These
+  // assertions lock in that it returns localized (non-English) title +
+  // description for the non-default locales — the contract metadata relies on.
+  // Full metadata-object integration is covered by the render-verification wave.
+  it("returns a localized title and description for pt-br (metadata contract)", async () => {
+    const c001 = getAllCases().find((c) => c.id === "case-001")!;
+    const result = await getLocalizedCase(c001, "pt-br");
+    expect(result.title).not.toBe(c001.title);
+    expect(result.description).not.toBe(c001.description);
+    expect(result.title.length).toBeGreaterThan(0);
+  });
+
+  it("returns a localized title for the zh-CN-style locale (metadata contract)", async () => {
+    const c = makeMockCase({ id: "case-001" });
+    const result = await getLocalizedCase(c, "__test__");
+    expect(result.title).toBe("案件零");
+    expect(result.description).not.toBe(c.description);
+  });
 });
