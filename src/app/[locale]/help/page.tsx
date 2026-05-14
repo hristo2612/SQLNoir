@@ -143,7 +143,7 @@ export default async function HelpPage() {
       <Script
         id="help-json-ld"
         type="application/ld+json"
-        strategy="afterInteractive"
+        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </>
