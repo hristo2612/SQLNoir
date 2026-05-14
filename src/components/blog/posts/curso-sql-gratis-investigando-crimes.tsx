@@ -84,7 +84,7 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
       <p className="text-gray-700 leading-relaxed mb-6">
         Existe muito &quot;curso de SQL gratuito&quot; por aí que pede e-mail,
         trava metade do conteúdo atrás de um plano premium ou exige instalar um
-        banco de dados na máquina. O SQLNoir é diferente: os casos iniciais são
+        banco de dados na máquina. O SQLNoir é diferente: todos os 6 casos são
         100% livres, o editor de SQL roda direto no navegador e você não
         precisa criar conta para resolver seu primeiro mistério.
       </p>
@@ -99,9 +99,9 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
       </p>
 
       <DetectiveTip variant="tip" title="Sem pegadinha">
-        O SQLNoir tem casos gratuitos e casos pagos opcionais, mas você consegue
-        aprender SELECT, WHERE, JOIN e agregações inteiras só com a parte
-        gratuita. Nada de cartão de crédito para começar.
+        Todos os 6 casos do SQLNoir são gratuitos — sem paywall e sem cartão de
+        crédito. Você aprende SELECT, WHERE, JOIN e agregações inteiras sem
+        gastar nada.
       </DetectiveTip>
 
       {/* ─── Seção 2 ─── */}
@@ -268,7 +268,9 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
       <p className="text-gray-700 leading-relaxed mb-6">
         São 6 casos de detetive disponíveis, do roubo ao assassinato. Cada um
         leva entre 30 e 60 minutos e pode ser feito no seu ritmo — pare quando
-        quiser, volte depois, refaça se travar. Não há cronômetro nem nota.
+        quiser, volte depois, refaça se travar. Não há cronômetro nem nota. Seu
+        progresso e XP só ficam salvos se você criar uma conta gratuita
+        (opcional).
       </p>
 
       {/* ─── Seção 5 ─── */}
@@ -452,10 +454,8 @@ WHERE s.descricao LIKE '%cicatriz%'
             O curso de SQL é realmente gratuito?
           </h3>
           <p className="text-gray-700 leading-relaxed">
-            Sim. Os casos iniciais do SQLNoir são gratuitos e cobrem SELECT,
-            WHERE, JOIN e agregações. Existem casos pagos opcionais, mas você
-            aprende a base de SQL inteira sem gastar nada e sem precisar de
-            cartão de crédito.
+            Sim. Todos os 6 casos do SQLNoir são gratuitos e cobrem SELECT,
+            WHERE, JOIN e agregações. Não há plano pago nem cartão de crédito.
           </p>
         </div>
 

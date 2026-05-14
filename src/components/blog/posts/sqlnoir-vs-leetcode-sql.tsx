@@ -102,7 +102,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
       <p className="text-gray-700 leading-relaxed mb-6">
         SQLNoir 是一款用 SQL 破案的网页游戏。你扮演侦探，面对一个真实结构的犯罪数据库——
         嫌疑人、证物、证词、现场记录——通过写 SQL 查询逐步排查线索，最终锁定真凶。
-        目前有 6 个以上的侦探案件，包含免费案件和付费案件，浏览器内置 SQL 编辑器，
+        目前共有 6 个侦探案件，全部免费，浏览器内置 SQL 编辑器，
         打开即玩、无需注册。
       </p>
 
@@ -110,7 +110,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
         <strong>它擅长的：</strong>有剧情、有目标，每写对一条查询都在推进案情，
         正反馈强、容易坚持；难度循序渐进，从简单的 <code>SELECT</code> 起步，逐步
         引入 <code>JOIN</code>、聚合和子查询；数据库结构真实，不是「员工/订单」那种
-        玩具表；即时判定对错，不用等人批改；免费案件足够你完整体验，无需注册即可上手。
+        玩具表；即时判定对错，不用等人批改；全部案件免费，无需注册即可上手（登录后才会保存 XP 和进度，注册是可选的）。
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -148,7 +148,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
           ],
           [
             "题量 / 内容量",
-            "6+ 个案件，重体验",
+            "6 个案件，重体验",
             "数百道题，重数量",
           ],
           [
@@ -163,7 +163,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
           ],
           [
             "上手成本",
-            "免费案件多，无需注册即玩",
+            "全部案件免费，无需注册即玩",
             "免费题有限，完整题库需会员",
           ],
           [
@@ -293,50 +293,50 @@ export default function SqlnoirVsLeetcodeSqlContent() {
       </h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        来看一条在 SQLNoir 案件里很典型的查询：根据目击者的描述，找出有嫌疑、
-        且声称有不在场证明的人。它同时用到了 <code>JOIN</code>、<code>WHERE</code>{" "}
-        的模糊匹配和 <code>NULL</code> 判断——这些都是笔试常客。
+        来看一条在 SQLNoir 案件里很典型的查询：根据目击者描述的特征，找出有嫌疑、
+        且没有留下任何笔录的人。它同时用到了 <code>JOIN</code>、<code>WHERE</code>{" "}
+        的条件筛选和 <code>NULL</code> 判断——这些都是笔试常客。
       </p>
 
       <SQLQueryBreakdown
         clauses={[
           {
             keyword: "SELECT",
-            code: "s.name, s.description, i.alibi",
-            annotation: "取出嫌疑人姓名、特征和不在场证明",
+            code: "s.name, s.疤痕类型, x.笔录",
+            annotation: "取出嫌疑人姓名、疤痕特征和讯问笔录",
           },
           {
             keyword: "FROM",
-            code: "suspects s",
+            code: "嫌疑人 s",
             annotation: "主表：嫌疑人",
           },
           {
             keyword: "JOIN",
-            code: "interviews i ON s.id = i.suspect_id",
-            annotation: "关联每个人的审讯记录",
+            code: "讯问 x ON s.id = x.嫌疑人id",
+            annotation: "关联每个人的讯问记录",
           },
           {
             keyword: "WHERE",
-            code: "s.description LIKE '%scar on left cheek%'",
-            annotation: "按目击者描述的特征模糊匹配",
+            code: "s.疤痕类型 = '左脸颊'",
+            annotation: "按目击者描述的疤痕特征筛选",
           },
           {
             keyword: "AND",
-            code: "i.alibi IS NOT NULL",
-            annotation: "只保留确实给出了不在场证明的人",
+            code: "x.笔录 IS NULL",
+            annotation: "只保留没有留下任何笔录的人",
           },
         ]}
-        caption="一条查询同时覆盖 JOIN、模糊匹配和 NULL 判断——典型的笔试考点组合"
+        caption="一条查询同时覆盖 JOIN、条件筛选和 NULL 判断——典型的笔试考点组合"
       />
 
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
         <h4 className="font-bold text-gray-900 mb-3">完整查询：</h4>
         <pre className="bg-gray-800 text-green-400 p-4 rounded text-sm overflow-x-auto">
-          {`SELECT s.name, s.description, i.alibi
-FROM suspects s
-JOIN interviews i ON s.id = i.suspect_id
-WHERE s.description LIKE '%scar on left cheek%'
-  AND i.alibi IS NOT NULL;`}
+          {`SELECT s.name, s.疤痕类型, x.笔录
+FROM 嫌疑人 s
+JOIN 讯问 x ON s.id = x.嫌疑人id
+WHERE s.疤痕类型 = '左脸颊'
+  AND x.笔录 IS NULL;`}
         </pre>
         <p className="text-gray-600 text-sm mt-2">
           在 LeetCode 上，同样的逻辑会被包装成一道「找出符合条件的用户」的题目；
@@ -345,7 +345,7 @@ WHERE s.description LIKE '%scar on left cheek%'
       </div>
 
       <DetectiveTip variant="warning" title="别忘了 NULL 的坑">
-        无论是刷题还是破案，<code>alibi = NULL</code> 永远查不出结果——在 SQL
+        无论是刷题还是破案，<code>笔录 = NULL</code> 永远查不出结果——在 SQL
         里任何值都不等于 <code>NULL</code>。要判断空值，必须用{" "}
         <code>IS NULL</code> 或 <code>IS NOT NULL</code>。这是笔试高频失分点。
       </DetectiveTip>
@@ -385,8 +385,7 @@ WHERE s.description LIKE '%scar on left cheek%'
             SQLNoir 是免费的吗？
           </h3>
           <p className="text-gray-700 leading-relaxed">
-            目前有 6 个以上的案件，包含免费案件和付费案件。免费案件不需要注册就能直接玩，
-            足够你完整体验「用 SQL 破案」是什么感觉。
+            是的，完全免费。目前共有 6 个侦探案件，全部免费，无需注册即可直接游玩。
           </p>
         </div>
 

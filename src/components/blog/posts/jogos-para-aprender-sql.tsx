@@ -109,7 +109,7 @@ AND i.alibi IS NOT NULL;`}
         </h4>
         <ul className="space-y-2 text-gray-700 mb-4">
           <li>
-            • <strong>Mais de 6 casos de detetive:</strong> de roubo a
+            • <strong>6 casos de detetive:</strong> de roubo a
             assassinato
           </li>
           <li>
@@ -141,7 +141,7 @@ AND i.alibi IS NOT NULL;`}
               <li>• Narrativa envolvente</li>
               <li>• Cobre todos os níveis de SQL</li>
               <li>• Cenários de banco de dados realistas</li>
-              <li>• Atualizações de conteúdo frequentes</li>
+              <li>• Disponível em português, inglês e chinês</li>
             </ul>
           </div>
           <div>

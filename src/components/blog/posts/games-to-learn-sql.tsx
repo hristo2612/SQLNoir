@@ -107,7 +107,7 @@ AND i.alibi IS NOT NULL;`}
         </h4>
         <ul className="space-y-2 text-gray-700 mb-4">
           <li>
-            • <strong>6+ detective cases:</strong> Everything from theft to
+            • <strong>6 detective cases:</strong> Everything from theft to
             murder
           </li>
           <li>
