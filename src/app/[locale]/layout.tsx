@@ -22,6 +22,20 @@ const defaultTitle =
 const defaultDescription =
   "SQLNoir is an interactive SQL game where you solve crimes and mysteries using SQL queries. Learn SQL by playing detective in this engaging SQL learning game.";
 
+// Maps a locale slug to its IANA-correct HTML lang attribute value.
+const htmlLang: Record<string, string> = {
+  en: "en",
+  "pt-br": "pt-BR",
+  "zh-CN": "zh-CN",
+};
+
+// Maps a locale slug to its Open Graph locale format.
+const ogLocale: Record<string, string> = {
+  en: "en_US",
+  "pt-br": "pt_BR",
+  "zh-CN": "zh_CN",
+};
+
 const localeMeta: Record<string, { title: string; description: string; keywords: string[] }> = {
   en: {
     title: defaultTitle,
@@ -59,6 +73,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         en: "/",
         "pt-br": "/pt-br",
         "zh-CN": "/zh-CN",
+        "x-default": "/",
       },
       types: {
         "application/rss+xml": "/blog/rss.xml",
@@ -66,8 +81,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     openGraph: {
       type: "website",
-      url: siteUrl,
+      url: `${siteUrl}${prefix}/`,
       siteName: "SQLNoir",
+      locale: ogLocale[locale] || ogLocale.en,
+      alternateLocale: Object.keys(ogLocale)
+        .filter((l) => l !== locale)
+        .map((l) => ogLocale[l]),
       title: meta.title,
       description: meta.description,
       images: [
@@ -171,7 +190,7 @@ export default async function LocaleLayout({
   }, meta.description);
 
   return (
-    <html lang={locale} className={locale === "zh-CN" ? notoSansSC.variable : ""}>
+    <html lang={htmlLang[locale] || locale} className={locale === "zh-CN" ? notoSansSC.variable : ""}>
       <head>
         <Script
           id="seo-json-ld"
