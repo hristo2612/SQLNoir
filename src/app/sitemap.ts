@@ -55,16 +55,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
+  // Blog posts are single-locale: each post exists only under its own locale
+  // prefix and 404s elsewhere, so no cross-locale hreflang alternates.
   const blogPages: MetadataRoute.Sitemap = blogPostsMeta.map((post) => {
-    const url = `${baseUrl}/blog/${post.slug}`;
+    const locale = post.locale ?? "en";
+    const localePrefix = locale === "en" ? "" : `/${locale}`;
     return {
-      url,
+      url: `${baseUrl}${localePrefix}/blog/${post.slug}`,
       lastModified: new Date(post.lastModified ?? post.date),
       changeFrequency: "monthly" as const,
       priority: 0.8,
-      ...withAlternates(url),
     };
   });
 
-  return [...staticPages, ...casePages, ...blogPages];
+  // Locale-specific landing pages (pt-br only): no cross-locale alternates.
+  const localeLandingPages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/pt-br/praticar`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/pt-br/sql-para-iniciantes`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+  ];
+
+  return [...staticPages, ...casePages, ...blogPages, ...localeLandingPages];
 }

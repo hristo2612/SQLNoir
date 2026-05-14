@@ -27,8 +27,8 @@
     "startInvestigation": "开始调查"
   },
   "home": {
-    "heroTitle": "用 SQL 破解谜案。",
-    "heroSubtitle": "走进烟雾缭绕的 80 年代侦探社，用 SQL 查询审讯嫌疑人，一条语句一条线索，逐步揭开真相。",
+    "heroTitle": "用 SQL 破解谋杀案",
+    "heroSubtitle": "SQL 推理游戏 ｜ SQL 侦探游戏 ｜ 6 个真实案件免费玩。用 SELECT、JOIN、WHERE 破案，在线学 SQL。",
     "startInvestigation": "开始调查",
     "welcomeDetective": "欢迎回来，侦探",
     "welcomeMessage": "城里风声鹤唳。新的证据刚刚摆到你的桌上。",
@@ -70,7 +70,7 @@
     }
   },
   "cases": {
-    "caseFiles": "案件档案",
+    "caseFiles": "SQL 案件档案",
     "beginner": "初级",
     "beginnerDesc": "适合 SQL 新手。学习查询与数据分析的基本功。",
     "intermediate": "中级",
@@ -450,8 +450,8 @@
     }
   },
   "metadata": {
-    "siteTitle": "互动式 SQL 游戏 | 在侦探案件中学 SQL | SQLNoir",
-    "siteDescription": "SQLNoir 是一款互动式 SQL 游戏，你将用 SQL 查询破解犯罪与谜案。在这款充满代入感的 SQL 学习游戏中，化身侦探，边玩边学。",
+    "siteTitle": "SQL 推理游戏 | 在侦探案件中学 SQL | SQLNoir",
+    "siteDescription": "SQLNoir 是一款 SQL 推理游戏，也是 SQL 侦探游戏：用 SQL 查询破解犯罪与谜案。化身侦探，用 SELECT、JOIN、WHERE 边破案边学 SQL。",
     "ogAlt": "SQLNoir 互动式 SQL 侦探游戏"
   }
 }

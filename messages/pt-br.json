@@ -27,8 +27,8 @@
     "startInvestigation": "Iniciar Investigação"
   },
   "home": {
-    "heroTitle": "Solucione mistérios com SQL.",
-    "heroSubtitle": "Entre em uma agência de detetives dos anos 80, interrogue suspeitos com consultas SQL e desvende o caso, uma query por vez.",
+    "heroTitle": "Aprenda SQL jogando — resolva crimes com suas próprias consultas",
+    "heroSubtitle": "Jogo de SQL detetive 100% em português. 6 casos grátis para resolver. SELECT, JOIN, WHERE — você é o investigador.",
     "startInvestigation": "Iniciar Investigação",
     "welcomeDetective": "Bem-vindo, Detetive",
     "welcomeMessage": "A cidade está agitada. Novas evidências acabaram de chegar à sua mesa.",
