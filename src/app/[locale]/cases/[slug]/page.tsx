@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { notFound } from "next/navigation";
 import { CasePageClient } from "@/components/CasePageClient";
 import { findCaseBySlug, getAllCases, getCaseSlug, getLocalizedCase } from "@/lib/case-utils";
@@ -76,10 +75,8 @@ export default async function CasePage({ params }: CasePageProps) {
 
   return (
     <>
-      <Script
-        id="case-json-ld"
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",

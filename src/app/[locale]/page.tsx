@@ -1,4 +1,3 @@
-import Script from "next/script";
 import { Github, BookOpen } from "lucide-react";
 import { BsIncognito } from "react-icons/bs";
 import { Navbar } from "@/components/Navbar";
@@ -290,10 +289,8 @@ export default async function HomePage() {
         </div>
       </section>
       <Footer />
-      <Script
-        id="home-json-ld"
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Noto_Sans_SC } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -48,9 +47,9 @@ const localeMeta: Record<string, { title: string; description: string; keywords:
     keywords: ["jogo de SQL", "aprender SQL", "tutorial interativo de SQL", "praticar SQL", "jogo de detetive SQL"],
   },
   "zh-CN": {
-    title: "互动 SQL 游戏 | 通过侦破案件学习 SQL | SQLNoir",
-    description: "SQLNoir 是一款互动 SQL 游戏，你将使用 SQL 查询语句侦破犯罪和神秘案件。在这款引人入胜的 SQL 学习游戏中扮演侦探，轻松掌握 SQL。",
-    keywords: ["SQL 游戏", "学习 SQL", "SQL 互动教程", "SQL 练习", "SQL 侦探游戏"],
+    title: "SQL 推理游戏 — 边破案边学 SQL ｜ SQLNoir",
+    description: "SQLNoir 是一款 SQL 推理游戏，也是 SQL 侦探游戏：用 SQL 查询语句侦破犯罪和神秘案件。化身侦探，边破案边学 SQL，轻松掌握查询技能。",
+    keywords: ["SQL 推理游戏", "SQL 侦探", "SQL 游戏", "学习 SQL", "SQL 练习", "SQL 侦探游戏"],
   },
 };
 
@@ -192,10 +191,8 @@ export default async function LocaleLayout({
   return (
     <html lang={htmlLang[locale] || locale} className={locale === "zh-CN" ? notoSansSC.variable : ""}>
       <head>
-        <Script
-          id="seo-json-ld"
+        <script
           type="application/ld+json"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>

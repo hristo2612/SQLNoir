@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { HelpPageClient } from "@/components/HelpPageClient";
 import { getTranslations, getLocale } from "next-intl/server";
 import { localeAlternates } from "@/lib/seo";
@@ -140,10 +139,8 @@ export default async function HelpPage() {
           </div>
         </section>
       )}
-      <Script
-        id="help-json-ld"
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </>

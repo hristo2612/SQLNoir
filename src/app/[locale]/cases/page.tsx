@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { CasesExplorer } from "@/components/CasesExplorer";
 import { Navbar } from "@/components/Navbar";
 import { getAllCases, getCaseSlug, getAllLocalizedCases } from "@/lib/case-utils";
@@ -75,10 +74,8 @@ export default async function CasesPage() {
         showShare
       />
       <CasesExplorer initialSession={session} initialUserInfo={userInfo} localizedCases={localizedCases} />
-      <Script
-        id="cases-json-ld"
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",

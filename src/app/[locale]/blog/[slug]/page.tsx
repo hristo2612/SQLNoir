@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { notFound } from "next/navigation";
 import { BlogPost } from "@/components/blog/BlogPost";
 import { getBlogPostMeta } from "@/lib/blog-posts";
@@ -127,10 +126,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <>
       <BlogPost slug={post.slug} />
-      <Script
-        id="blog-post-json-ld"
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </>
