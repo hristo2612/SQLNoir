@@ -8,7 +8,7 @@ const artBaselAssassinationCase: Case = {
     "Miami’s leading tech corporation, was about to unveil its groundbreaking microprocessor. Just hours before the reveal, the prototype was destroyed.",
   xpReward: 1000,
   completed: false,
-  isNew: true,
+  isNew: false,
   category: "advanced",
   brief: `QuantumTech, Miami’s leading technology corporation, was about to unveil its groundbreaking microprocessor called “QuantaX.” Just hours before the reveal, the prototype was destroyed, and all research data was erased. Detectives suspect corporate espionage.`,
   objectives: ["Find who sabotaged the microprocessor."],

@@ -8,7 +8,7 @@ const vanishingDiamondCase: Case = {
     "The famous “Heart of Atlantis” diamond necklace suddenly disappeared from its display at the charity gala.",
   xpReward: 250,
   completed: false,
-  isNew: true,
+  isNew: false,
   category: "intermediate",
   brief: `At Miami’s prestigious Fontainebleau Hotel charity gala, the famous “Heart of Atlantis” diamond necklace suddenly disappeared from its display.`,
   objectives: ["Find who stole the diamond."],
