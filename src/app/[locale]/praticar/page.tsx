@@ -7,14 +7,14 @@ import { TrackedLink } from "@/components/TrackedLink";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Praticar SQL Online Grátis — Sandbox + Casos Reais",
+    title: "Praticar SQL Online Grátis — Casos Reais no Navegador",
     description:
       "Pratique SQL online no navegador. Casos de detetive reais para resolver com SELECT, JOIN e WHERE. Comece a praticar sem instalar nada, sem cadastro.",
     alternates: { canonical: "/pt-br/praticar" },
     openGraph: {
       type: "website",
       title:
-        "Praticar SQL Online Grátis — Sandbox + Casos Reais | SQLNoir",
+        "Praticar SQL Online Grátis — Casos Reais no Navegador | SQLNoir",
       description:
         "Pratique SQL online no navegador. Casos de detetive reais para resolver com SELECT, JOIN e WHERE. Comece a praticar sem instalar nada, sem cadastro.",
       url: "https://www.sqlnoir.com/pt-br/praticar",
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title:
-        "Praticar SQL Online Grátis — Sandbox + Casos Reais | SQLNoir",
+        "Praticar SQL Online Grátis — Casos Reais no Navegador | SQLNoir",
       description:
         "Pratique SQL online no navegador. Casos de detetive reais para resolver com SELECT, JOIN e WHERE. Comece a praticar sem instalar nada, sem cadastro.",
       images: ["/open-graph-image.png"],

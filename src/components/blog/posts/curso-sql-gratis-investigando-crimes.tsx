@@ -488,7 +488,14 @@ WHERE s.descricao LIKE '%cicatriz%'
           <p className="text-gray-700 leading-relaxed">
             Sim. O primeiro caso pede apenas SELECT e WHERE, que leem quase como
             português. A dificuldade sobe aos poucos, então você nunca é jogado
-            direto no nível difícil.
+            direto no nível difícil. Se quiser, dá para revisar antes os{" "}
+            <Link
+              href="/pt-br/sql-para-iniciantes"
+              className="text-amber-700 hover:text-amber-900 underline"
+            >
+              fundamentos de SQL para iniciantes
+            </Link>
+            .
           </p>
         </div>
 
@@ -514,7 +521,14 @@ WHERE s.descricao LIKE '%cicatriz%'
         >
           casos do SQLNoir
         </Link>{" "}
-        e escreva sua primeira consulta agora.
+        e escreva sua primeira consulta agora — e sempre que quiser{" "}
+        <Link
+          href="/pt-br/praticar"
+          className="text-amber-700 hover:text-amber-900 underline"
+        >
+          praticar SQL
+        </Link>
+        , é só voltar e resolver mais um.
       </p>
     </div>
   );

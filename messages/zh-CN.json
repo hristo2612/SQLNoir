@@ -28,7 +28,7 @@
   },
   "home": {
     "heroTitle": "用 SQL 破解谋杀案",
-    "heroSubtitle": "SQL 推理游戏 ｜ SQL 侦探游戏 ｜ 6 个真实案件免费玩。用 SELECT、JOIN、WHERE 破案，在线学 SQL。",
+    "heroSubtitle": "化身侦探，用 SELECT、JOIN、WHERE 审问数据库，在 6 个真实案件里边破案边学 SQL。",
     "startInvestigation": "开始调查",
     "welcomeDetective": "欢迎回来，侦探",
     "welcomeMessage": "城里风声鹤唳。新的证据刚刚摆到你的桌上。",

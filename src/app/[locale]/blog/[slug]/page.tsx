@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { BlogPost } from "@/components/blog/BlogPost";
 import { getBlogPostMeta } from "@/lib/blog-posts";
 import { getTranslations, getLocale } from "next-intl/server";
-import { localeAlternates } from "@/lib/seo";
+import { localePrefix } from "@/lib/seo";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -25,15 +25,20 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     heroPath
   )}&w=1200&q=90`;
 
+  // Blog posts are single-locale: each post exists only under its own locale
+  // prefix and 404s elsewhere, so a self-referential canonical only — no
+  // cross-locale hreflang alternates pointing at non-existent versions.
+  const postPath = `${localePrefix(locale)}/blog/${post.slug}`;
+
   return {
     title: post.title,
     description: post.excerpt,
-    alternates: localeAlternates(`/blog/${post.slug}`, locale),
+    alternates: { canonical: postPath },
     openGraph: {
       type: "article",
       title: post.title,
       description: post.excerpt,
-      url: `${BASE_URL}/blog/${post.slug}`,
+      url: `${BASE_URL}${postPath}`,
       publishedTime: post.date,
       modifiedTime: post.lastModified ?? post.date,
       authors: [post.author],
@@ -67,7 +72,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const tNav = await getTranslations("nav");
 
-  const url = `${BASE_URL}/blog/${post.slug}`;
+  const prefix = localePrefix(locale);
+  const url = `${BASE_URL}${prefix}/blog/${post.slug}`;
   const heroUrl = `${BASE_URL}${post.heroImage.src}`;
 
   const jsonLd = {
@@ -80,13 +86,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             "@type": "ListItem",
             position: 1,
             name: tNav("home"),
-            item: "https://www.sqlnoir.com/",
+            item: `${BASE_URL}${prefix}/`,
           },
           {
             "@type": "ListItem",
             position: 2,
             name: tNav("blog"),
-            item: "https://www.sqlnoir.com/blog",
+            item: `${BASE_URL}${prefix}/blog`,
           },
           {
             "@type": "ListItem",

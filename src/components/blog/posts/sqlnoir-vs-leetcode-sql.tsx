@@ -199,7 +199,14 @@ export default function SqlnoirVsLeetcodeSqlContent() {
       </h3>
       <p className="text-gray-700 leading-relaxed mb-6">
         从 SQLNoir 开始。直接刷 LeetCode 很容易在前几道 Medium
-        就受挫退场。案件的剧情会给你继续下去的理由，而你练的依然是真正的 SQL。
+        就受挫退场。你可以先挑一个{" "}
+        <Link
+          href="/zh-CN/cases"
+          className="text-amber-700 hover:text-amber-900 underline"
+        >
+          入门侦探案件
+        </Link>
+        上手——案件的剧情会给你继续下去的理由，而你练的依然是真正的 SQL。
       </p>
 
       <h3 className="text-xl font-bold text-amber-800 mt-8 mb-4">
@@ -228,8 +235,14 @@ export default function SqlnoirVsLeetcodeSqlContent() {
 
       {/* Tier 1 CTA */}
       <p className="text-gray-700 leading-relaxed mb-6">
-        不确定自己属于哪一类？最简单的办法是先免费打一个 SQLNoir
-        案件，亲手感受一下「用查询破案」是什么体验，再决定下一步。
+        不确定自己属于哪一类？最简单的办法是先免费打一个{" "}
+        <Link
+          href="/zh-CN/cases"
+          className="text-amber-700 hover:text-amber-900 underline font-medium"
+        >
+          SQLNoir 案件
+        </Link>
+        ，亲手感受一下「用查询破案」是什么体验，再决定下一步。
       </p>
 
       {/* ─── Section 5: Same skills ─── */}

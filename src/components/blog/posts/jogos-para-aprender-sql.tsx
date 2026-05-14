@@ -72,12 +72,12 @@ export default function JogosParaAprenderSqlContent() {
 
       <p className="text-gray-700 leading-relaxed mb-6">
         <strong>
-          <a
-            href="https://www.sqlnoir.com"
+          <Link
+            href="/pt-br"
             className="text-amber-900 hover:text-amber-700 underline"
           >
             SQL Noir
-          </a>
+          </Link>
         </strong>{" "}
         é a minha tentativa de tornar o aprendizado de SQL realmente divertido.
         Eu o criei porque estava cansado de tutoriais entediantes. Você joga
@@ -163,12 +163,12 @@ AND i.alibi IS NOT NULL;`}
           <strong>Tempo:</strong> 30 a 60 minutos por caso
         </p>
         <div className="mt-4">
-          <a
-            href="https://www.sqlnoir.com"
+          <Link
+            href="/pt-br/cases"
             className="inline-flex items-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm font-medium transition-colors"
           >
             Jogar SQL Noir →
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -681,6 +681,16 @@ AND population < (
           <h4 className="font-bold text-blue-900 mb-3">
             🚀 Para iniciantes absolutos
           </h4>
+          <p className="text-blue-800 text-sm mb-3">
+            Se você está começando SQL do zero, vale primeiro entender os{" "}
+            <Link
+              href="/pt-br/sql-para-iniciantes"
+              className="underline hover:text-blue-900"
+            >
+              conceitos básicos de SQL para iniciantes
+            </Link>{" "}
+            antes de partir para os jogos.
+          </p>
           <ol className="text-blue-800 space-y-2">
             <li>
               1.{" "}
@@ -713,9 +723,9 @@ AND population < (
             <li>
               3.{" "}
               <strong>
-                <a href="https://www.sqlnoir.com" className="hover:underline">
+                <Link href="/pt-br" className="hover:underline">
                   SQL Noir
-                </a>
+                </Link>
               </strong>{" "}
               - Quando já estiver à vontade com o básico
             </li>
@@ -729,9 +739,9 @@ AND population < (
             <li>
               1.{" "}
               <strong>
-                <a href="https://www.sqlnoir.com" className="hover:underline">
+                <Link href="/pt-br" className="hover:underline">
                   SQL Noir
-                </a>
+                </Link>
               </strong>{" "}
               - Cenários realistas e dificuldade progressiva
             </li>
@@ -801,9 +811,9 @@ AND population < (
             <li>
               3.{" "}
               <strong>
-                <a href="https://www.sqlnoir.com" className="hover:underline">
+                <Link href="/pt-br" className="hover:underline">
                   SQL Noir
-                </a>
+                </Link>
               </strong>{" "}
               - Habilidades de raciocínio lógico
             </li>
@@ -831,9 +841,9 @@ AND population < (
             <li>
               2.{" "}
               <strong>
-                <a href="https://www.sqlnoir.com" className="hover:underline">
+                <Link href="/pt-br" className="hover:underline">
                   SQL Noir
-                </a>
+                </Link>
               </strong>{" "}
               - Casos de detetive avançados
             </li>
@@ -966,12 +976,12 @@ AND population < (
         A questão é a seguinte: todos esses jogos de SQL funcionam, mas
         funcionam para perfis diferentes. Se você gosta de histórias e não se
         importa com um bom desafio, comece pelo{" "}
-        <a
-          href="https://www.sqlnoir.com"
+        <Link
+          href="/pt-br"
           className="text-amber-700 hover:text-amber-900 underline"
         >
           SQL Noir
-        </a>
+        </Link>
         . Se você é completamente novo em SQL, o{" "}
         <a
           href="http://wwwlgis.informatik.uni-kl.de/extra/game/?lang=en"

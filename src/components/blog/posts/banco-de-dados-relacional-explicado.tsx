@@ -558,15 +558,23 @@ WHERE s.cidade = 'São Paulo';`}
 
       <p className="text-gray-700 leading-relaxed">
         Agora que você entende tabelas, chaves e relacionamentos, o próximo
-        passo é praticar. A melhor forma de fixar o modelo relacional é
-        consultar um de verdade — comece pelos{" "}
+        passo é praticar. Se ainda está dando os primeiros passos, vale começar
+        pelos{" "}
+        <Link
+          href="/pt-br/sql-para-iniciantes"
+          className="text-amber-700 hover:text-amber-900 underline"
+        >
+          fundamentos de SQL para iniciantes
+        </Link>
+        . A melhor forma de fixar o modelo relacional é consultar um de
+        verdade — depois é só partir para os{" "}
         <Link
           href="/pt-br/cases"
           className="text-amber-700 hover:text-amber-900 underline"
         >
           casos de detetive do SQLNoir
         </Link>{" "}
-        e veja as tabelas se conectarem na prática.
+        e ver as tabelas se conectarem na prática.
       </p>
     </div>
   );
