@@ -151,15 +151,6 @@
     "submitSolution": "Enviar Solução",
     "progressError": "Ocorreu um erro ao atualizar o progresso"
   },
-  "hints": {
-    "title": "Dicas de Investigação",
-    "checkNullTitle": "Verifique Valores NULL",
-    "checkNullDesc": "Use IS NULL para encontrar registros com informações faltando em campos críticos.",
-    "joinTablesTitle": "Junte Múltiplas Tabelas",
-    "joinTablesDesc": "Conecte pedidos com informações de clientes usando operações JOIN.",
-    "filterDateTitle": "Filtre por Intervalo de Datas",
-    "filterDateDesc": "Use o operador BETWEEN para encontrar pedidos em datas específicas."
-  },
   "notes": {
     "title": "Anotações da Investigação",
     "placeholder": "Faça anotações sobre sua investigação aqui...",
@@ -382,7 +373,7 @@
       "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) — análise de produto.",
       "thirdPartyVercel": "<strong>Vercel Analytics</strong> — análise de visualizações de página.",
       "thirdPartySupabase": "<strong>Supabase</strong> — autenticação e banco de dados.",
-      "thirdPartyStripe": "<strong>Stripe</strong> — processamento de pagamentos para a compra da Licença de Detetive.",
+      "thirdPartyStripe": "<strong>Stripe</strong> — processaria pagamentos caso planos pagos sejam introduzidos. O checkout pago não está ativo no momento, portanto nenhum dado de pagamento é processado hoje.",
       "thirdPartyNoSell": "Não vendemos seus dados a terceiros.",
       "retentionTitle": "Retenção de dados",
       "retentionBody": "Os dados da conta são mantidos enquanto sua conta estiver ativa. Os dados de análise são armazenados de forma anônima e expiram automaticamente de acordo com as políticas de retenção do PostHog e do Vercel.",

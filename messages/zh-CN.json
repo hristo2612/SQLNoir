@@ -151,15 +151,6 @@
     "submitSolution": "提交答案",
     "progressError": "更新进度时出错"
   },
-  "hints": {
-    "title": "调查提示",
-    "checkNullTitle": "检查 NULL 值",
-    "checkNullDesc": "使用 IS NULL 查找关键字段中信息缺失的记录。",
-    "joinTablesTitle": "连接多张表",
-    "joinTablesDesc": "使用 JOIN 将订单信息与客户信息关联起来。",
-    "filterDateTitle": "按日期范围筛选",
-    "filterDateDesc": "使用 BETWEEN 查找指定日期范围内的订单。"
-  },
   "notes": {
     "title": "调查笔记",
     "placeholder": "在这里记下你的调查笔记……",
@@ -382,7 +373,7 @@
       "thirdPartyPosthog": "<strong>PostHog</strong>（<posthog>posthog.com</posthog>）——产品分析。",
       "thirdPartyVercel": "<strong>Vercel Analytics</strong>——页面浏览分析。",
       "thirdPartySupabase": "<strong>Supabase</strong>——身份验证与数据库。",
-      "thirdPartyStripe": "<strong>Stripe</strong>——为侦探证购买提供支付处理。",
+      "thirdPartyStripe": "<strong>Stripe</strong>——如果未来推出付费方案，将由其处理付款。目前未启用付费结账，因此当前不会处理任何付款数据。",
       "thirdPartyNoSell": "我们不会向任何第三方出售你的数据。",
       "retentionTitle": "数据保留",
       "retentionBody": "账户数据将在你的账户处于活跃状态期间予以保留。分析数据以匿名化形式保存，并根据 PostHog 与 Vercel 的保留策略自动过期。",

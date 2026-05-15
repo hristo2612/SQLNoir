@@ -151,15 +151,6 @@
     "submitSolution": "Submit Solution",
     "progressError": "An error occurred while updating progress"
   },
-  "hints": {
-    "title": "Investigation Tips",
-    "checkNullTitle": "Check for NULL Values",
-    "checkNullDesc": "Use IS NULL to find records with missing information in critical fields.",
-    "joinTablesTitle": "Join Multiple Tables",
-    "joinTablesDesc": "Connect orders with customer information using JOIN operations.",
-    "filterDateTitle": "Filter by Date Range",
-    "filterDateDesc": "Use BETWEEN operator to find orders within specific dates."
-  },
   "notes": {
     "title": "Investigation Notes",
     "placeholder": "Take notes about your investigation here...",
@@ -382,7 +373,7 @@
       "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) — product analytics.",
       "thirdPartyVercel": "<strong>Vercel Analytics</strong> — page view analytics.",
       "thirdPartySupabase": "<strong>Supabase</strong> — authentication and database.",
-      "thirdPartyStripe": "<strong>Stripe</strong> — payment processing for Detective License purchases.",
+      "thirdPartyStripe": "<strong>Stripe</strong> — would process payments if paid plans are introduced. Paid checkout is not currently active, so no payment data is processed today.",
       "thirdPartyNoSell": "We do not sell your data to any third parties.",
       "retentionTitle": "Data Retention",
       "retentionBody": "Account data is retained for as long as your account is active. Analytics data is retained in anonymized form and automatically expires based on PostHog and Vercel's retention policies.",
