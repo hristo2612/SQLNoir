@@ -18,6 +18,8 @@ export function localeAlternates(path: string, locale: string) {
     languages: {
       en: path,
       "pt-br": `/pt-br${path}`,
+      "zh-CN": `/zh-CN${path}`,
+      "x-default": path,
     },
   };
 }

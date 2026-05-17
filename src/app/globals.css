@@ -9,6 +9,10 @@
     font-family: "Special Elite", monospace;
   }
 
+  .font-cjk {
+    font-family: var(--font-noto-sans-sc), "Noto Sans SC", system-ui, sans-serif;
+  }
+
   html {
     min-height: 100%;
     scroll-behavior: smooth;

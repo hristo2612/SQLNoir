@@ -68,6 +68,7 @@ const copyToClipboard = async (text: string) => {
 };
 
 function TableNode({ data }: TableNodeProps) {
+  const t = useTranslations();
   return (
     <div className="bg-amber-100/50 rounded-lg border border-amber-900/10 min-w-[200px]">
       <div className="bg-amber-100 px-4 py-2 flex items-center">
@@ -85,13 +86,13 @@ function TableNode({ data }: TableNodeProps) {
               {column.isPrimary && (
                 <Key
                   className="w-3 h-3 text-amber-900 inline ml-1"
-                  aria-label="Primary Key"
+                  aria-label={t('caseStudy.primaryKey')}
                 />
               )}
               {column.isForeign && (
                 <Link
                   className="w-3 h-3 text-amber-700 inline ml-1"
-                  aria-label="Foreign Key"
+                  aria-label={t('caseStudy.foreignKey')}
                 />
               )}
             </span>
@@ -385,7 +386,7 @@ export function DatabaseSchema({ caseId }: DatabaseSchemaProps) {
                         ? "opacity-100"
                         : "opacity-0 group-hover:opacity-100"
                     }`}
-                    title="Copy table name"
+                    title={t('caseStudy.copyTableName')}
                   >
                     <Copy className="w-3.5 h-3.5 text-amber-700" />
                   </button>

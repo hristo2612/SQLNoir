@@ -8,7 +8,8 @@ import {
   trackPaywallCtaClicked,
   trackPaywallDismissed,
 } from "@/lib/posthog";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { getPriceForLocale } from "@/lib/ppp-prices";
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -26,20 +27,21 @@ export function PaywallModal({
   triggerLocation,
 }: PaywallModalProps) {
   const t = useTranslations("license");
+  const locale = useLocale();
   const [loading, setLoading] = useState(false);
-  const [price, setPrice] = useState("$14.99");
+  const [price, setPrice] = useState(() => getPriceForLocale(locale).display);
 
   useEffect(() => {
     if (isOpen) {
       trackPaywallShown(caseId, triggerLocation);
-      fetch("/api/price")
+      fetch(`/api/price?locale=${encodeURIComponent(locale)}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.display) setPrice(data.display);
         })
         .catch(() => {});
     }
-  }, [isOpen, caseId, triggerLocation]);
+  }, [isOpen, caseId, triggerLocation, locale]);
 
   const handleCtaClick = async () => {
     trackPaywallCtaClicked(caseId, {
@@ -48,7 +50,11 @@ export function PaywallModal({
     });
     setLoading(true);
     try {
-      const res = await fetch("/api/checkout", { method: "POST" });
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale }),
+      });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;

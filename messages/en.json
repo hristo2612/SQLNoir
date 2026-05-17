@@ -39,10 +39,10 @@
     "featureNoSetup": "No setup needed",
     "featureNoSetupDesc": "Built-in SQL workspace powered by SQL.js. Just open a case and start digging.",
     "featureEarnXP": "Earn detective XP",
-    "featureEarnXPDesc": "Solve cases to level up your badge and unlock tougher investigations.",
+    "featureEarnXPDesc": "Solve cases to earn XP and level up your detective badge as you take on tougher investigations.",
     "howItWorksTitle": "How SQLNoir works",
     "howItWorksP1": "Each case drops you into a story-driven investigation. You read the brief, study the database schema, and run SQL queries in a built-in editor to surface clues. As you connect tables, eliminate suspects, and validate alibis, you practice real SQL patterns: filtering, joins, aggregates, and subqueries. No setup or installs. Just open a case file and start interrogating the data.",
-    "howItWorksP2": "Progression is tracked with XP and difficulty tiers, so you can start as a rookie and grow into a seasoned investigator. Beginner cases teach fundamentals, while advanced cases push you with layered joins and trickier conditions.",
+    "howItWorksP2": "Your XP and solved-case count track your progress, so you can start as a rookie and work up to the advanced cases at your own pace. Beginner cases teach fundamentals, while advanced cases push you with layered joins and trickier conditions.",
     "howItWorksP3": "Ready to see it in action?",
     "startSolvingCases": "Start Solving Cases",
     "whoIsThisFor": "Who this is for",
@@ -55,13 +55,19 @@
     "faqAccountQ": "Do I need an account to play?",
     "faqAccountA": "You can open and solve cases without creating an account. Sign in to track XP, progress, and solved cases across devices.",
     "faqAccessQ": "How does access work?",
-    "faqAccessA": "Intermediate and advanced cases require XP to unlock, so pick a starting case and build momentum from there.",
+    "faqAccessA": "All cases are open from the start — there's nothing to unlock. The difficulty levels (beginner, intermediate, advanced) are just a guide: start with a beginner case and progress at your own pace. XP tracks your progress as you solve cases.",
     "faqSqlQ": "What SQL do I need to know?",
     "faqSqlA": "Beginners can start with simple SELECTs. Intermediate and advanced cases introduce joins, grouping, filters, and subqueries as you progress.",
     "faqInterviewQ": "Will this help with interviews?",
     "faqInterviewA": "Yes. Cases mimic realistic data puzzles you might see in data and engineering interviews. It's great for practicing under a narrative without rote question banks.",
-    "faqHintsQ": "Can I get hints if I'm stuck?",
-    "faqHintsA": "Each case includes a schema view and objectives. If you need more help, join the community Discord or check the help page for guidance."
+    "faqHintsQ": "What if I get stuck on a case?",
+    "faqHintsA": "Every case gives you a schema view and a list of objectives to work from, plus a notes panel to track your thinking. If you're still stuck, the community Discord and the help page are good places to ask.",
+    "cta": {
+      "default": "Start Investigation",
+      "startInvestigating": "Start Investigating",
+      "solveFirstCase": "Solve Your First Case",
+      "beginMystery": "Begin the Mystery"
+    }
   },
   "cases": {
     "caseFiles": "Case Files",
@@ -78,7 +84,7 @@
       "ogDescription": "Pick a case, question suspects with SQL, and earn XP as you solve each investigation.",
       "ogAlt": "SQLNoir case files",
       "collectionName": "SQLNoir Case Files",
-      "collectionDescription": "Interactive SQL detective cases with XP tiers across beginner to advanced difficulty."
+      "collectionDescription": "Interactive SQL detective cases across three difficulty tiers, from beginner to advanced."
     }
   },
   "caseSolver": {
@@ -122,7 +128,6 @@
     "column": "Column",
     "type": "Type",
     "key": "Key",
-    "placeholder": "SELECT * FROM crime_scene WHERE...",
     "executesSelection": "Executes only the highlighted text",
     "executesAll": "Executes the full editor contents",
     "editorPlaceholder": "SELECT * FROM crime_scene WHERE..."
@@ -145,15 +150,6 @@
     "submitting": "Submitting...",
     "submitSolution": "Submit Solution",
     "progressError": "An error occurred while updating progress"
-  },
-  "hints": {
-    "title": "Investigation Tips",
-    "checkNullTitle": "Check for NULL Values",
-    "checkNullDesc": "Use IS NULL to find records with missing information in critical fields.",
-    "joinTablesTitle": "Join Multiple Tables",
-    "joinTablesDesc": "Connect orders with customer information using JOIN operations.",
-    "filterDateTitle": "Filter by Date Range",
-    "filterDateDesc": "Use BETWEEN operator to find orders within specific dates."
   },
   "notes": {
     "title": "Investigation Notes",
@@ -245,6 +241,7 @@
     "starOnGitHub": "Star on GitHub",
     "joinDiscord": "Join Discord",
     "readDetectivesJournal": "Read Detective's Journal",
+    "shareSqlNoir": "Share SQL Noir",
     "sqlTips": {
       "tip1": "Comment your complex SQL queries",
       "tip2": "Use single quotes for text values: WHERE name = 'John'",
@@ -325,24 +322,116 @@
     "switchToEnglish": "Switch to English",
     "changeLanguage": "Change language",
     "portuguese": "Português (BR)",
-    "english": "English"
+    "english": "English",
+    "chinese": "Chinese"
+  },
+  "footer": {
+    "copyright": "© {year} SQLNoir",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact"
+  },
+  "cookieConsent": {
+    "message": "We use cookies for analytics. DNT is respected.",
+    "privacyLink": "Privacy Policy",
+    "accept": "OK"
+  },
+  "paywall": {
+    "title": "Unlock All Cases",
+    "subtitle": "You've proven your detective skills. Upgrade to access intermediate and advanced cases, plus future investigations.",
+    "tierName": "Detective Pro",
+    "perMonth": "per month",
+    "feature1": "All intermediate & advanced cases",
+    "feature2": "New cases as they launch",
+    "feature3": "Detailed solution explanations",
+    "ctaUpgrade": "Upgrade Now",
+    "ctaMaybeLater": "Maybe later"
   },
   "privacy": {
     "metadata": {
       "title": "Privacy Policy",
       "description": "SQLNoir privacy policy — how we collect, use, and protect your data when you play our interactive SQL detective game."
+    },
+    "body": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: March 15, 2026",
+      "collectionTitle": "What We Collect",
+      "collectionIntro": "When you use SQLNoir, we may collect the following information:",
+      "collectionAccount": "<strong>Account data:</strong> If you sign in with Google OAuth (via Supabase), we store your email address and a user ID.",
+      "collectionAnalytics": "<strong>Analytics data:</strong> We use PostHog and Vercel Analytics to collect anonymized page views and feature usage data.",
+      "collectionCookies": "<strong>Cookies:</strong> Authentication session cookies (Supabase) and analytics cookies (PostHog).",
+      "useTitle": "How We Use It",
+      "useItem1": "To provide and improve SQLNoir's features and content.",
+      "useItem2": "To track your progress, XP, and solved cases (if signed in).",
+      "useItem3": "To understand how users interact with the site so we can make it better.",
+      "cookiesTitle": "Cookies",
+      "cookiesIntro": "SQLNoir uses the following cookies:",
+      "cookiesAuth": "<strong>Authentication cookies</strong> (Supabase) — to keep you signed in across sessions.",
+      "cookiesAnalytics": "<strong>Analytics cookies</strong> (PostHog) — to collect anonymized usage data.",
+      "cookiesDisable": "You can disable cookies in your browser settings. Disabling authentication cookies will require you to sign in again on each visit.",
+      "thirdPartyTitle": "Third-Party Services",
+      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) — product analytics.",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong> — page view analytics.",
+      "thirdPartySupabase": "<strong>Supabase</strong> — authentication and database.",
+      "thirdPartyStripe": "<strong>Stripe</strong> — would process payments if paid plans are introduced. Paid checkout is not currently active, so no payment data is processed today.",
+      "thirdPartyNoSell": "We do not sell your data to any third parties.",
+      "retentionTitle": "Data Retention",
+      "retentionBody": "Account data is retained for as long as your account is active. Analytics data is retained in anonymized form and automatically expires based on PostHog and Vercel's retention policies.",
+      "rightsTitle": "Your Rights",
+      "rightsIntro": "Under GDPR and other applicable privacy regulations, you have the right to:",
+      "rightsItem1": "Access the personal data we hold about you.",
+      "rightsItem2": "Request correction of inaccurate data.",
+      "rightsItem3": "Request deletion of your data.",
+      "rightsItem4": "Opt out of analytics tracking by enabling the <strong>Do Not Track</strong> setting in your browser. PostHog respects the DNT signal.",
+      "rightsExercise": "To exercise any of these rights, contact us at the email below.",
+      "contactTitle": "Contact",
+      "contactBody": "If you have any questions about this privacy policy or want to request data deletion, contact us at <email>hristoapps@gmail.com</email>."
     }
   },
   "terms": {
     "metadata": {
       "title": "Terms of Service",
       "description": "SQLNoir terms of service — rules and conditions for using our interactive SQL learning platform and detective cases."
+    },
+    "body": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: March 15, 2026",
+      "overviewTitle": "Overview",
+      "overviewBody": "SQLNoir is an interactive SQL learning platform where you solve detective cases using SQL queries. By using SQLNoir, you agree to these terms. SQLNoir is provided \"as is\" without warranty of any kind.",
+      "accountsTitle": "Accounts and Access",
+      "accountsIntro": "You can use SQLNoir without creating an account. Signing in with Google OAuth allows you to track progress across devices.",
+      "accountsFreeTier": "<strong>Free access:</strong> All cases are currently available for free — no payment is required to play any of them.",
+      "accountsLicense": "<strong>Future plans:</strong> A paid option may be introduced later. If it is, these terms will be updated before any case becomes paid.",
+      "paymentsTitle": "Payments",
+      "paymentsBody": "SQLNoir is currently free to use. If a paid option is introduced in the future, payments would be processed securely by <stripe>Stripe</stripe>, and these terms would be updated accordingly. If you experience any issues, please contact us and we'll do our best to help.",
+      "ugcTitle": "User-Generated Content",
+      "ugcBody": "SQL queries you write in SQLNoir are executed locally in your browser using SQL.js. We do not store, collect, or share your queries.",
+      "acceptableUseTitle": "Acceptable Use",
+      "acceptableUseIntro": "You agree not to:",
+      "acceptableUseItem1": "Use automated tools to scrape or crawl SQLNoir content.",
+      "acceptableUseItem2": "Attempt to disrupt or abuse the service.",
+      "acceptableUseItem3": "Redistribute or resell case content without permission.",
+      "ipTitle": "Intellectual Property",
+      "ipBody": "All cases, stories, characters, and code on SQLNoir are copyright of SQLNoir and its creator. You may not reproduce or redistribute this content without written permission.",
+      "terminationTitle": "Termination",
+      "terminationBody": "We reserve the right to suspend or terminate accounts that violate these terms.",
+      "changesTitle": "Changes to These Terms",
+      "changesBody": "We may update these terms from time to time. Continued use of SQLNoir after changes constitutes acceptance of the updated terms.",
+      "contactTitle": "Contact",
+      "contactBody": "Questions about these terms? Contact us at <email>hristoapps@gmail.com</email>."
     }
   },
   "contact": {
     "metadata": {
       "title": "Contact",
       "description": "Get in touch with the SQLNoir team. Report bugs, suggest features, or join our Discord community for SQL detective enthusiasts."
+    },
+    "body": {
+      "title": "Contact",
+      "intro": "Have a question, found a bug, or want to say hi? Reach out!",
+      "emailLabel": "Email",
+      "githubLabel": "GitHub",
+      "discordLabel": "Discord"
     }
   },
   "checkoutSuccess": {

@@ -27,8 +27,8 @@
     "startInvestigation": "Iniciar Investigação"
   },
   "home": {
-    "heroTitle": "Solucione mistérios com SQL.",
-    "heroSubtitle": "Entre em uma agência de detetives dos anos 80, interrogue suspeitos com consultas SQL e desvende o caso, uma query por vez.",
+    "heroTitle": "Aprenda SQL jogando — resolva crimes com suas próprias consultas",
+    "heroSubtitle": "Jogo de SQL detetive 100% em português. 6 casos grátis para resolver. SELECT, JOIN, WHERE — você é o investigador.",
     "startInvestigation": "Iniciar Investigação",
     "welcomeDetective": "Bem-vindo, Detetive",
     "welcomeMessage": "A cidade está agitada. Novas evidências acabaram de chegar à sua mesa.",
@@ -39,10 +39,10 @@
     "featureNoSetup": "Sem configuração",
     "featureNoSetupDesc": "Workspace SQL integrado com SQL.js. Basta abrir um caso e começar a investigar.",
     "featureEarnXP": "Ganhe XP de detetive",
-    "featureEarnXPDesc": "Resolva casos para subir de nível no seu distintivo e desbloquear investigações mais difíceis.",
+    "featureEarnXPDesc": "Resolva casos para acumular XP e subir de nível no seu distintivo conforme enfrenta investigações cada vez mais difíceis.",
     "howItWorksTitle": "Como o SQLNoir funciona",
     "howItWorksP1": "Cada caso coloca você em uma investigação com narrativa. Você lê o briefing, estuda o esquema do banco de dados e executa consultas SQL em um editor integrado para descobrir pistas. Conforme você conecta tabelas, elimina suspeitos e valida álibis, você pratica padrões reais de SQL: filtros, joins, agregações e subconsultas. Sem configuração ou instalação. Basta abrir um arquivo de caso e começar a interrogar os dados.",
-    "howItWorksP2": "A progressão é rastreada com XP e níveis de dificuldade, então você pode começar como novato e evoluir até se tornar um investigador experiente. Casos para iniciantes ensinam fundamentos, enquanto casos avançados desafiam com joins em camadas e condições mais complexas.",
+    "howItWorksP2": "O seu progresso é rastreado com XP, então você pode começar como novato e evoluir até se tornar um investigador experiente. Casos para iniciantes ensinam fundamentos, enquanto casos avançados desafiam com joins em camadas e condições mais complexas.",
     "howItWorksP3": "Pronto para ver em ação?",
     "startSolvingCases": "Comece a Resolver Casos",
     "whoIsThisFor": "Para quem é",
@@ -55,13 +55,19 @@
     "faqAccountQ": "Preciso de uma conta para jogar?",
     "faqAccountA": "Você pode abrir e resolver casos sem criar uma conta. Faça login para rastrear XP, progresso e casos resolvidos entre dispositivos.",
     "faqAccessQ": "Como funciona o acesso?",
-    "faqAccessA": "Casos intermediários e avançados requerem XP para desbloquear, então escolha um caso inicial e construa impulso a partir daí.",
+    "faqAccessA": "Todos os casos estão disponíveis desde o início — não há nada a desbloquear. Os níveis de dificuldade (iniciante, intermediário, avançado) são apenas um guia: comece por um caso para iniciantes e avance no seu ritmo. O XP acompanha o seu progresso conforme você resolve casos.",
     "faqSqlQ": "O que preciso saber de SQL?",
     "faqSqlA": "Iniciantes podem começar com SELECTs simples. Casos intermediários e avançados introduzem joins, agrupamento, filtros e subconsultas conforme você progride.",
     "faqInterviewQ": "Isso ajuda em entrevistas?",
     "faqInterviewA": "Sim. Os casos simulam puzzles de dados realistas que você pode encontrar em entrevistas de dados e engenharia. É ótimo para praticar com narrativa sem bancos de questões repetitivas.",
-    "faqHintsQ": "Posso receber dicas se estiver travado?",
-    "faqHintsA": "Cada caso inclui uma visualização do esquema e objetivos. Se precisar de mais ajuda, junte-se à comunidade no Discord ou confira a página de ajuda."
+    "faqHintsQ": "E se eu travar em um caso?",
+    "faqHintsA": "Todo caso traz uma visualização do esquema e uma lista de objetivos para te guiar, além de um painel de notas para registrar seu raciocínio. Se mesmo assim travar, a comunidade no Discord e a página de ajuda são bons lugares para perguntar.",
+    "cta": {
+      "default": "Iniciar Investigação",
+      "startInvestigating": "Começar a Investigar",
+      "solveFirstCase": "Resolva Seu Primeiro Caso",
+      "beginMystery": "Desvende o Mistério"
+    }
   },
   "cases": {
     "caseFiles": "Arquivos de Caso",
@@ -78,7 +84,7 @@
       "ogDescription": "Escolha um caso, interrogue suspeitos com SQL e ganhe XP conforme resolve cada investigação.",
       "ogAlt": "Arquivos de caso do SQLNoir",
       "collectionName": "Arquivos de Caso SQLNoir",
-      "collectionDescription": "Casos interativos de detetive SQL com níveis de XP do iniciante ao avançado."
+      "collectionDescription": "Casos interativos de detetive SQL em três níveis de dificuldade, do iniciante ao avançado."
     }
   },
   "caseSolver": {
@@ -124,7 +130,6 @@
     "column": "Coluna",
     "type": "Tipo",
     "key": "Chave",
-    "placeholder": "SELECT * FROM crime_scene WHERE...",
     "editorPlaceholder": "SELECT * FROM crime_scene WHERE..."
   },
   "solution": {
@@ -145,15 +150,6 @@
     "submitting": "Enviando...",
     "submitSolution": "Enviar Solução",
     "progressError": "Ocorreu um erro ao atualizar o progresso"
-  },
-  "hints": {
-    "title": "Dicas de Investigação",
-    "checkNullTitle": "Verifique Valores NULL",
-    "checkNullDesc": "Use IS NULL para encontrar registros com informações faltando em campos críticos.",
-    "joinTablesTitle": "Junte Múltiplas Tabelas",
-    "joinTablesDesc": "Conecte pedidos com informações de clientes usando operações JOIN.",
-    "filterDateTitle": "Filtre por Intervalo de Datas",
-    "filterDateDesc": "Use o operador BETWEEN para encontrar pedidos em datas específicas."
   },
   "notes": {
     "title": "Anotações da Investigação",
@@ -245,6 +241,7 @@
     "starOnGitHub": "Estrela no GitHub",
     "joinDiscord": "Entrar no Discord",
     "readDetectivesJournal": "Ler o Diário do Detetive",
+    "shareSqlNoir": "Compartilhar SQL Noir",
     "sqlTips": {
       "tip1": "Comente suas consultas SQL complexas",
       "tip2": "Use aspas simples para valores de texto: WHERE name = 'John'",
@@ -325,24 +322,116 @@
     "switchToEnglish": "Mudar para Inglês",
     "changeLanguage": "Mudar idioma",
     "portuguese": "Português (BR)",
-    "english": "English"
+    "english": "English",
+    "chinese": "Chinês"
+  },
+  "footer": {
+    "copyright": "© {year} SQLNoir",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Serviço",
+    "contact": "Contato"
+  },
+  "cookieConsent": {
+    "message": "Usamos cookies para análises. O sinal DNT (Do Not Track) é respeitado.",
+    "privacyLink": "Política de Privacidade",
+    "accept": "OK"
+  },
+  "paywall": {
+    "title": "Desbloqueie Todos os Casos",
+    "subtitle": "Você provou suas habilidades de detetive. Faça upgrade para acessar casos intermediários e avançados, além de futuras investigações.",
+    "tierName": "Detective Pro",
+    "perMonth": "por mês",
+    "feature1": "Todos os casos intermediários e avançados",
+    "feature2": "Novos casos assim que forem lançados",
+    "feature3": "Explicações detalhadas das soluções",
+    "ctaUpgrade": "Fazer Upgrade",
+    "ctaMaybeLater": "Talvez depois"
   },
   "privacy": {
     "metadata": {
       "title": "Política de Privacidade",
       "description": "Política de privacidade do SQLNoir — como coletamos, usamos e protegemos seus dados ao jogar nosso jogo interativo de detetive SQL."
+    },
+    "body": {
+      "title": "Política de Privacidade",
+      "lastUpdated": "Última atualização: 15 de março de 2026",
+      "collectionTitle": "O que coletamos",
+      "collectionIntro": "Quando você usa o SQLNoir, podemos coletar as seguintes informações:",
+      "collectionAccount": "<strong>Dados da conta:</strong> se você entrar com o Google OAuth (via Supabase), armazenamos seu endereço de e-mail e um ID de usuário.",
+      "collectionAnalytics": "<strong>Dados de análise:</strong> usamos o PostHog e o Vercel Analytics para coletar visualizações de página e dados de uso de recursos de forma anônima.",
+      "collectionCookies": "<strong>Cookies:</strong> cookies de sessão de autenticação (Supabase) e cookies de análise (PostHog).",
+      "useTitle": "Como usamos essas informações",
+      "useItem1": "Para oferecer e aprimorar os recursos e o conteúdo do SQLNoir.",
+      "useItem2": "Para acompanhar seu progresso, XP e casos resolvidos (quando você está conectado).",
+      "useItem3": "Para entender como as pessoas interagem com o site e, assim, torná-lo melhor.",
+      "cookiesTitle": "Cookies",
+      "cookiesIntro": "O SQLNoir utiliza os seguintes cookies:",
+      "cookiesAuth": "<strong>Cookies de autenticação</strong> (Supabase) — para manter você conectado entre as sessões.",
+      "cookiesAnalytics": "<strong>Cookies de análise</strong> (PostHog) — para coletar dados de uso de forma anônima.",
+      "cookiesDisable": "Você pode desativar os cookies nas configurações do seu navegador. Desativar os cookies de autenticação fará com que você precise entrar novamente a cada visita.",
+      "thirdPartyTitle": "Serviços de terceiros",
+      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) — análise de produto.",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong> — análise de visualizações de página.",
+      "thirdPartySupabase": "<strong>Supabase</strong> — autenticação e banco de dados.",
+      "thirdPartyStripe": "<strong>Stripe</strong> — processaria pagamentos caso planos pagos sejam introduzidos. O checkout pago não está ativo no momento, portanto nenhum dado de pagamento é processado hoje.",
+      "thirdPartyNoSell": "Não vendemos seus dados a terceiros.",
+      "retentionTitle": "Retenção de dados",
+      "retentionBody": "Os dados da conta são mantidos enquanto sua conta estiver ativa. Os dados de análise são armazenados de forma anônima e expiram automaticamente de acordo com as políticas de retenção do PostHog e do Vercel.",
+      "rightsTitle": "Seus direitos",
+      "rightsIntro": "De acordo com o GDPR e demais regulamentações de privacidade aplicáveis, você tem o direito de:",
+      "rightsItem1": "Acessar os dados pessoais que mantemos sobre você.",
+      "rightsItem2": "Solicitar a correção de dados imprecisos.",
+      "rightsItem3": "Solicitar a exclusão dos seus dados.",
+      "rightsItem4": "Recusar o rastreamento analítico ativando a configuração <strong>Do Not Track</strong> no seu navegador. O PostHog respeita o sinal DNT.",
+      "rightsExercise": "Para exercer qualquer um desses direitos, entre em contato pelo e-mail abaixo.",
+      "contactTitle": "Contato",
+      "contactBody": "Se você tiver dúvidas sobre esta política de privacidade ou quiser solicitar a exclusão de dados, entre em contato pelo <email>hristoapps@gmail.com</email>."
     }
   },
   "terms": {
     "metadata": {
       "title": "Termos de Serviço",
       "description": "Termos de serviço do SQLNoir — regras e condições para usar nossa plataforma interativa de aprendizado de SQL e casos de detetive."
+    },
+    "body": {
+      "title": "Termos de Serviço",
+      "lastUpdated": "Última atualização: 15 de março de 2026",
+      "overviewTitle": "Visão geral",
+      "overviewBody": "O SQLNoir é uma plataforma interativa de aprendizado de SQL na qual você resolve casos de detetive usando consultas SQL. Ao usar o SQLNoir, você concorda com estes termos. O SQLNoir é fornecido \"no estado em que se encontra\", sem qualquer tipo de garantia.",
+      "accountsTitle": "Contas e acesso",
+      "accountsIntro": "Você pode usar o SQLNoir sem criar uma conta. Entrar com o Google OAuth permite acompanhar seu progresso entre dispositivos.",
+      "accountsFreeTier": "<strong>Acesso gratuito:</strong> todos os casos estão disponíveis gratuitamente no momento — não é preciso pagar nada para jogar qualquer um deles.",
+      "accountsLicense": "<strong>Planos futuros:</strong> uma opção paga pode ser introduzida no futuro. Caso isso aconteça, estes termos serão atualizados antes que qualquer caso passe a ser pago.",
+      "paymentsTitle": "Pagamentos",
+      "paymentsBody": "O SQLNoir é gratuito no momento. Caso uma opção paga seja introduzida no futuro, os pagamentos serão processados de forma segura pela <stripe>Stripe</stripe>, e estes termos serão atualizados conforme necessário. Se você tiver qualquer problema, entre em contato conosco e faremos o possível para ajudar.",
+      "ugcTitle": "Conteúdo gerado pelo usuário",
+      "ugcBody": "As consultas SQL que você escreve no SQLNoir são executadas localmente no seu navegador usando o SQL.js. Nós não armazenamos, coletamos nem compartilhamos suas consultas.",
+      "acceptableUseTitle": "Uso aceitável",
+      "acceptableUseIntro": "Você concorda em não:",
+      "acceptableUseItem1": "Usar ferramentas automatizadas para raspar ou rastrear o conteúdo do SQLNoir.",
+      "acceptableUseItem2": "Tentar interromper ou abusar do serviço.",
+      "acceptableUseItem3": "Redistribuir ou revender o conteúdo dos casos sem autorização.",
+      "ipTitle": "Propriedade intelectual",
+      "ipBody": "Todos os casos, histórias, personagens e códigos do SQLNoir são protegidos por direitos autorais do SQLNoir e de seu criador. Você não pode reproduzir ou redistribuir esse conteúdo sem autorização por escrito.",
+      "terminationTitle": "Encerramento",
+      "terminationBody": "Reservamo-nos o direito de suspender ou encerrar contas que violem estes termos.",
+      "changesTitle": "Alterações destes termos",
+      "changesBody": "Podemos atualizar estes termos periodicamente. O uso contínuo do SQLNoir após as alterações constitui aceitação dos termos atualizados.",
+      "contactTitle": "Contato",
+      "contactBody": "Dúvidas sobre estes termos? Entre em contato pelo e-mail <email>hristoapps@gmail.com</email>."
     }
   },
   "contact": {
     "metadata": {
       "title": "Contato",
       "description": "Entre em contato com a equipe do SQLNoir. Reporte bugs, sugira funcionalidades ou junte-se à nossa comunidade no Discord para entusiastas de SQL."
+    },
+    "body": {
+      "title": "Contato",
+      "intro": "Tem uma pergunta, encontrou um bug ou só quer mandar um oi? Fale com a gente!",
+      "emailLabel": "E-mail",
+      "githubLabel": "GitHub",
+      "discordLabel": "Discord"
     }
   },
   "checkoutSuccess": {

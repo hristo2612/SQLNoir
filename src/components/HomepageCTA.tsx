@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { TrackedLink } from "./TrackedLink";
 import posthog from "posthog-js";
-
-const CTA_COPY_MAP: Record<string, string> = {
-  "start-investigating": "Start Investigating",
-  "solve-first-case": "Solve Your First Case",
-  "begin-mystery": "Begin the Mystery",
-};
 
 interface HomepageCTAProps {
   ctaId: string;
@@ -18,7 +13,18 @@ interface HomepageCTAProps {
 }
 
 export function HomepageCTA({ ctaId, source, className, children }: HomepageCTAProps) {
-  const [ctaText, setCtaText] = useState("Start Investigation");
+  const t = useTranslations();
+
+  const CTA_COPY_MAP: Record<string, string> = useMemo(
+    () => ({
+      "start-investigating": t("home.cta.startInvestigating"),
+      "solve-first-case": t("home.cta.solveFirstCase"),
+      "begin-mystery": t("home.cta.beginMystery"),
+    }),
+    [t]
+  );
+
+  const [ctaText, setCtaText] = useState(t("home.cta.default"));
 
   useEffect(() => {
     posthog.onFeatureFlags(() => {
@@ -27,7 +33,7 @@ export function HomepageCTA({ ctaId, source, className, children }: HomepageCTAP
         setCtaText(CTA_COPY_MAP[flag]);
       }
     });
-  }, []);
+  }, [CTA_COPY_MAP]);
 
   return (
     <TrackedLink

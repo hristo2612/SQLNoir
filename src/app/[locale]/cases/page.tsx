@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { CasesExplorer } from "@/components/CasesExplorer";
 import { Navbar } from "@/components/Navbar";
 import { getAllCases, getCaseSlug, getAllLocalizedCases } from "@/lib/case-utils";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { getTranslations, getLocale } from "next-intl/server";
-import { localeAlternates } from "@/lib/seo";
+import { localeAlternates, localePrefix, siteUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title: t("ogTitle"),
       description: t("ogDescription"),
-      url: "https://www.sqlnoir.com/cases",
+      url: `${siteUrl}${localePrefix(locale)}/cases`,
       images: [
         {
           url: "/open-graph-image.png",
@@ -75,10 +74,8 @@ export default async function CasesPage() {
         showShare
       />
       <CasesExplorer initialSession={session} initialUserInfo={userInfo} localizedCases={localizedCases} />
-      <Script
-        id="cases-json-ld"
+      <script
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",

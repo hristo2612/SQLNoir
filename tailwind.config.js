@@ -9,6 +9,7 @@ export default {
     extend: {
       fontFamily: {
         detective: ['Special Elite', 'monospace'],
+        sansCJK: ['"Noto Sans SC"', 'system-ui', 'sans-serif'],
       },
     },
   },

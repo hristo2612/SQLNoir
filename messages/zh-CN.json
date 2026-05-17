@@ -1,0 +1,448 @@
+{
+  "common": {
+    "appName": "SQLNoir",
+    "xp": "XP",
+    "xpLabel": "经验值：{amount}",
+    "xpRequired": "需要 {amount} XP",
+    "new": "新案件",
+    "solved": "已侦破",
+    "locked": "已锁定",
+    "menu": "菜单",
+    "share": "分享",
+    "loading": "加载中...",
+    "null": "NULL",
+    "error": "发生错误",
+    "close": "关闭",
+    "back": "返回",
+    "blog": "博客"
+  },
+  "nav": {
+    "home": "首页",
+    "cases": "案件",
+    "help": "帮助",
+    "blog": "侦探手记",
+    "journal": "手记",
+    "journalFull": "侦探手记",
+    "github": "GitHub",
+    "startInvestigation": "开始调查"
+  },
+  "home": {
+    "heroTitle": "用 SQL 破解谋杀案",
+    "heroSubtitle": "化身侦探，用 SELECT、JOIN、WHERE 审问数据库，在 6 个真实案件里边破案边学 SQL。",
+    "startInvestigation": "开始调查",
+    "welcomeDetective": "欢迎回来，侦探",
+    "welcomeMessage": "城里风声鹤唳。新的证据刚刚摆到你的桌上。",
+    "openCaseFiles": "翻开案件档案",
+    "learnMore": "↓ 了解更多 ↓",
+    "featureQueryDriven": "查询驱动的案件",
+    "featureQueryDrivenDesc": "每条线索都藏在数据库里。用 SQL 审问数据，揪出真凶。",
+    "featureNoSetup": "无需任何配置",
+    "featureNoSetupDesc": "内置 SQL.js 驱动的查询工作区。打开案件，立刻开始调查。",
+    "featureEarnXP": "积累侦探经验值",
+    "featureEarnXPDesc": "破案积累经验值、升级你的警徽，记录你从菜鸟到资深调查员的成长轨迹。",
+    "howItWorksTitle": "SQLNoir 是怎么玩的",
+    "howItWorksP1": "每个案件都把你扔进一段剧情驱动的调查。你阅读案情简报，研究数据库结构，在内置编辑器里运行 SQL 查询以挖掘线索。当你把表关联起来、排除嫌疑人、核实不在场证明时，你也在练习真正的 SQL 模式：筛选、连接、聚合、子查询。无需安装与配置，打开案件文件就能开始审讯数据。",
+    "howItWorksP2": "经验值会记录你的破案进度，你可以从菜鸟起步，逐步成长为经验老到的调查员。初级案件教授基础，进阶案件用层叠的 JOIN 与刁钻的条件磨练你。",
+    "howItWorksP3": "准备好亲手试一试了吗？",
+    "startSolvingCases": "开始破案",
+    "whoIsThisFor": "适合谁",
+    "audienceDevelopers": "想用动手、剧情优先的方式练习 SQL 基础与 JOIN 的开发者。",
+    "audienceAnalysts": "正在备战面试、需要真实查询场景的数据分析师。",
+    "audienceStudents": "比起枯燥的教材，更适合靠剧情与即时反馈快速进步的学生。",
+    "audienceInstructors": "希望让学员直接练习、无需配置环境的 SQL 教师与讲师。",
+    "faqTitle": "常见问题",
+    "faqSubtitle": "在开启第一案前，先了解一下。",
+    "faqAccountQ": "玩游戏需要账号吗？",
+    "faqAccountA": "不注册也可以打开并破解案件。登录后可以跨设备同步经验值、进度和已侦破的案件。",
+    "faqAccessQ": "案件需要解锁吗？",
+    "faqAccessA": "所有案件从一开始就向你开放，无需解锁。难度等级（初级、中级、高级）只是一个参考——建议从初级案件起步，按自己的节奏推进。经验值则记录你的破案进度。",
+    "faqSqlQ": "我需要会哪些 SQL？",
+    "faqSqlA": "新手从简单的 SELECT 开始即可。中级与高级案件会循序渐进地引入 JOIN、分组、筛选和子查询。",
+    "faqInterviewQ": "这对面试有帮助吗？",
+    "faqInterviewA": "有的。案件模拟你可能在数据和工程面试中遇到的真实数据谜题。比起死记题库，用剧情练习要有趣得多。",
+    "faqHintsQ": "如果某个案件卡住了怎么办？",
+    "faqHintsA": "每个案件都提供数据库结构视图和一份调查目标清单供你参考，还有一个笔记面板帮你记录思路。如果还是没头绪，社区 Discord 和帮助页都是不错的提问去处。",
+    "cta": {
+      "default": "开始调查",
+      "startInvestigating": "立刻开始调查",
+      "solveFirstCase": "破解你的第一案",
+      "beginMystery": "揭开谜案"
+    }
+  },
+  "cases": {
+    "caseFiles": "SQL 案件档案",
+    "beginner": "初级",
+    "beginnerDesc": "适合 SQL 新手。学习查询与数据分析的基本功。",
+    "intermediate": "中级",
+    "intermediateDesc": "面向具备基础 SQL 知识的调查员。挑战更复杂的查询与优化。",
+    "advanced": "高级",
+    "advancedDesc": "专家级案件，需要深厚的 SQL 功底与解题能力。",
+    "metadata": {
+      "title": "案件档案 | 玩互动式 SQL 侦探剧情",
+      "description": "浏览 SQLNoir 各难度的案件。破解互动式侦探剧情，积累经验值，磨练你的 SQL 技能。",
+      "ogTitle": "案件档案 | 玩互动式 SQL 侦探剧情",
+      "ogDescription": "挑选一个案件，用 SQL 审讯嫌疑人，破解一案积累一次经验值。",
+      "ogAlt": "SQLNoir 案件档案",
+      "collectionName": "SQLNoir 案件档案",
+      "collectionDescription": "覆盖初级到高级三个难度等级的互动式 SQL 侦探案件。"
+    }
+  },
+  "caseSolver": {
+    "caseBrief": "案件概要",
+    "sqlWorkspace": "SQL 查询区",
+    "schema": "数据库结构",
+    "notes": "调查笔记",
+    "submit": "提交答案",
+    "backToCases": "返回案件列表",
+    "back": "返回",
+    "sideBySide": "并排视图",
+    "stackView": "上下分栏视图",
+    "tab1": "窗口 1",
+    "tab2": "窗口 2"
+  },
+  "caseStudy": {
+    "objectives": "调查目标",
+    "sqlQuery": "SQL 查询",
+    "executesHighlighted": "仅执行选中的文本",
+    "executesFullEditor": "执行编辑器中的全部内容",
+    "executing": "执行中...",
+    "execute": "执行",
+    "enter": "Enter",
+    "ctrlEnter": "Ctrl + Enter",
+    "errorInQuery": "查询出错",
+    "results": "查询结果",
+    "noResults": "暂无结果。执行查询后即可在这里查看。",
+    "queryEmpty": "查询不能为空",
+    "queryResultInvalid": "查询结果格式有误",
+    "loadingDatabase": "正在加载数据库...",
+    "failedToLoadDatabase": "数据库加载失败",
+    "primaryKey": "主键",
+    "foreignKey": "外键",
+    "schemaTip": "提示：你可以拖动数据表，自行整理结构视图。",
+    "loadingSchema": "正在加载数据库结构...",
+    "failedToLoadSchema": "数据库结构加载失败",
+    "noTablesFound": "数据库中未找到任何数据表。",
+    "tableView": "表格视图",
+    "graphView": "图形视图",
+    "copyTableName": "复制表名",
+    "column": "字段名",
+    "type": "类型",
+    "key": "键类型",
+    "executesSelection": "仅执行选中的文本",
+    "executesAll": "执行编辑器中的全部内容",
+    "editorPlaceholder": "SELECT * FROM 犯罪现场 WHERE..."
+  },
+  "solution": {
+    "caseSolved": "案件已侦破！",
+    "explanation": "解析说明",
+    "saveXpNote": "提示：注册账号后，可以保存已破解案件的经验值奖励。",
+    "enjoyedMystery": "喜欢这个谜案吗？",
+    "shareMessage": "把 SQLNoir 分享给另一位侦探，看他能不能也破解它。",
+    "shareSqlnoir": "分享 SQLNoir",
+    "submitFindings": "提交你的调查结果",
+    "notQuiteRight": "答案不对",
+    "tryAgainMessage": "请再试试其他答案。",
+    "tryAgain": "再试一次",
+    "submitDescription": "提交你在调查中锁定的嫌疑人，看看是否成功破案。",
+    "yourAnswer": "你的答案",
+    "enterAnswer": "输入你的答案…",
+    "answerHint": "请输入你通过调查锁定的具体姓名。",
+    "submitting": "提交中...",
+    "submitSolution": "提交答案",
+    "progressError": "更新进度时出错"
+  },
+  "notes": {
+    "title": "调查笔记",
+    "placeholder": "在这里记下你的调查笔记……",
+    "autoSaveMessage": "你的笔记会自动保存在本地，重新打开后仍会保留。"
+  },
+  "share": {
+    "title": "一起破解谜案吧！",
+    "shareTitle": "SQL Noir —— 在破案中学习 SQL",
+    "twitter": "Twitter",
+    "facebook": "Facebook",
+    "linkedin": "LinkedIn",
+    "copyLink": "复制链接",
+    "linkCopied": "链接已复制！"
+  },
+  "auth": {
+    "welcomeBack": "欢迎回来，侦探",
+    "joinInvestigation": "加入这场调查",
+    "signInWithGoogle": "用 Google 登录",
+    "signUpWithGoogle": "用 Google 注册",
+    "orContinueWithEmail": "或使用邮箱继续",
+    "email": "邮箱",
+    "password": "密码",
+    "passwordHint": "密码至少需要 6 位",
+    "processing": "处理中...",
+    "signInWithEmail": "用邮箱登录",
+    "signUpWithEmail": "用邮箱注册",
+    "noAccount": "还没有账号？立即注册",
+    "hasAccount": "已经有账号？前往登录",
+    "authNotAvailable": "当前无法使用登录功能",
+    "googleSignInError": "Google 登录过程中出错",
+    "invalidCredentials": "邮箱或密码错误，请重试。",
+    "emailNotConfirmed": "请先确认你的邮箱地址再登录。",
+    "accountExists": "该邮箱已注册账号，请直接登录。",
+    "weakPassword": "密码至少需要 6 位。",
+    "accountCreated": "账号已创建！你现在可以登录了。",
+    "genericError": "发生错误",
+    "detectiveProfile": "侦探档案",
+    "experiencePoints": "经验值",
+    "casesSolved": "已侦破案件：{count}",
+    "signOut": "退出登录"
+  },
+  "help": {
+    "title": "案件查到死胡同？",
+    "subtitle": "每位侦探都需要自己的人脉网。有线索想分享，或在棘手案件上需要帮一把？",
+    "startNew": "去开启一个新调查：",
+    "caseFiles": "案件档案",
+    "orBrowse": "或在以下地方翻翻提示：",
+    "discordTitle": "Discord 总部",
+    "discordDesc": "加入社区，交流查询心得，或在卡住时讨一个方向。",
+    "enterDiscord": "进入 Discord",
+    "githubTitle": "GitHub Issues",
+    "githubDesc": "发现 Bug 或想提议新功能？开个 issue，我们会跟进。",
+    "reportOnGithub": "在 GitHub 上反馈",
+    "quickAnswers": "快速答疑",
+    "faqClueQ": "需要一点线索？",
+    "faqClueA": "先查看「数据库结构」标签，再到 Discord 讨一个方向。",
+    "faqBugQ": "在代码里发现了 Bug？",
+    "faqBugA": "发现 Bug 或异常？请在 GitHub 上反馈，我们会调查。",
+    "faqContributeQ": "想加入侦探队吗？",
+    "faqContributeA": "欢迎提 Pull Request。挑一个开放的 issue，或给我们提一个新的案件创意。",
+    "metadata": {
+      "title": "帮助与支持",
+      "description": "获取 SQLNoir 案件相关的帮助，加入社区，或反馈 Bug。这里有答疑、Discord 与 GitHub 支持链接。"
+    }
+  },
+  "blog": {
+    "title": "侦探手记",
+    "subtitle": "SQL 博客",
+    "pageTitle": "侦探手记 — 第 {pageNum} 页",
+    "readFullArticle": "阅读全文",
+    "previous": "上一页",
+    "next": "下一页",
+    "paginationLabel": "博客分页",
+    "noPosts": "暂无文章，敬请期待！",
+    "metadata": {
+      "title": "侦探手记 | SQL 博客",
+      "description": "来自 SQLNoir 侦探手记的 SQL 教程、技巧与游戏推荐。",
+      "ogAlt": "SQLNoir 博客",
+      "rssTitle": "SQLNoir — 侦探手记",
+      "rssDescription": "来自 SQLNoir 侦探手记的 SQL 教程、技巧与游戏推荐。"
+    }
+  },
+  "gameApp": {
+    "sqlNoir": "SQL Noir",
+    "solveMysteriesThroughSQL": "用 SQL 破解谜案。",
+    "startInvestigation": "开始调查",
+    "detectivesTip": "侦探小贴士：{tip}",
+    "starOnGitHub": "在 GitHub 上点星",
+    "joinDiscord": "加入 Discord",
+    "readDetectivesJournal": "阅读侦探手记",
+    "shareSqlNoir": "分享 SQL Noir",
+    "sqlTips": {
+      "tip1": "为复杂的 SQL 查询写好注释",
+      "tip2": "字符串值请用单引号：WHERE name = 'John'",
+      "tip3": "SQL 语句结尾别忘了分号（;）"
+    }
+  },
+  "blogComponents": {
+    "quickQuiz": {
+      "title": "小测验",
+      "correct": "回答正确！",
+      "notQuite": "差一点",
+      "tryAgain": "再试一次"
+    },
+    "detectiveTip": {
+      "detectivesNote": "侦探笔记",
+      "watchOut": "注意",
+      "keyClue": "关键线索"
+    },
+    "mysteryTeaser": {
+      "difficulty": "难度",
+      "tryThisCase": "试试这个案件"
+    },
+    "difficultyBadge": {
+      "beginner": "初级",
+      "intermediate": "中级",
+      "advanced": "高级"
+    },
+    "beforeAfter": {
+      "before": "之前",
+      "after": "之后"
+    },
+    "cheatSheet": {
+      "title": "速查表"
+    },
+    "sqlBreakdown": {
+      "title": "SQL 拆解"
+    }
+  },
+  "license": {
+    "upgradeTitle": "升级侦探证",
+    "upgradeSubtitle": "更深的谜案在前方等你，侦探……",
+    "unlockCases": "解锁 4 个高阶案件",
+    "unlockCasesDesc": "中级与高级调查，带来更复杂的 SQL 挑战",
+    "earnBadges": "获得专属经验值徽章",
+    "earnBadgesDesc": "用持照侦探专属成就展示你的 SQL 功底",
+    "supportDev": "支持独立开发",
+    "supportDevDesc": "帮助我们打造更多案件，让 SQLNoir 持续成长",
+    "oneTimePayment": "一次付费，永久持有",
+    "getYourLicense": "领取执照",
+    "continueWithFree": "继续玩免费案件",
+    "getLicense": "获得侦探证",
+    "redirecting": "跳转中...",
+    "somethingWentWrong": "出了点小问题，请重试。",
+    "checkingCredentials": "正在验证凭据...",
+    "caseClassified": "案件已加密",
+    "caseClassifiedDesc": "这桩调查需要侦探证。升级后即可解锁全部中级与高级案件。",
+    "backToCaseFiles": "返回案件档案",
+    "licenseRequired": "需要执照",
+    "unlockAllCases": "使用侦探证解锁全部案件",
+    "unlockAllCasesDesc": "一次性购买。完整解锁所有案件、所有难度，无限练习。"
+  },
+  "checkout": {
+    "paymentReceived": "付款已收到！",
+    "welcomeDetective": "欢迎回来，侦探",
+    "signInToActivate": "登录以激活你的侦探证并解锁全部案件。",
+    "activatingLicense": "正在激活你的执照...",
+    "licenseActive": "你的侦探证已激活。全部 6 桩案件都已解锁，等你来破。",
+    "signInButton": "登录以激活执照",
+    "whatYouGet": "你将获得：",
+    "accessAllCases": "解锁全部 6 桩侦探案件",
+    "allDifficulties": "从初级到高级全部难度",
+    "unlimitedPractice": "无限次 SQL 练习，真实数据库结构",
+    "xpTracking": "经验值追踪与进度徽章",
+    "openCaseFiles": "翻开案件档案"
+  },
+  "localeSwitcher": {
+    "switchToPortuguese": "切换为葡萄牙语",
+    "switchToEnglish": "切换为英语",
+    "changeLanguage": "切换语言",
+    "portuguese": "Português (BR)",
+    "english": "English",
+    "chinese": "中文"
+  },
+  "footer": {
+    "copyright": "© {year} SQLNoir",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "contact": "联系我们"
+  },
+  "cookieConsent": {
+    "message": "我们使用 Cookie 进行数据分析，并尊重浏览器的 DNT 设置。",
+    "privacyLink": "隐私政策",
+    "accept": "好的"
+  },
+  "paywall": {
+    "title": "解锁全部案件",
+    "subtitle": "你已证明了侦探实力。升级后即可解锁中级与高级案件，以及未来更多调查。",
+    "tierName": "Detective Pro",
+    "perMonth": "每月",
+    "feature1": "全部中级与高级案件",
+    "feature2": "新案件上线即可玩",
+    "feature3": "详尽的解题说明",
+    "ctaUpgrade": "立即升级",
+    "ctaMaybeLater": "再说吧"
+  },
+  "privacy": {
+    "metadata": {
+      "title": "隐私政策",
+      "description": "SQLNoir 隐私政策 — 我们如何在你玩这款互动式 SQL 侦探游戏时收集、使用与保护你的数据。"
+    },
+    "body": {
+      "title": "隐私政策",
+      "lastUpdated": "最后更新：2026 年 3 月 15 日",
+      "collectionTitle": "我们收集的信息",
+      "collectionIntro": "当你使用 SQLNoir 时，我们可能会收集以下信息：",
+      "collectionAccount": "<strong>账户数据：</strong>当你使用 Google OAuth（通过 Supabase）登录时，我们会保存你的电子邮箱地址和用户 ID。",
+      "collectionAnalytics": "<strong>分析数据：</strong>我们使用 PostHog 与 Vercel Analytics 收集匿名化的页面浏览数据和功能使用数据。",
+      "collectionCookies": "<strong>Cookie：</strong>身份验证会话 Cookie（Supabase）以及分析 Cookie（PostHog）。",
+      "useTitle": "我们如何使用这些信息",
+      "useItem1": "用于提供和改进 SQLNoir 的功能与内容。",
+      "useItem2": "用于记录你的学习进度、经验值（XP）以及已破解的案件（仅在登录状态下）。",
+      "useItem3": "用于了解用户如何与网站互动，以便我们持续优化产品。",
+      "cookiesTitle": "Cookie",
+      "cookiesIntro": "SQLNoir 使用以下 Cookie：",
+      "cookiesAuth": "<strong>身份验证 Cookie</strong>（Supabase）——用于在多次会话间保持你的登录状态。",
+      "cookiesAnalytics": "<strong>分析 Cookie</strong>（PostHog）——用于收集匿名化的使用数据。",
+      "cookiesDisable": "你可以在浏览器设置中禁用 Cookie。禁用身份验证 Cookie 后，每次访问都需要重新登录。",
+      "thirdPartyTitle": "第三方服务",
+      "thirdPartyPosthog": "<strong>PostHog</strong>（<posthog>posthog.com</posthog>）——产品分析。",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong>——页面浏览分析。",
+      "thirdPartySupabase": "<strong>Supabase</strong>——身份验证与数据库。",
+      "thirdPartyStripe": "<strong>Stripe</strong>——如果未来推出付费方案，将由其处理付款。目前未启用付费结账，因此当前不会处理任何付款数据。",
+      "thirdPartyNoSell": "我们不会向任何第三方出售你的数据。",
+      "retentionTitle": "数据保留",
+      "retentionBody": "账户数据将在你的账户处于活跃状态期间予以保留。分析数据以匿名化形式保存，并根据 PostHog 与 Vercel 的保留策略自动过期。",
+      "rightsTitle": "你的权利",
+      "rightsIntro": "根据 GDPR 及其他适用的隐私法规，你有权：",
+      "rightsItem1": "访问我们持有的与你有关的个人数据。",
+      "rightsItem2": "请求更正不准确的数据。",
+      "rightsItem3": "请求删除你的数据。",
+      "rightsItem4": "通过在浏览器中启用 <strong>Do Not Track</strong> 设置来拒绝分析跟踪。PostHog 会遵守 DNT 信号。",
+      "rightsExercise": "如需行使上述任何权利，请通过下方邮箱与我们联系。",
+      "contactTitle": "联系我们",
+      "contactBody": "如对本隐私政策有任何疑问，或希望请求删除数据，请通过 <email>hristoapps@gmail.com</email> 与我们联系。"
+    }
+  },
+  "terms": {
+    "metadata": {
+      "title": "服务条款",
+      "description": "SQLNoir 服务条款 — 使用我们互动式 SQL 学习平台与侦探案件时所需遵守的规则与条件。"
+    },
+    "body": {
+      "title": "服务条款",
+      "lastUpdated": "最后更新：2026 年 3 月 15 日",
+      "overviewTitle": "概述",
+      "overviewBody": "SQLNoir 是一款互动式 SQL 学习平台，你可以通过编写 SQL 查询来破解侦探案件。使用 SQLNoir 即表示你同意本条款。SQLNoir 按\"现状\"提供，不附带任何形式的担保。",
+      "accountsTitle": "账户与访问",
+      "accountsIntro": "无需创建账户即可使用 SQLNoir。使用 Google OAuth 登录可在多台设备间同步你的学习进度。",
+      "accountsFreeTier": "<strong>免费使用：</strong>目前所有案件均可免费游玩，玩任何案件都无需付费。",
+      "accountsLicense": "<strong>未来计划：</strong>未来可能会推出付费选项。如果推出，我们会在任何案件变为付费之前更新本条款。",
+      "paymentsTitle": "付款",
+      "paymentsBody": "SQLNoir 目前完全免费。如果未来推出付费选项，付款将由 <stripe>Stripe</stripe> 安全处理，并会相应更新本条款。如遇到任何问题，请联系我们，我们将尽力协助解决。",
+      "ugcTitle": "用户生成内容",
+      "ugcBody": "你在 SQLNoir 中编写的 SQL 查询将通过 SQL.js 在你的浏览器本地执行。我们不会存储、收集或分享你的查询内容。",
+      "acceptableUseTitle": "可接受使用",
+      "acceptableUseIntro": "你同意不会：",
+      "acceptableUseItem1": "使用自动化工具抓取或爬取 SQLNoir 的内容。",
+      "acceptableUseItem2": "尝试干扰或滥用本服务。",
+      "acceptableUseItem3": "未经许可重新分发或转售案件内容。",
+      "ipTitle": "知识产权",
+      "ipBody": "SQLNoir 上的所有案件、故事、角色与代码版权均归 SQLNoir 及其创作者所有。未经书面许可，你不得复制或重新分发上述内容。",
+      "terminationTitle": "终止",
+      "terminationBody": "我们保留对违反本条款的账户予以暂停或终止的权利。",
+      "changesTitle": "条款变更",
+      "changesBody": "我们可能会不定期更新本条款。条款变更后继续使用 SQLNoir 即视为你接受更新后的条款。",
+      "contactTitle": "联系我们",
+      "contactBody": "对本条款有任何疑问？请通过 <email>hristoapps@gmail.com</email> 联系我们。"
+    }
+  },
+  "contact": {
+    "metadata": {
+      "title": "联系我们",
+      "description": "联系 SQLNoir 团队。反馈 Bug、提议新功能，或加入我们的 Discord 社区，与 SQL 侦探爱好者们交流。"
+    },
+    "body": {
+      "title": "联系我们",
+      "intro": "有问题、发现了 Bug，或者只是想打个招呼？欢迎随时联系我们！",
+      "emailLabel": "邮箱",
+      "githubLabel": "GitHub",
+      "discordLabel": "Discord"
+    }
+  },
+  "checkoutSuccess": {
+    "metadata": {
+      "title": "购买完成",
+      "description": "你的侦探证购买已完成。请登录以激活执照并解锁全部 SQLNoir 案件。"
+    }
+  },
+  "metadata": {
+    "siteTitle": "SQL 推理游戏 | 在侦探案件中学 SQL | SQLNoir",
+    "siteDescription": "SQLNoir 是一款 SQL 推理游戏，也是 SQL 侦探游戏：用 SQL 查询破解犯罪与谜案。化身侦探，用 SELECT、JOIN、WHERE 边破案边学 SQL。",
+    "ogAlt": "SQLNoir 互动式 SQL 侦探游戏"
+  }
+}

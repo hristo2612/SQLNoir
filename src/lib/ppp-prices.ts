@@ -127,3 +127,63 @@ export function getPriceTier(countryCode: string): PriceTier {
 export function getDefaultPrice(): PriceTier {
   return getPriceTier("US");
 }
+
+// ---------------------------------------------------------------------------
+// Locale-aware pricing (zh-CN → CNY, all others → USD)
+// ---------------------------------------------------------------------------
+
+export type SupportedCurrency = "usd" | "cny";
+
+export interface LocalizedPrice {
+  currency: SupportedCurrency;
+  amount: number; // unit amount in MAJOR units (e.g. 14.99 USD, 99 CNY)
+  display: string; // e.g. "$14.99" or "¥99"
+  priceId: string | null; // Stripe price ID; null when not yet provisioned
+}
+
+/**
+ * Map a UI locale to the Stripe currency we should bill in.
+ * Only zh-CN gets CNY for now; everyone else stays on USD.
+ */
+export function getCurrencyForLocale(locale: string): SupportedCurrency {
+  return locale === "zh-CN" ? "cny" : "usd";
+}
+
+// Single CNY tier (PPP-equivalent to $14.99 for a developer/student audience).
+// CEO range: ¥69 / ¥99 / ¥139 — default is ¥99.
+const CNY_AMOUNT_MAJOR = 99;
+const CNY_DISPLAY = "¥99"; // ¥99 — no decimals at this price point
+
+/**
+ * Locale + country aware price lookup.
+ *
+ * - zh-CN locale → CNY single tier (¥99), priceId from STRIPE_PRICE_ID_CNY
+ *   (env var must be set by CEO after WeChat verification clears in Stripe).
+ * - Any other locale → existing USD PPP tier resolved from countryCode.
+ *
+ * Amount is in MAJOR units (dollars / yuan), not cents, to match the public
+ * contract described in the Phase 5 plan.
+ */
+export function getPriceForLocale(
+  locale: string,
+  countryCode?: string
+): LocalizedPrice {
+  const currency = getCurrencyForLocale(locale);
+
+  if (currency === "cny") {
+    return {
+      currency,
+      amount: CNY_AMOUNT_MAJOR,
+      display: CNY_DISPLAY,
+      priceId: process.env.STRIPE_PRICE_ID_CNY ?? null,
+    };
+  }
+
+  const tier = getPriceTier(countryCode || "US");
+  return {
+    currency: "usd",
+    amount: tier.amount / 100, // cents → major units
+    display: tier.display,
+    priceId: tier.priceId || null,
+  };
+}

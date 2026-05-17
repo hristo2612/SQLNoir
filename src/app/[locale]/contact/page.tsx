@@ -37,6 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ContactPage() {
   const tNav = await getTranslations("nav");
+  const t = await getTranslations("contact.body");
 
   return (
     <>
@@ -53,16 +54,16 @@ export default async function ContactPage() {
       />
       <main className="min-h-screen bg-amber-50/50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
-          <h1 className="font-detective text-4xl text-amber-900">Contact</h1>
-          <p className="text-amber-800 text-lg">
-            Have a question, found a bug, or want to say hi? Reach out!
-          </p>
+          <h1 className="font-detective text-4xl text-amber-900">
+            {t("title")}
+          </h1>
+          <p className="text-amber-800 text-lg">{t("intro")}</p>
 
           <div className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-4">
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <span className="font-detective text-amber-900 w-20 shrink-0">
-                  Email
+                  {t("emailLabel")}
                 </span>
                 <a
                   href="mailto:hristoapps@gmail.com"
@@ -73,7 +74,7 @@ export default async function ContactPage() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="font-detective text-amber-900 w-20 shrink-0">
-                  GitHub
+                  {t("githubLabel")}
                 </span>
                 <a
                   href="https://github.com/hristo2612/SQLNoir"
@@ -86,7 +87,7 @@ export default async function ContactPage() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="font-detective text-amber-900 w-20 shrink-0">
-                  Discord
+                  {t("discordLabel")}
                 </span>
                 <a
                   href="https://discord.gg/rMQRwrRYHH"

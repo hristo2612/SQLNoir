@@ -174,10 +174,10 @@ export function GameApp({
           href="/blog"
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-100/80 hover:bg-amber-200/80 
                    text-amber-900 transition-colors duration-200 backdrop-blur-sm"
-          title="Read Detective's Journal"
+          title={t('gameApp.readDetectivesJournal')}
         >
           <BookOpen className="w-5 h-5" />
-          <span className="hidden sm:inline">Blog</span>
+          <span className="hidden sm:inline">{t('common.blog')}</span>
         </Link>
         <button
           onClick={() => {
@@ -186,10 +186,10 @@ export function GameApp({
           }}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-100/80 hover:bg-amber-200/80 
                    text-amber-900 transition-colors duration-200 backdrop-blur-sm"
-          title="Share SQL Noir"
+          title={t('gameApp.shareSqlNoir')}
         >
           <Share2 className="w-5 h-5" />
-          <span className="hidden sm:inline">Share</span>
+          <span className="hidden sm:inline">{t('common.share')}</span>
         </button>
         <a
           href="https://github.com/hristo2612/SQLNoir"

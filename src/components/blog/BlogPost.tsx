@@ -17,6 +17,10 @@ interface BlogPostProps {
 
 // Dynamically import post content components
 const postComponents: Record<string, React.ComponentType> = {
+  "curso-sql-gratis-investigando-crimes": dynamic(() => import("./posts/curso-sql-gratis-investigando-crimes")),
+  "banco-de-dados-relacional-explicado": dynamic(() => import("./posts/banco-de-dados-relacional-explicado")),
+  "jogos-para-aprender-sql": dynamic(() => import("./posts/jogos-para-aprender-sql")),
+  "sqlnoir-vs-leetcode-sql": dynamic(() => import("./posts/sqlnoir-vs-leetcode-sql")),
   "coalesce-sql": dynamic(() => import("./posts/coalesce-sql")),
   "sql-views": dynamic(() => import("./posts/sql-views")),
   "view-vs-materialized-view": dynamic(() => import("./posts/view-vs-materialized-view")),

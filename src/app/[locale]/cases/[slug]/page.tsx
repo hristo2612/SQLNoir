@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { notFound } from "next/navigation";
 import { CasePageClient } from "@/components/CasePageClient";
 import { findCaseBySlug, getAllCases, getCaseSlug, getLocalizedCase } from "@/lib/case-utils";
 import { isCaseFree } from "@/lib/license";
 import { getTranslations, getLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
-import { localeAlternates } from "@/lib/seo";
+import { localeAlternates, localePrefix, siteUrl } from "@/lib/seo";
 
 interface CasePageProps {
   params: Promise<{ slug: string }>;
@@ -23,14 +22,16 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: CasePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const caseData = findCaseBySlug(slug);
+  const baseCaseData = findCaseBySlug(slug);
   const locale = await getLocale();
 
-  if (!caseData) {
+  if (!baseCaseData) {
     return {
       title: "Case not found | SQL Noir",
     };
   }
+
+  const caseData = await getLocalizedCase(baseCaseData, locale);
 
   return {
     title: caseData.title,
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: CasePageProps): Promise<Metad
       type: "article",
       title: caseData.title,
       description: caseData.description,
-      url: `https://www.sqlnoir.com/cases/${slug}`,
+      url: `${siteUrl}${localePrefix(locale)}/cases/${slug}`,
       images: [
         {
           url: "/open-graph-image.png",
@@ -74,10 +75,8 @@ export default async function CasePage({ params }: CasePageProps) {
 
   return (
     <>
-      <Script
-        id="case-json-ld"
+      <script
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",

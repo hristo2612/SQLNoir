@@ -37,6 +37,27 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function TermsPage() {
   const tNav = await getTranslations("nav");
+  const t = await getTranslations("terms.body");
+
+  const strongTag = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+  const stripeTag = (chunks: React.ReactNode) => (
+    <a
+      href="https://stripe.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-amber-700 hover:text-amber-900 underline"
+    >
+      {chunks}
+    </a>
+  );
+  const emailTag = (chunks: React.ReactNode) => (
+    <a
+      href="mailto:hristoapps@gmail.com"
+      className="text-amber-700 hover:text-amber-900 underline"
+    >
+      {chunks}
+    </a>
+  );
 
   return (
     <>
@@ -54,132 +75,91 @@ export default async function TermsPage() {
       <main className="min-h-screen bg-amber-50/50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
           <h1 className="font-detective text-4xl text-amber-900">
-            Terms of Service
+            {t("title")}
           </h1>
-          <p className="text-amber-800">Last updated: March 15, 2026</p>
+          <p className="text-amber-800">{t("lastUpdated")}</p>
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
-              Overview
+              {t("overviewTitle")}
             </h2>
             <p className="text-amber-800 leading-relaxed">
-              SQLNoir is an interactive SQL learning platform where you solve
-              detective cases using SQL queries. By using SQLNoir, you agree to
-              these terms. SQLNoir is provided &quot;as is&quot; without warranty of any
-              kind.
+              {t("overviewBody")}
             </p>
           </section>
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
-              Accounts and Access
+              {t("accountsTitle")}
             </h2>
             <p className="text-amber-800 leading-relaxed">
-              You can use SQLNoir without creating an account. Signing in with
-              Google OAuth allows you to track progress across devices.
+              {t("accountsIntro")}
             </p>
             <ul className="list-disc list-inside text-amber-800 space-y-1">
-              <li>
-                <strong>Free tier:</strong> Access to 2 introductory cases.
-              </li>
-              <li>
-                <strong>Detective License:</strong> A one-time purchase of
-                $14.99 that unlocks all cases.
-              </li>
+              <li>{t.rich("accountsFreeTier", { strong: strongTag })}</li>
+              <li>{t.rich("accountsLicense", { strong: strongTag })}</li>
             </ul>
           </section>
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
-              Payments
+              {t("paymentsTitle")}
             </h2>
             <p className="text-amber-800 leading-relaxed">
-              Payments are processed securely by{" "}
-              <a
-                href="https://stripe.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-amber-700 hover:text-amber-900 underline"
-              >
-                Stripe
-              </a>
-              . The Detective License is a one-time digital purchase. Because it
-              is a digital product with immediate access, refunds are generally
-              not offered. If you experience any issues, please contact us and
-              we&apos;ll do our best to help.
+              {t.rich("paymentsBody", { stripe: stripeTag })}
             </p>
           </section>
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
-              User-Generated Content
+              {t("ugcTitle")}
             </h2>
-            <p className="text-amber-800 leading-relaxed">
-              SQL queries you write in SQLNoir are executed locally in your
-              browser using SQL.js. We do not store, collect, or share your
-              queries.
-            </p>
+            <p className="text-amber-800 leading-relaxed">{t("ugcBody")}</p>
           </section>
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
-              Acceptable Use
+              {t("acceptableUseTitle")}
             </h2>
             <p className="text-amber-800 leading-relaxed">
-              You agree not to:
+              {t("acceptableUseIntro")}
             </p>
             <ul className="list-disc list-inside text-amber-800 space-y-1">
-              <li>Use automated tools to scrape or crawl SQLNoir content.</li>
-              <li>Attempt to disrupt or abuse the service.</li>
-              <li>
-                Redistribute or resell case content without permission.
-              </li>
+              <li>{t("acceptableUseItem1")}</li>
+              <li>{t("acceptableUseItem2")}</li>
+              <li>{t("acceptableUseItem3")}</li>
             </ul>
           </section>
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
-              Intellectual Property
+              {t("ipTitle")}
+            </h2>
+            <p className="text-amber-800 leading-relaxed">{t("ipBody")}</p>
+          </section>
+
+          <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
+            <h2 className="font-detective text-2xl text-amber-900">
+              {t("terminationTitle")}
             </h2>
             <p className="text-amber-800 leading-relaxed">
-              All cases, stories, characters, and code on SQLNoir are copyright
-              of SQLNoir and its creator. You may not reproduce or redistribute
-              this content without written permission.
+              {t("terminationBody")}
             </p>
           </section>
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
-              Termination
+              {t("changesTitle")}
             </h2>
-            <p className="text-amber-800 leading-relaxed">
-              We reserve the right to suspend or terminate accounts that violate
-              these terms. If your account is terminated, you will lose access to
-              any purchased content.
-            </p>
+            <p className="text-amber-800 leading-relaxed">{t("changesBody")}</p>
           </section>
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
-              Changes to These Terms
+              {t("contactTitle")}
             </h2>
             <p className="text-amber-800 leading-relaxed">
-              We may update these terms from time to time. Continued use of
-              SQLNoir after changes constitutes acceptance of the updated terms.
-            </p>
-          </section>
-
-          <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
-            <h2 className="font-detective text-2xl text-amber-900">Contact</h2>
-            <p className="text-amber-800 leading-relaxed">
-              Questions about these terms? Contact us at{" "}
-              <a
-                href="mailto:hristoapps@gmail.com"
-                className="text-amber-700 hover:text-amber-900 underline"
-              >
-                hristoapps@gmail.com
-              </a>
-              .
+              {t.rich("contactBody", { email: emailTag })}
             </p>
           </section>
         </div>

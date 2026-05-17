@@ -21,6 +21,7 @@ import clusteredVsNonclusteredIndexHero from "../../public/blog/clustered-vs-non
 import sqlViewsHero from "../../public/blog/sql-views-hero.png";
 import viewVsMaterializedViewHero from "../../public/blog/view-vs-materialized-view-hero.png";
 import coalesceSqlHero from "../../public/blog/coalesce-sql-hero.png";
+import sqlJoinTypesExplainedHeroNew from "../../public/blog/sql-join-types-explained-hero-new.png";
 
 export interface BlogPostMeta {
   slug: string;
@@ -39,6 +40,56 @@ export function getBlogPostsForLocale(locale: string): BlogPostMeta[] {
 }
 
 export const blogPostsMeta: BlogPostMeta[] = [
+  {
+    slug: "curso-sql-gratis-investigando-crimes",
+    title:
+      "Curso de SQL Grátis em Português — Aprenda Investigando 6 Crimes",
+    excerpt:
+      "Curso gratuito de SQL com casos reais de detetive. 6 mistérios para resolver, do básico ao JOIN. Sem cadastro, sem cartão — só você, o SQL e o caso.",
+    date: "2026-05-14",
+    readTime: "9 min de leitura",
+    author: "Hristo Bogoev",
+    heroImage: sqlForDataAnalystsHero,
+    lastModified: "2026-05-14",
+    locale: "pt-br",
+  },
+  {
+    slug: "banco-de-dados-relacional-explicado",
+    title:
+      "O Que É um Banco de Dados Relacional? Guia Completo para Iniciantes",
+    excerpt:
+      "Entenda o que é um banco de dados relacional: tabelas, chaves primárias e estrangeiras, relacionamentos. Guia em português com exemplos práticos.",
+    date: "2026-05-14",
+    readTime: "10 min de leitura",
+    author: "Hristo Bogoev",
+    heroImage: primaryKeyVsForeignKeyHero,
+    lastModified: "2026-05-14",
+    locale: "pt-br",
+  },
+  {
+    slug: "jogos-para-aprender-sql",
+    title: "Os Melhores Jogos para Aprender SQL em 2026",
+    excerpt:
+      "Aprender SQL jogando funciona. Conheça os melhores jogos de SQL — incluindo o SQLNoir, o jogo de detetive onde você resolve crimes com consultas.",
+    date: "2026-05-14",
+    readTime: "12 min de leitura",
+    author: "Hristo Bogoev",
+    heroImage: gamesToLearnSqlHero,
+    lastModified: "2026-05-14",
+    locale: "pt-br",
+  },
+  {
+    slug: "sqlnoir-vs-leetcode-sql",
+    title: "SQLNoir vs LeetCode SQL — 用案件代替刷题，哪种更适合学 SQL?",
+    excerpt:
+      "LeetCode SQL 题目枯燥? 试试用侦探案件学 SQL。SQLNoir vs LeetCode SQL 详细对比:难度曲线、趣味性、面试与笔试准备效果。",
+    date: "2026-05-14",
+    readTime: "9 min read",
+    author: "Hristo Bogoev",
+    heroImage: sqlJoinTypesExplainedHeroNew,
+    lastModified: "2026-05-14",
+    locale: "zh-CN",
+  },
   {
     slug: "coalesce-sql",
     title: "SQL COALESCE Explained: Handle NULL Values Like a Pro",

@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
+  const t = useTranslations("cookieConsent");
 
   useEffect(() => {
     if (!localStorage.getItem("cookie-consent")) {
@@ -19,13 +21,13 @@ export function CookieConsent() {
       style={{ maxHeight: 40 }}
     >
       <span>
-        We use cookies for analytics. DNT is respected.
+        {t("message")}
       </span>
       <Link
         href="/privacy"
         className="underline underline-offset-2 hover:text-amber-200"
       >
-        Privacy Policy
+        {t("privacyLink")}
       </Link>
       <button
         type="button"
@@ -36,7 +38,7 @@ export function CookieConsent() {
         }}
         className="px-3 py-0.5 rounded bg-amber-50 text-amber-900 font-medium hover:bg-amber-200 transition-colors"
       >
-        OK
+        {t("accept")}
       </button>
     </div>
   );

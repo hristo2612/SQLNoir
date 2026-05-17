@@ -48,6 +48,7 @@ export async function getLocalizedCase(caseData: Case, locale: string): Promise<
       objectives: t.objectives || caseData.objectives,
       solution: {
         ...caseData.solution,
+        answer: t.solution?.answer ?? caseData.solution.answer,
         successMessage: t.solution?.successMessage || caseData.solution.successMessage,
         explanation: t.solution?.explanation || caseData.solution.explanation,
       },
