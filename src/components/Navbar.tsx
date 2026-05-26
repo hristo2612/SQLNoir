@@ -315,16 +315,24 @@ export function Navbar({
               </button>
             )}
 
-            <button
-              type="button"
-              onClick={() => { switchLocale(currentLocale === "en" ? "pt-br" : "en"); setIsMenuOpen(false); }}
-              className="w-full inline-flex items-center justify-between px-4 py-3 rounded-lg font-detective transition-colors duration-200 border shadow-sm bg-amber-100 text-amber-900 hover:bg-amber-200"
-            >
-              <span className="inline-flex items-center gap-2">
-                <Globe className="w-4 h-4" />
-                <span>{currentLocale === "en" ? t('localeSwitcher.portuguese') : t('localeSwitcher.english')}</span>
-              </span>
-            </button>
+            <div className="flex items-center gap-2 px-1 pt-1">
+              <Globe className="w-4 h-4 text-amber-900 shrink-0" />
+              <span className="text-sm font-detective text-amber-900">{t('localeSwitcher.changeLanguage')}</span>
+            </div>
+            {([
+              ["en", t('localeSwitcher.english')],
+              ["pt-br", t('localeSwitcher.portuguese')],
+              ["zh-CN", t('localeSwitcher.chinese')],
+            ] as const).map(([locale, label]) => (
+              <button
+                key={locale}
+                type="button"
+                onClick={() => { switchLocale(locale); setIsMenuOpen(false); }}
+                className={`w-full inline-flex items-center justify-between px-4 py-3 rounded-lg font-detective transition-colors duration-200 border shadow-sm ${currentLocale === locale ? "bg-amber-200 text-amber-900 border-amber-300" : "bg-amber-100 text-amber-900 border-transparent hover:bg-amber-200"}`}
+              >
+                <span>{label}</span>
+              </button>
+            ))}
           </div>
         </div>
       )}
