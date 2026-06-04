@@ -1132,7 +1132,7 @@ export default [
     (55, 55, 'Youve got this wrong. Im not someone who would kill.'),
     (56, 56, 'I was at church that morning. I couldnt kill anyone.'),
     (57, 57, 'This is a huge misunderstanding. I would never kill.'),
-    (58, 58, 'I didn’t kill Leo per se. I was just a middleman.'),
+    (58, 58, 'I didn’t kill Leo per se. I was just a middleman. It was a someone else who killed him, all I know about him is that he drives a Lamborghini.'),
     (59, 59, 'Im innocent of this. I couldnt possibly kill someone.'),
     (60, 60, 'Youre barking up the wrong tree. I wouldnt kill anybody.'),
     (61, 61, 'I have a solid alibi. I didnt kill anyone that day.'),
