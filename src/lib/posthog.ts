@@ -1,6 +1,7 @@
 import posthog from "posthog-js";
 
-export const POSTHOG_KEY = "phc_C9evTEmJ8kVCqV0JMxU8A0sL3PdbBxmG0f3usUq4X5x";
+export const POSTHOG_KEY =
+  process.env.NEXT_PUBLIC_POSTHOG_KEY || "phc_C9evTEmJ8kVCqV0JMxU8A0sL3PdbBxmG0f3usUq4X5x";
 export const POSTHOG_HOST = "https://us.i.posthog.com";
 
 let initialized = false;

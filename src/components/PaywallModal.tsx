@@ -7,6 +7,7 @@ import {
   trackPaywallShown,
   trackPaywallCtaClicked,
   trackPaywallDismissed,
+  posthog,
 } from "@/lib/posthog";
 import { useLocale, useTranslations } from "next-intl";
 import { getPriceForLocale } from "@/lib/ppp-prices";
@@ -50,6 +51,12 @@ export function PaywallModal({
     });
     setLoading(true);
     try {
+      posthog.capture("checkout_initiated", {
+        case_id: caseId,
+        trigger_location: triggerLocation,
+        price,
+        locale,
+      });
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

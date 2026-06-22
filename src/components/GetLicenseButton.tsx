@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Shield } from "lucide-react";
 import { track } from "@vercel/analytics/react";
+import { posthog } from "@/lib/posthog";
 import { useTranslations } from "next-intl";
 
 interface GetLicenseButtonProps {
@@ -26,6 +27,10 @@ export function GetLicenseButton({
     });
 
     try {
+      posthog.capture("checkout_initiated", {
+        source,
+        trigger_location: source,
+      });
       const res = await fetch("/api/checkout", { method: "POST" });
       const data = await res.json();
 

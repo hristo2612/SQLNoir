@@ -57,6 +57,10 @@ export function trackSignUpCompleted() {
   capture("sign_up_completed", {});
 }
 
+export function trackLogin() {
+  capture("login", {});
+}
+
 export function trackShareClicked(props: { platform: string }) {
   capture("share_clicked", props);
 }

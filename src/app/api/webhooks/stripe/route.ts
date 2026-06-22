@@ -1,14 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@supabase/supabase-js";
+import { PostHog } from "posthog-node";
 import { revokeLicenseByPaymentIntent } from "@/lib/license-revoke";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+// Mirror the values from src/lib/posthog.ts without importing that module
+// (it pulls in the browser-only posthog-js library).
+const POSTHOG_KEY =
+  process.env.NEXT_PUBLIC_POSTHOG_KEY || "phc_C9evTEmJ8kVCqV0JMxU8A0sL3PdbBxmG0f3usUq4X5x";
+const POSTHOG_HOST = "https://us.i.posthog.com";
+
 function getSupabaseAdmin() {
   if (!supabaseUrl || !supabaseServiceKey) return null;
   return createClient(supabaseUrl, supabaseServiceKey);
+}
+
+// Capture a server-side `purchase_completed` event in PostHog. Runs in a
+// short-lived serverless context, so we always flush + shutdown before
+// returning so the event is actually delivered.
+async function capturePurchaseCompleted(session: any, paymentIntent: string | null) {
+  try {
+    const distinctId =
+      session.metadata?.user_id ||
+      session.customer_details?.email ||
+      session.customer_email ||
+      session.id;
+
+    const posthog = new PostHog(POSTHOG_KEY, { host: POSTHOG_HOST });
+    posthog.capture({
+      distinctId,
+      event: "purchase_completed",
+      properties: {
+        amount_total: session.amount_total,
+        currency: session.currency ?? session.metadata?.currency ?? null,
+        country: session.metadata?.country ?? null,
+        tier: session.metadata?.tier ?? null,
+        ppp_price: session.metadata?.ppp_price ?? null,
+        stripe_session_id: session.id,
+        payment_intent: paymentIntent,
+      },
+    });
+    await posthog.shutdown();
+  } catch (err) {
+    console.error("Failed to capture purchase_completed in PostHog:", err);
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -98,6 +136,7 @@ export async function POST(req: NextRequest) {
       }
 
       console.log(`License granted to user ${userId}`);
+      await capturePurchaseCompleted(session, paymentIntent);
     } else {
       // Idempotency check: skip if this session was already stored
       const { data: existingPending } = await supabaseAdmin
@@ -140,6 +179,7 @@ export async function POST(req: NextRequest) {
       }
 
       console.log(`Pending license stored for email: ${email}`);
+      await capturePurchaseCompleted(session, paymentIntent);
     }
   } else if (event.type === "charge.refunded") {
     // Revoke access on a FULL refund only. Stripe sets charge.refunded=true once the charge is
