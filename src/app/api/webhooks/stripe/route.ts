@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@supabase/supabase-js";
+import { revokeLicenseByPaymentIntent } from "@/lib/license-revoke";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -43,6 +44,8 @@ export async function POST(req: NextRequest) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
     const userId = session.metadata?.user_id;
+    const paymentIntent =
+      typeof session.payment_intent === "string" ? session.payment_intent : null;
 
     if (!session.id) {
       console.error("Webhook received session without id");
@@ -82,6 +85,7 @@ export async function POST(req: NextRequest) {
           license_purchased_at: new Date().toISOString(),
           stripe_customer_id: typeof session.customer === "string" ? session.customer : null,
           stripe_session_id: session.id,
+          payment_intent: paymentIntent,
         })
         .eq("id", userId);
 
@@ -123,6 +127,7 @@ export async function POST(req: NextRequest) {
           email,
           stripe_session_id: session.id,
           stripe_customer_id: typeof session.customer === "string" ? session.customer : null,
+          payment_intent: paymentIntent,
           created_at: new Date().toISOString(),
         });
 
@@ -136,6 +141,63 @@ export async function POST(req: NextRequest) {
 
       console.log(`Pending license stored for email: ${email}`);
     }
+  } else if (event.type === "charge.refunded") {
+    // Revoke access on a FULL refund only. Stripe sets charge.refunded=true once the charge is
+    // fully refunded; partial refunds leave it false and keep access.
+    const charge = event.data.object;
+    if (!charge.refunded) {
+      console.log(`Partial refund on charge ${charge.id}, keeping access`);
+      return NextResponse.json({ received: true });
+    }
+    const paymentIntent =
+      typeof charge.payment_intent === "string" ? charge.payment_intent : null;
+    if (!paymentIntent) {
+      console.log("Refund without payment_intent, skipping");
+      return NextResponse.json({ received: true });
+    }
+
+    const supabaseAdmin = getSupabaseAdmin();
+    if (!supabaseAdmin) {
+      console.error("Supabase admin client not configured");
+      return NextResponse.json({ error: "Database not configured" }, { status: 500 });
+    }
+
+    const outcome = await revokeLicenseByPaymentIntent(
+      supabaseAdmin,
+      paymentIntent,
+      `refund: ${charge.id}`
+    );
+    if (outcome.result === "error") {
+      console.error(`Failed to revoke on refund ${charge.id}:`, outcome.error);
+      return NextResponse.json({ error: "Failed to revoke license" }, { status: 500 });
+    }
+    console.log(`Refund ${charge.id} -> revoke outcome: ${outcome.result}`);
+  } else if (event.type === "charge.dispute.created") {
+    // Chargeback: revoke immediately (low-ticket game; if they dispute the charge, pull access).
+    const dispute = event.data.object;
+    const paymentIntent =
+      typeof dispute.payment_intent === "string" ? dispute.payment_intent : null;
+    if (!paymentIntent) {
+      console.log("Dispute without payment_intent, skipping");
+      return NextResponse.json({ received: true });
+    }
+
+    const supabaseAdmin = getSupabaseAdmin();
+    if (!supabaseAdmin) {
+      console.error("Supabase admin client not configured");
+      return NextResponse.json({ error: "Database not configured" }, { status: 500 });
+    }
+
+    const outcome = await revokeLicenseByPaymentIntent(
+      supabaseAdmin,
+      paymentIntent,
+      `chargeback: ${dispute.id}`
+    );
+    if (outcome.result === "error") {
+      console.error(`Failed to revoke on dispute ${dispute.id}:`, outcome.error);
+      return NextResponse.json({ error: "Failed to revoke license" }, { status: 500 });
+    }
+    console.log(`Dispute ${dispute.id} -> revoke outcome: ${outcome.result}`);
   }
 
   return NextResponse.json({ received: true });
