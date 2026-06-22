@@ -301,7 +301,8 @@
     "backToCaseFiles": "Voltar aos Arquivos de Caso",
     "licenseRequired": "Licença Necessária",
     "unlockAllCases": "Desbloqueie todos os casos com uma Licença de Detetive",
-    "unlockAllCasesDesc": "Compra única. Acesso total a todos os 6 casos, todos os níveis de dificuldade, prática ilimitada."
+    "unlockAllCasesDesc": "Compra única. Acesso total a todos os 6 casos, todos os níveis de dificuldade, prática ilimitada.",
+    "teamLicense": "Precisa de uma licença para equipe ou instituição de ensino? Escreva para <a>support@sqlnoir.com</a>"
   },
   "checkout": {
     "paymentReceived": "Pagamento Recebido!",
@@ -315,7 +316,8 @@
     "allDifficulties": "Do iniciante ao avançado",
     "unlimitedPractice": "Prática ilimitada de SQL com esquemas reais",
     "xpTracking": "Rastreamento de XP e badges de progresso",
-    "openCaseFiles": "Abrir os Arquivos de Caso"
+    "openCaseFiles": "Abrir os Arquivos de Caso",
+    "teamLicense": "Dúvidas sobre licenças para equipe ou em volume? Escreva para <a>support@sqlnoir.com</a>"
   },
   "localeSwitcher": {
     "switchToPortuguese": "Mudar para Português",
@@ -346,7 +348,8 @@
     "feature2": "Novos casos assim que forem lançados",
     "feature3": "Explicações detalhadas das soluções",
     "ctaUpgrade": "Fazer Upgrade",
-    "ctaMaybeLater": "Talvez depois"
+    "ctaMaybeLater": "Talvez depois",
+    "teamLicense": "Precisa de uma licença para equipe ou instituição de ensino? Escreva para <a>support@sqlnoir.com</a>"
   },
   "privacy": {
     "metadata": {

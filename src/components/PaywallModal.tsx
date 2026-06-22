@@ -182,6 +182,19 @@ export function PaywallModal({
           >
             {t('continueWithFree')}
           </button>
+
+          <p className="mt-4 text-center text-xs text-amber-700/60">
+            {t.rich('teamLicense', {
+              a: (chunks) => (
+                <a
+                  href="mailto:support@sqlnoir.com"
+                  className="underline hover:text-amber-800"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
+          </p>
         </div>
       </div>
     </div>,

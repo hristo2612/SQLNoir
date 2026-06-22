@@ -301,7 +301,8 @@
     "backToCaseFiles": "返回案件档案",
     "licenseRequired": "需要执照",
     "unlockAllCases": "使用侦探证解锁全部案件",
-    "unlockAllCasesDesc": "一次性购买。完整解锁所有案件、所有难度，无限练习。"
+    "unlockAllCasesDesc": "一次性购买。完整解锁所有案件、所有难度，无限练习。",
+    "teamLicense": "需要团队或教育授权？请联系 <a>support@sqlnoir.com</a>"
   },
   "checkout": {
     "paymentReceived": "付款已收到！",
@@ -315,7 +316,8 @@
     "allDifficulties": "从初级到高级全部难度",
     "unlimitedPractice": "无限次 SQL 练习，真实数据库结构",
     "xpTracking": "经验值追踪与进度徽章",
-    "openCaseFiles": "翻开案件档案"
+    "openCaseFiles": "翻开案件档案",
+    "teamLicense": "对团队或批量授权有疑问？请联系 <a>support@sqlnoir.com</a>"
   },
   "localeSwitcher": {
     "switchToPortuguese": "切换为葡萄牙语",
@@ -346,7 +348,8 @@
     "feature2": "新案件上线即可玩",
     "feature3": "详尽的解题说明",
     "ctaUpgrade": "立即升级",
-    "ctaMaybeLater": "再说吧"
+    "ctaMaybeLater": "再说吧",
+    "teamLicense": "需要团队或教育授权？请联系 <a>support@sqlnoir.com</a>"
   },
   "privacy": {
     "metadata": {

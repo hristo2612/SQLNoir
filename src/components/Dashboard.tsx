@@ -45,6 +45,18 @@ export function Dashboard({
               <p className="text-amber-700 text-sm">
                 {t('license.unlockAllCasesDesc')}
               </p>
+              <p className="text-amber-700/70 text-xs">
+                {t.rich('license.teamLicense', {
+                  a: (chunks) => (
+                    <a
+                      href="mailto:support@sqlnoir.com"
+                      className="underline hover:text-amber-900"
+                    >
+                      {chunks}
+                    </a>
+                  ),
+                })}
+              </p>
             </div>
             <GetLicenseButton source="dashboard-banner" />
           </div>
