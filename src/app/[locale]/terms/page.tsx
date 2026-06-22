@@ -112,6 +112,15 @@ export default async function TermsPage() {
 
           <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
             <h2 className="font-detective text-2xl text-amber-900">
+              {t("refundTitle")}
+            </h2>
+            <p className="text-amber-800 leading-relaxed">
+              {t.rich("refundBody", { email: emailTag })}
+            </p>
+          </section>
+
+          <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
+            <h2 className="font-detective text-2xl text-amber-900">
               {t("ugcTitle")}
             </h2>
             <p className="text-amber-800 leading-relaxed">{t("ugcBody")}</p>
