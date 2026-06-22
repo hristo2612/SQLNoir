@@ -52,7 +52,7 @@ export default async function TermsPage() {
   );
   const emailTag = (chunks: React.ReactNode) => (
     <a
-      href="mailto:hristoapps@gmail.com"
+      href="mailto:support@sqlnoir.com"
       className="text-amber-700 hover:text-amber-900 underline"
     >
       {chunks}
