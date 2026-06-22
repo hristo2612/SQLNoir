@@ -329,7 +329,8 @@
     "copyright": "© {year} SQLNoir",
     "privacy": "Política de Privacidade",
     "terms": "Termos de Serviço",
-    "contact": "Contato"
+    "contact": "Contato",
+    "faq": "Perguntas Frequentes"
   },
   "cookieConsent": {
     "message": "Usamos cookies para análises. O sinal DNT (Do Not Track) é respeitado.",
@@ -444,5 +445,47 @@
     "siteTitle": "Jogo Interativo de SQL | Aprenda SQL Resolvendo Casos de Detetive | SQLNoir",
     "siteDescription": "SQLNoir é um jogo interativo de SQL onde você soluciona crimes e mistérios usando consultas SQL. Aprenda SQL sendo detetive neste envolvente jogo de aprendizado.",
     "ogAlt": "SQLNoir jogo interativo de detetive SQL"
+  },
+  "faq": {
+    "metadata": {
+      "title": "Perguntas Frequentes",
+      "description": "Respostas para dúvidas comuns sobre a Licença de Detetive vitalícia do SQLNoir, reembolsos, preços por país, casos gratuitos, jogo offline e suporte."
+    },
+    "body": {
+      "title": "Perguntas Frequentes",
+      "intro": "Dúvidas comuns sobre comprar e jogar o SQLNoir. Não encontrou o que precisa? Escreva para support@sqlnoir.com.",
+      "q1": {
+        "question": "É uma assinatura ou uma compra única?",
+        "answer": "É uma compra única, não uma assinatura. Você compra a Licença de Detetive vitalícia uma vez e ela nunca expira. A licença também inclui os futuros casos pagos que lançarmos, sem custo adicional. Não há cobranças recorrentes."
+      },
+      "q2": {
+        "question": "Paguei mas não consigo acessar os casos. O que faço?",
+        "answer": "Isso costuma acontecer quando a compra foi feita de forma anônima, antes de entrar na conta. Entre com qualquer conta, reabra um caso bloqueado e clique em Obter Licença para reivindicar sua compra. Se ainda estiver bloqueado, escreva para <email>support@sqlnoir.com</email> e nós resolveremos."
+      },
+      "q3": {
+        "question": "Posso pedir reembolso?",
+        "answer": "Sim. Oferecemos reembolso de 14 dias, sem perguntas, e ajudamos qualquer cliente insatisfeito mesmo após esse prazo. Basta escrever para <email>support@sqlnoir.com</email>."
+      },
+      "q4": {
+        "question": "Por que o preço é diferente no meu país?",
+        "answer": "Usamos preços justos baseados no poder de compra. O preço é ajustado automaticamente ao poder de compra local do seu país, então pode ser diferente do que outras pessoas veem. Isso é intencional, não um erro."
+      },
+      "q5": {
+        "question": "Quais casos são gratuitos?",
+        "answer": "Os dois primeiros casos são gratuitos para jogar. Os demais exigem uma Licença de Detetive."
+      },
+      "q6": {
+        "question": "Posso jogar offline?",
+        "answer": "Você pode trabalhar em um caso no navegador sem conexão, mas verificar suas respostas exige conexão com a internet."
+      },
+      "q7": {
+        "question": "Vocês oferecem licenças para equipes, salas de aula ou educação?",
+        "answer": "Sim, com descontos. Escreva para <email>support@sqlnoir.com</email> para receber um orçamento e nós cuidamos de tudo."
+      },
+      "q8": {
+        "question": "Como obtenho ajuda ou relato um bug?",
+        "answer": "Escreva para <email>support@sqlnoir.com</email> ou entre na nossa comunidade no <discord>Discord</discord>. Teremos prazer em ajudar."
+      }
+    }
   }
 }

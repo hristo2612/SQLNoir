@@ -329,7 +329,8 @@
     "copyright": "© {year} SQLNoir",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "contact": "Contact"
+    "contact": "Contact",
+    "faq": "FAQ"
   },
   "cookieConsent": {
     "message": "We use cookies for analytics. DNT is respected.",
@@ -444,5 +445,47 @@
     "siteTitle": "Interactive SQL Game | Learn SQL by Solving Detective Cases | SQLNoir",
     "siteDescription": "SQLNoir is an interactive SQL game where you solve crimes and mysteries using SQL queries. Learn SQL by playing detective in this engaging SQL learning game.",
     "ogAlt": "SQLNoir interactive SQL detective game"
+  },
+  "faq": {
+    "metadata": {
+      "title": "FAQ",
+      "description": "Answers to common questions about SQLNoir's lifetime Detective License, refunds, country pricing, free cases, offline play, and support."
+    },
+    "body": {
+      "title": "Frequently Asked Questions",
+      "intro": "Common questions about buying and playing SQLNoir. Can't find what you need? Email support@sqlnoir.com.",
+      "q1": {
+        "question": "Is this a subscription or a one-time purchase?",
+        "answer": "It's a one-time purchase, not a subscription. You buy a lifetime Detective License once and it never expires. The license also includes future paid cases we release, at no extra cost. There are no recurring charges."
+      },
+      "q2": {
+        "question": "I paid but can't access the cases. What do I do?",
+        "answer": "This usually happens when the purchase was made anonymously, before signing in. Sign in with any account, reopen a locked case, and click Get License to claim your purchase. If you're still locked out, email <email>support@sqlnoir.com</email> and we'll sort it out."
+      },
+      "q3": {
+        "question": "Can I get a refund?",
+        "answer": "Yes. We offer a 14-day, no-questions-asked refund, and we'll help any unhappy customer even after that window. Just email <email>support@sqlnoir.com</email>."
+      },
+      "q4": {
+        "question": "Why is the price different in my country?",
+        "answer": "We use fair purchasing-power pricing. The price is automatically adjusted to the local purchasing power of your country, so it may differ from what others see. This is intentional, not a bug."
+      },
+      "q5": {
+        "question": "Which cases are free?",
+        "answer": "The first two cases are free to play. The remaining cases require a Detective License."
+      },
+      "q6": {
+        "question": "Can I play offline?",
+        "answer": "You can work on a case in your browser without a connection, but checking your answers requires an internet connection."
+      },
+      "q7": {
+        "question": "Do you offer team, classroom, or education licenses?",
+        "answer": "Yes, with discounts. Email <email>support@sqlnoir.com</email> for a quote and we'll set you up."
+      },
+      "q8": {
+        "question": "How do I get help or report a bug?",
+        "answer": "Email <email>support@sqlnoir.com</email> or join our <discord>Discord</discord> community. We're happy to help."
+      }
+    }
   }
 }

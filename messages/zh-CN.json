@@ -329,7 +329,8 @@
     "copyright": "© {year} SQLNoir",
     "privacy": "隐私政策",
     "terms": "服务条款",
-    "contact": "联系我们"
+    "contact": "联系我们",
+    "faq": "常见问题"
   },
   "cookieConsent": {
     "message": "我们使用 Cookie 进行数据分析，并尊重浏览器的 DNT 设置。",
@@ -444,5 +445,47 @@
     "siteTitle": "SQL 推理游戏 | 在侦探案件中学 SQL | SQLNoir",
     "siteDescription": "SQLNoir 是一款 SQL 推理游戏，也是 SQL 侦探游戏：用 SQL 查询破解犯罪与谜案。化身侦探，用 SELECT、JOIN、WHERE 边破案边学 SQL。",
     "ogAlt": "SQLNoir 互动式 SQL 侦探游戏"
+  },
+  "faq": {
+    "metadata": {
+      "title": "常见问题",
+      "description": "关于 SQLNoir 终身侦探许可证、退款、各国定价、免费案件、离线游玩和支持的常见问题解答。"
+    },
+    "body": {
+      "title": "常见问题",
+      "intro": "关于购买和游玩 SQLNoir 的常见问题。没找到需要的内容？请发送邮件至 support@sqlnoir.com。",
+      "q1": {
+        "question": "这是订阅还是一次性购买？",
+        "answer": "这是一次性购买，而非订阅。你只需购买一次终身侦探许可证，它永不过期。该许可证还包含我们未来发布的付费案件，无需额外付费。没有任何周期性扣费。"
+      },
+      "q2": {
+        "question": "我付款了但无法访问案件，该怎么办？",
+        "answer": "这通常是因为在登录之前以匿名方式完成了购买。请使用任意账户登录，重新打开一个已锁定的案件，然后点击“获取许可证”来认领你的购买。如果仍然无法访问，请发送邮件至 <email>support@sqlnoir.com</email>，我们会为你解决。"
+      },
+      "q3": {
+        "question": "我可以退款吗？",
+        "answer": "可以。我们提供 14 天无理由退款，即使超过该期限，我们也会帮助任何不满意的客户。只需发送邮件至 <email>support@sqlnoir.com</email>。"
+      },
+      "q4": {
+        "question": "为什么我所在国家的价格不同？",
+        "answer": "我们采用公平的购买力定价。价格会根据你所在国家的本地购买力自动调整，因此可能与其他人看到的不同。这是有意为之，并非错误。"
+      },
+      "q5": {
+        "question": "哪些案件是免费的？",
+        "answer": "前两个案件可免费游玩，其余案件需要侦探许可证。"
+      },
+      "q6": {
+        "question": "我可以离线游玩吗？",
+        "answer": "你可以在浏览器中离线处理案件，但核对答案需要联网。"
+      },
+      "q7": {
+        "question": "你们提供团队、课堂或教育许可证吗？",
+        "answer": "提供，并有折扣。请发送邮件至 <email>support@sqlnoir.com</email> 获取报价，我们会为你安排。"
+      },
+      "q8": {
+        "question": "如何获取帮助或报告漏洞？",
+        "answer": "请发送邮件至 <email>support@sqlnoir.com</email>，或加入我们的 <discord>Discord</discord> 社区。我们很乐意提供帮助。"
+      }
+    }
   }
 }
