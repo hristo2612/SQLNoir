@@ -92,7 +92,7 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
             {t("tierName")}
           </p>
           <p className="font-detective text-4xl text-amber-900">{price}</p>
-          <p className="text-amber-600 text-sm">{t("perMonth")}</p>
+          <p className="text-amber-600 text-sm">{t("oneTimePayment")}</p>
         </div>
 
         <ul className="space-y-2 text-amber-800 text-sm">

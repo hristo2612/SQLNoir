@@ -523,7 +523,7 @@ TRUNCATE TABLE large_table;
           Ready to put your SQL skills to the real test?
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          Solve murder mysteries using nothing but your SQL queries in SQLNoir. Completely free.
+          Solve murder mysteries using nothing but your SQL queries in SQLNoir. The first two cases are free — the rest unlock with a one-time Detective License.
         </p>
         <Link
           href="/cases"
