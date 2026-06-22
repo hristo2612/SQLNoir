@@ -123,6 +123,19 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
         >
           {t("ctaMaybeLater")}
         </button>
+
+        <p className="text-center text-xs text-amber-600/70">
+          {t.rich("teamLicense", {
+            a: (chunks) => (
+              <a
+                href="mailto:support@sqlnoir.com"
+                className="underline hover:text-amber-800"
+              >
+                {chunks}
+              </a>
+            ),
+          })}
+        </p>
       </div>
     </div>
   );

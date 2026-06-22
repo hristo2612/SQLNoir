@@ -301,7 +301,8 @@
     "backToCaseFiles": "Back to Case Files",
     "licenseRequired": "License Required",
     "unlockAllCases": "Unlock all cases with a Detective License",
-    "unlockAllCasesDesc": "One-time purchase. Full access to all cases, every difficulty tier, unlimited practice."
+    "unlockAllCasesDesc": "One-time purchase. Full access to all cases, every difficulty tier, unlimited practice.",
+    "teamLicense": "Need a team or education license? Email <a>support@sqlnoir.com</a>"
   },
   "checkout": {
     "paymentReceived": "Payment Received!",
@@ -315,7 +316,8 @@
     "allDifficulties": "Beginner through Advanced difficulty",
     "unlimitedPractice": "Unlimited SQL practice with real schemas",
     "xpTracking": "XP tracking and progress badges",
-    "openCaseFiles": "Open the Case Files"
+    "openCaseFiles": "Open the Case Files",
+    "teamLicense": "Questions about team or bulk licenses? Email <a>support@sqlnoir.com</a>"
   },
   "localeSwitcher": {
     "switchToPortuguese": "Switch to Portuguese",
@@ -345,7 +347,8 @@
     "feature2": "New cases as they launch",
     "feature3": "Detailed solution explanations",
     "ctaUpgrade": "Upgrade Now",
-    "ctaMaybeLater": "Maybe later"
+    "ctaMaybeLater": "Maybe later",
+    "teamLicense": "Need a team or education license? Email <a>support@sqlnoir.com</a>"
   },
   "privacy": {
     "metadata": {

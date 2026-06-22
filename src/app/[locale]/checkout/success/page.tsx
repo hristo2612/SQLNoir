@@ -155,6 +155,19 @@ export default function CheckoutSuccessPage() {
             </>
           )}
 
+          <p className="text-amber-700/60 text-xs">
+            {tCheckout.rich("teamLicense", {
+              a: (chunks) => (
+                <a
+                  href="mailto:support@sqlnoir.com"
+                  className="underline hover:text-amber-800"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
+          </p>
+
           <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} />
         </div>
       </main>
