@@ -20,7 +20,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   // Track route changes for SPA navigation
   const pathname = usePathname();
   useEffect(() => {
-    if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
+    if (!POSTHOG_KEY || typeof window === "undefined" || navigator.doNotTrack === "1") return;
     posthog.capture("$pageview", { $current_url: window.location.href });
   }, [pathname]);
 
@@ -31,6 +31,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!POSTHOG_KEY) return;
       if (event === "SIGNED_IN" && session?.user) {
         const user = session.user;
 

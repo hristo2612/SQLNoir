@@ -9,8 +9,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 // Mirror the values from src/lib/posthog.ts without importing that module
 // (it pulls in the browser-only posthog-js library).
-const POSTHOG_KEY =
-  process.env.NEXT_PUBLIC_POSTHOG_KEY || "phc_C9evTEmJ8kVCqV0JMxU8A0sL3PdbBxmG0f3usUq4X5x";
+const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const POSTHOG_HOST = "https://us.i.posthog.com";
 
 function getSupabaseAdmin() {
@@ -22,6 +21,8 @@ function getSupabaseAdmin() {
 // short-lived serverless context, so we always flush + shutdown before
 // returning so the event is actually delivered.
 async function capturePurchaseCompleted(session: any, paymentIntent: string | null) {
+  if (!POSTHOG_KEY) return;
+
   try {
     const distinctId =
       session.metadata?.user_id ||

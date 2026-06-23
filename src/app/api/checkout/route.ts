@@ -8,6 +8,27 @@ import {
 } from "@/lib/ppp-prices";
 
 const PRODUCT_NAME = "SQLNoir Detective License";
+const DEFAULT_PUBLIC_SITE_URL = "https://www.sqlnoir.com";
+
+function stripTrailingSlash(value: string): string {
+  return value.replace(/\/$/, "");
+}
+
+function getBadgeImageUrl(origin: string): string {
+  if (process.env.STRIPE_PRODUCT_IMAGE_URL) {
+    return process.env.STRIPE_PRODUCT_IMAGE_URL;
+  }
+
+  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const publicBase =
+    configuredSiteUrl?.startsWith("https://")
+      ? configuredSiteUrl
+      : origin.startsWith("https://")
+      ? origin
+      : DEFAULT_PUBLIC_SITE_URL;
+
+  return `${stripTrailingSlash(publicBase)}/detective-license-badge.jpg`;
+}
 
 export async function POST(req: NextRequest) {
   if (!stripe) {
@@ -44,34 +65,21 @@ export async function POST(req: NextRequest) {
     // Dynamic pricing via Stripe `price_data` — no pre-created Price objects.
     // The PPP amount (in cents) and currency come straight from the resolved
     // locale/country tier; zh-CN bills ¥99 in CNY, everyone else USD per tier.
-    //
-    // Single-product reporting: when STRIPE_PRODUCT_ID is set, attach that
-    // existing Stripe Product so every sale rolls up under one product in the
-    // dashboard. When it's unset, fall back to inline product_data so checkout
-    // works with ZERO dashboard setup. Stripe rejects having BOTH `product`
-    // and `product_data`, so this is strictly one or the other.
-    const productId = process.env.STRIPE_PRODUCT_ID;
     const priceData: {
       currency: string;
       unit_amount: number;
-      product?: string;
       product_data?: { name: string; images?: string[] };
     } = {
       currency: localizedPrice.currency,
       unit_amount: localizedPrice.amount,
-    };
-    if (productId) {
-      // Image comes from the Stripe Product itself (uploaded in the dashboard).
-      priceData.product = productId;
-    } else {
-      // Inline product: attach the Detective License badge so it shows in
-      // checkout. Stripe fetches this URL, so it must be absolute + public.
-      const imageBase = process.env.NEXT_PUBLIC_SITE_URL || origin;
-      priceData.product_data = {
+      // Inline product data guarantees Checkout can show the badge without
+      // depending on a manually configured Stripe dashboard Product. Stripe must
+      // be able to fetch this URL publicly; local/Tailscale URLs are not usable.
+      product_data: {
         name: PRODUCT_NAME,
-        images: [`${imageBase}/detective-license-badge.jpg`],
-      };
-    }
+        images: [getBadgeImageUrl(origin)],
+      },
+    };
 
     const lineItems = [{ price_data: priceData, quantity: 1 }];
 

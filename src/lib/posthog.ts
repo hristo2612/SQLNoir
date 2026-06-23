@@ -1,7 +1,6 @@
 import posthog from "posthog-js";
 
-export const POSTHOG_KEY =
-  process.env.NEXT_PUBLIC_POSTHOG_KEY || "phc_C9evTEmJ8kVCqV0JMxU8A0sL3PdbBxmG0f3usUq4X5x";
+export const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 export const POSTHOG_HOST = "https://us.i.posthog.com";
 
 let initialized = false;
@@ -13,6 +12,10 @@ export function hasConsent(): boolean {
 
 export function initPostHog() {
   if (typeof window === "undefined" || initialized) {
+    return;
+  }
+
+  if (!POSTHOG_KEY) {
     return;
   }
 
@@ -38,7 +41,7 @@ function isDNT(): boolean {
 }
 
 export function trackPaywallShown(caseId: string, triggerLocation: string) {
-  if (isDNT()) return;
+  if (!POSTHOG_KEY || isDNT()) return;
   posthog.capture("paywall_shown", {
     case_id: caseId,
     trigger_location: triggerLocation,
@@ -46,7 +49,7 @@ export function trackPaywallShown(caseId: string, triggerLocation: string) {
 }
 
 export function trackPaywallCtaClicked(caseId: string, properties?: Record<string, string | number | boolean | null>) {
-  if (isDNT()) return;
+  if (!POSTHOG_KEY || isDNT()) return;
   posthog.capture("paywall_cta_clicked", {
     case_id: caseId,
     ...properties,
@@ -54,7 +57,7 @@ export function trackPaywallCtaClicked(caseId: string, properties?: Record<strin
 }
 
 export function trackPaywallDismissed(caseId: string) {
-  if (isDNT()) return;
+  if (!POSTHOG_KEY || isDNT()) return;
   posthog.capture("paywall_dismissed", {
     case_id: caseId,
   });
