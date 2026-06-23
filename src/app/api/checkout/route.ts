@@ -55,15 +55,22 @@ export async function POST(req: NextRequest) {
       currency: string;
       unit_amount: number;
       product?: string;
-      product_data?: { name: string };
+      product_data?: { name: string; images?: string[] };
     } = {
       currency: localizedPrice.currency,
       unit_amount: localizedPrice.amount,
     };
     if (productId) {
+      // Image comes from the Stripe Product itself (uploaded in the dashboard).
       priceData.product = productId;
     } else {
-      priceData.product_data = { name: PRODUCT_NAME };
+      // Inline product: attach the Detective License badge so it shows in
+      // checkout. Stripe fetches this URL, so it must be absolute + public.
+      const imageBase = process.env.NEXT_PUBLIC_SITE_URL || origin;
+      priceData.product_data = {
+        name: PRODUCT_NAME,
+        images: [`${imageBase}/detective-license-badge.jpg`],
+      };
     }
 
     const lineItems = [{ price_data: priceData, quantity: 1 }];
@@ -110,7 +117,13 @@ export async function POST(req: NextRequest) {
       checkoutParams.customer_email = session.user.email;
       checkoutParams.metadata.user_id = session.user.id;
     } else {
-      // Anonymous user: Stripe will collect email, we'll link after sign-in
+      // Anonymous user: Stripe will collect email, we'll link after sign-in.
+      // Force `customer_creation: "always"` so Stripe reliably creates a
+      // Customer and captures the buyer email into `customer_details.email` on
+      // the completed session. The webhook persists that email onto the
+      // pending_licenses row, and claim-license binds the claim to it — so the
+      // email MUST be present for the anonymous path to be claimable.
+      checkoutParams.customer_creation = "always";
       checkoutParams.metadata.anonymous = "true";
     }
 

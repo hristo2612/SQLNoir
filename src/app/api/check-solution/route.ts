@@ -2,8 +2,36 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getAllCases, getLocalizedCase } from "@/lib/case-utils";
 import { isCaseFree } from "@/lib/license";
+import { rateLimit } from "@/lib/rate-limit";
+
+// Defense-in-depth rate limit (best-effort, per-instance — see rate-limit.ts).
+// Answer-checking is interactive; 30 attempts / 60s per IP throttles automated
+// answer-guessing while leaving normal play untouched.
+const CHECK_RATE_LIMIT = 30;
+const CHECK_RATE_WINDOW_MS = 60_000;
+
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-vercel-forwarded-for") ||
+    "unknown"
+  );
+}
 
 export async function POST(req: NextRequest) {
+  // Rate-limit early, keyed by IP + route, before parsing the body.
+  const ip = getClientIp(req);
+  const limit = rateLimit(`check-solution:${ip}`, {
+    limit: CHECK_RATE_LIMIT,
+    windowMs: CHECK_RATE_WINDOW_MS,
+  });
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests, please slow down." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+    );
+  }
+
   let body: { caseId?: string; answer?: string; locale?: string };
   try {
     body = await req.json();

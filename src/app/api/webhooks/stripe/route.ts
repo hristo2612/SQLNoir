@@ -150,14 +150,17 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ received: true });
       }
 
-      const email = session.customer_details?.email || session.customer_email;
-      if (!email) {
+      const rawEmail = session.customer_details?.email || session.customer_email;
+      if (!rawEmail) {
         console.error("Webhook received session without customer email");
         return NextResponse.json(
           { error: "Missing customer email" },
           { status: 400 }
         );
       }
+      // Normalize to lowercase + trimmed so the claim-license email-match gate
+      // (which also normalizes) is a reliable equality check.
+      const email = rawEmail.toLowerCase().trim();
 
       // Anonymous purchase: store as pending license to be claimed after sign-in
       const { error } = await supabaseAdmin
