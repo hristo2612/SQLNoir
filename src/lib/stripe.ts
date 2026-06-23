@@ -9,9 +9,3 @@ if (!stripeSecretKey) {
 export const stripe = stripeSecretKey
   ? new Stripe(stripeSecretKey)
   : null;
-
-export const STRIPE_CONFIG = {
-  priceId: process.env.STRIPE_PRICE_ID || "price_1TBNUeGVhJ4iW6Gkj6dRIbNy",
-  publishableKey:
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
-} as const;

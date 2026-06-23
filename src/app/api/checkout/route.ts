@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe, STRIPE_CONFIG } from "@/lib/stripe";
+import { stripe } from "@/lib/stripe";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import {
   getPriceTier,
   getCurrencyForLocale,
   getPriceForLocale,
 } from "@/lib/ppp-prices";
+
+const PRODUCT_NAME = "SQLNoir Detective License";
 
 export async function POST(req: NextRequest) {
   if (!stripe) {
@@ -39,24 +41,40 @@ export async function POST(req: NextRequest) {
     const currency = getCurrencyForLocale(locale);
     const localizedPrice = getPriceForLocale(locale, country);
 
-    // Locale-aware line items + payment methods.
-    // - zh-CN: CNY price (if STRIPE_PRICE_ID_CNY is provisioned) + card/alipay/wechat_pay
-    // - everyone else: USD PPP tier + card only
-    let lineItems: Array<{ price: string; quantity: number }>;
-    if (currency === "cny") {
-      if (!localizedPrice.priceId) {
-        return NextResponse.json(
-          { error: "CNY checkout not yet provisioned (STRIPE_PRICE_ID_CNY missing)" },
-          { status: 503 }
-        );
-      }
-      lineItems = [{ price: localizedPrice.priceId, quantity: 1 }];
+    // Dynamic pricing via Stripe `price_data` — no pre-created Price objects.
+    // The PPP amount (in cents) and currency come straight from the resolved
+    // locale/country tier; zh-CN bills ¥99 in CNY, everyone else USD per tier.
+    //
+    // Single-product reporting: when STRIPE_PRODUCT_ID is set, attach that
+    // existing Stripe Product so every sale rolls up under one product in the
+    // dashboard. When it's unset, fall back to inline product_data so checkout
+    // works with ZERO dashboard setup. Stripe rejects having BOTH `product`
+    // and `product_data`, so this is strictly one or the other.
+    const productId = process.env.STRIPE_PRODUCT_ID;
+    const priceData: {
+      currency: string;
+      unit_amount: number;
+      product?: string;
+      product_data?: { name: string };
+    } = {
+      currency: localizedPrice.currency,
+      unit_amount: localizedPrice.amount,
+    };
+    if (productId) {
+      priceData.product = productId;
     } else {
-      const hasTierPriceId =
-        priceTier.priceId && priceTier.priceId.startsWith("price_");
-      lineItems = hasTierPriceId
-        ? [{ price: priceTier.priceId, quantity: 1 }]
-        : [{ price: STRIPE_CONFIG.priceId, quantity: 1 }];
+      priceData.product_data = { name: PRODUCT_NAME };
+    }
+
+    const lineItems = [{ price_data: priceData, quantity: 1 }];
+
+    // Sanity check: every line item must agree on currency or Stripe rejects
+    // the session. Fail loudly here so the bug is obvious in logs.
+    const currencies = new Set(lineItems.map((li) => li.price_data.currency));
+    if (currencies.size > 1) {
+      throw new Error(
+        `Mixed currencies in checkout for country=${country}: ${[...currencies].join(", ")}`
+      );
     }
 
     const paymentMethodTypes =

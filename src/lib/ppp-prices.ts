@@ -2,51 +2,20 @@
  * PPP-based price tiers for Detective License.
  * Formula: $14.99 × (country_GDP_PPP / US_GDP_PPP), floor $1.99, ceiling $14.99.
  * 124 countries across 13 tiers.
+ *
+ * Pricing is DYNAMIC: amounts are passed to Stripe via `price_data.unit_amount`,
+ * so there are no pre-created Stripe Price objects to manage. PPP robustness
+ * comes from the amount + currency, not from a per-tier Stripe Price ID.
  */
 
+export type SupportedCurrency = "usd" | "cny";
+
 export interface PriceTier {
-  amount: number; // in cents
+  amount: number; // in cents (Stripe unit_amount)
+  currency: SupportedCurrency;
   display: string; // formatted price string
   tier: number;
-  priceId: string; // Stripe Price ID — populated after creation
 }
-
-// Stripe Price IDs per tier
-const isLive = process.env.STRIPE_SECRET_KEY?.startsWith("sk_live_");
-
-const SANDBOX_PRICE_IDS: Record<number, string> = {
-  1: "price_1TBNqcGVhJ4iW6GkrlHQhV5S",
-  2: "price_1TBNqcGVhJ4iW6Gkt96Vrw7D",
-  3: "price_1TBNqdGVhJ4iW6GkfuwlH0Id",
-  4: "price_1TBNqeGVhJ4iW6GkGPGXaSfo",
-  5: "price_1TBNqeGVhJ4iW6GkEUolbSVL",
-  6: "price_1TBNqfGVhJ4iW6GkTsUv9pq1",
-  7: "price_1TBNqgGVhJ4iW6GkkEM9eIN6",
-  8: "price_1TBNqhGVhJ4iW6Gkxyfu9UWi",
-  9: "price_1TBNqhGVhJ4iW6GkOQBjVbzM",
-  10: "price_1TBNqiGVhJ4iW6Gk9FiCr5aH",
-  11: "price_1TBNqjGVhJ4iW6GkfhBAiKb7",
-  12: "price_1TBNqkGVhJ4iW6Gkt08u0bjS",
-  13: "price_1TBNqkGVhJ4iW6GkDxtcYCZW",
-};
-
-const LIVE_PRICE_IDS: Record<number, string> = {
-  1: "price_1TBNxSGgtzjPIYC0VwuunD6n",
-  2: "price_1TBNxSGgtzjPIYC0iPUgdbtb",
-  3: "price_1TBNxTGgtzjPIYC09IqS0Ijq",
-  4: "price_1TBNxUGgtzjPIYC0shG7Etdm",
-  5: "price_1TBNxUGgtzjPIYC0fhumEfV6",
-  6: "price_1TBNxVGgtzjPIYC0CDoyLc6m",
-  7: "price_1TBNxVGgtzjPIYC0b980v7Ed",
-  8: "price_1TBNxWGgtzjPIYC0SJ4cEE4x",
-  9: "price_1TBNxWGgtzjPIYC0rLFKmcvB",
-  10: "price_1TBNxXGgtzjPIYC0zlH0AUA9",
-  11: "price_1TBNxXGgtzjPIYC0TjlWAKZQ",
-  12: "price_1TBNxYGgtzjPIYC0MFYE2RNy",
-  13: "price_1TBNxYGgtzjPIYC0bAAVUX4U",
-};
-
-const TIER_PRICE_IDS = isLive ? LIVE_PRICE_IDS : SANDBOX_PRICE_IDS;
 
 const TIERS: Record<number, { amount: number; display: string }> = {
   1: { amount: 199, display: "$1.99" },
@@ -119,9 +88,8 @@ export function getPriceTier(countryCode: string): PriceTier {
   const code = countryCode?.toUpperCase() || "US";
   const tier = COUNTRY_TIERS[code] ?? DEFAULT_TIER;
   const { amount, display } = TIERS[tier];
-  const priceId = TIER_PRICE_IDS[tier] || TIER_PRICE_IDS[DEFAULT_TIER];
 
-  return { amount, display, tier, priceId };
+  return { amount, currency: "usd", display, tier };
 }
 
 export function getDefaultPrice(): PriceTier {
@@ -132,13 +100,11 @@ export function getDefaultPrice(): PriceTier {
 // Locale-aware pricing (zh-CN → CNY, all others → USD)
 // ---------------------------------------------------------------------------
 
-export type SupportedCurrency = "usd" | "cny";
-
 export interface LocalizedPrice {
+  amount: number; // unit amount in CENTS (Stripe unit_amount)
   currency: SupportedCurrency;
-  amount: number; // unit amount in MAJOR units (e.g. 14.99 USD, 99 CNY)
   display: string; // e.g. "$14.99" or "¥99"
-  priceId: string | null; // Stripe price ID; null when not yet provisioned
+  tier: number;
 }
 
 /**
@@ -150,40 +116,40 @@ export function getCurrencyForLocale(locale: string): SupportedCurrency {
 }
 
 // Single CNY tier (PPP-equivalent to $14.99 for a developer/student audience).
-// CEO range: ¥69 / ¥99 / ¥139 — default is ¥99.
-const CNY_AMOUNT_MAJOR = 99;
+// CEO range: ¥69 / ¥99 / ¥139 — default is ¥99. CNY uses 2 decimal places in
+// Stripe, so ¥99 → 9900 minor units.
+const CNY_AMOUNT_CENTS = 9900;
 const CNY_DISPLAY = "¥99"; // ¥99 — no decimals at this price point
 
 /**
  * Locale + country aware price lookup.
  *
- * - zh-CN locale → CNY single tier (¥99), priceId from STRIPE_PRICE_ID_CNY
- *   (env var must be set by CEO after WeChat verification clears in Stripe).
+ * - zh-CN locale → CNY single tier (¥99 → 9900 cents).
  * - Any other locale → existing USD PPP tier resolved from countryCode.
  *
- * Amount is in MAJOR units (dollars / yuan), not cents, to match the public
- * contract described in the Phase 5 plan.
+ * Amount is in CENTS (Stripe unit_amount) so it can be passed straight into
+ * `price_data.unit_amount` — there are no Stripe Price IDs anymore.
  */
 export function getPriceForLocale(
   locale: string,
   countryCode?: string
 ): LocalizedPrice {
   const currency = getCurrencyForLocale(locale);
+  const tier = getPriceTier(countryCode || "US");
 
   if (currency === "cny") {
     return {
+      amount: CNY_AMOUNT_CENTS,
       currency,
-      amount: CNY_AMOUNT_MAJOR,
       display: CNY_DISPLAY,
-      priceId: process.env.STRIPE_PRICE_ID_CNY ?? null,
+      tier: tier.tier,
     };
   }
 
-  const tier = getPriceTier(countryCode || "US");
   return {
+    amount: tier.amount,
     currency: "usd",
-    amount: tier.amount / 100, // cents → major units
     display: tier.display,
-    priceId: tier.priceId || null,
+    tier: tier.tier,
   };
 }
