@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Navbar } from "@/components/Navbar";
@@ -20,6 +20,7 @@ export default function CheckoutSuccessPage() {
   const [loading, setLoading] = useState(true);
   const [claimed, setClaimed] = useState(false);
   const [claiming, setClaiming] = useState(false);
+  const [claimError, setClaimError] = useState<string | null>(null);
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
@@ -42,15 +43,23 @@ export default function CheckoutSuccessPage() {
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (user && !claimed && stripeSessionId) {
-      claimLicense();
-    }
-  }, [user, claimed, stripeSessionId]);
+  const confirmActiveLicense = useCallback(async () => {
+    if (!supabase || !user) return false;
+    const { data } = await supabase
+      .from("user_info")
+      .select("has_license")
+      .eq("id", user.id)
+      .single();
+    return Boolean(data?.has_license);
+  }, [user]);
 
-  const claimLicense = async () => {
-    if (!stripeSessionId) return;
+  const claimLicense = useCallback(async () => {
+    if (!stripeSessionId) {
+      setClaimError(tCheckout("activationMissingSession"));
+      return;
+    }
     setClaiming(true);
+    setClaimError(null);
     try {
       const res = await fetch("/api/claim-license", {
         method: "POST",
@@ -58,19 +67,34 @@ export default function CheckoutSuccessPage() {
         body: JSON.stringify({ stripeSessionId }),
       });
       const data = await res.json();
-      if (data.success || data.error === "No pending license found for this purchase") {
+      if (data.success) {
         setClaimed(true);
+        return;
       }
+      if (data.error === "No pending license found for this purchase") {
+        if (await confirmActiveLicense()) {
+          setClaimed(true);
+          return;
+        }
+      }
+      setClaimError(data.error || tCheckout("activationFailed"));
     } catch {
-      setClaimed(true);
+      setClaimError(tCheckout("activationFailed"));
     } finally {
       setClaiming(false);
     }
-  };
+  }, [confirmActiveLicense, stripeSessionId, tCheckout]);
+
+  useEffect(() => {
+    if (user && !claimed && !claiming && !claimError) {
+      claimLicense();
+    }
+  }, [user, claimed, claiming, claimError, claimLicense]);
 
   const showSignInPrompt = !loading && !user;
   const showClaimingState = user && claiming;
-  const showSuccess = user && (claimed || !claiming);
+  const showClaimError = user && claimError && !claiming;
+  const showSuccess = user && claimed && !claiming;
 
   return (
     <>
@@ -100,6 +124,8 @@ export default function CheckoutSuccessPage() {
                 ? tCheckout("signInToActivate")
                 : showClaimingState
                 ? tCheckout("activatingLicense")
+                : showClaimError
+                ? claimError
                 : tCheckout("licenseActive")}
             </p>
           </div>
@@ -117,6 +143,24 @@ export default function CheckoutSuccessPage() {
           {showClaimingState && (
             <div className="flex justify-center">
               <div className="w-8 h-8 border-2 border-amber-300 border-t-amber-700 rounded-full animate-spin" />
+            </div>
+          )}
+
+          {showClaimError && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-5 space-y-4 text-left">
+              <p className="font-detective text-red-900 text-lg">
+                {tCheckout("activationIssue")}
+              </p>
+              <p className="text-red-800 text-sm">
+                {tCheckout("activationIssueHelp")}
+              </p>
+              <button
+                type="button"
+                onClick={claimLicense}
+                className="inline-flex items-center justify-center px-5 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white font-detective transition-colors"
+              >
+                {tCheckout("retryActivation")}
+              </button>
             </div>
           )}
 

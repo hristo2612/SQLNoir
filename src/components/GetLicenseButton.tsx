@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Shield } from "lucide-react";
 import { track } from "@vercel/analytics/react";
 import { posthog } from "@/lib/posthog";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface GetLicenseButtonProps {
   className?: string;
@@ -16,6 +16,7 @@ export function GetLicenseButton({
   source = "dashboard",
 }: GetLicenseButtonProps) {
   const t = useTranslations("license");
+  const locale = useLocale();
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
@@ -30,8 +31,13 @@ export function GetLicenseButton({
       posthog.capture("checkout_initiated", {
         source,
         trigger_location: source,
+        locale,
       });
-      const res = await fetch("/api/checkout", { method: "POST" });
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale }),
+      });
       const data = await res.json();
 
       if (data.error) {

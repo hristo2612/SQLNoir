@@ -5,7 +5,6 @@ import { useRouter } from "@/i18n/navigation";
 import type { Session } from "@supabase/supabase-js";
 import { Dashboard } from "./Dashboard";
 import { PaywallModal } from "./PaywallModal";
-import { AuthModal } from "./auth/AuthModal";
 import { supabase } from "@/lib/supabase";
 import { getCaseSlug } from "@/lib/case-utils";
 import { getUserHasLicense } from "@/lib/license";
@@ -23,10 +22,9 @@ export function CasesExplorer({
   initialUserInfo = null,
   localizedCases,
 }: CasesExplorerProps) {
-  const [user, setUser] = useState<any>(initialSession?.user ?? null);
+  const [, setUser] = useState<any>(initialSession?.user ?? null);
   const [userInfo, setUserInfo] = useState<any>(initialUserInfo);
   const [paywallCase, setPaywallCase] = useState<Case | null>(null);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const router = useRouter();
 
   const hasLicense = getUserHasLicense(userInfo);
@@ -128,12 +126,8 @@ export function CasesExplorer({
   };
 
   const handleLockedCaseClick = (caseData: Case) => {
-    if (!user) {
-      // Not signed in — prompt auth first
-      setShowAuthModal(true);
-      return;
-    }
-    // Signed in but no license — show paywall
+    // Checkout supports anonymous purchase; account creation happens after payment
+    // on the success page so the license can be bound to the buyer email.
     setPaywallCase(caseData);
   };
 

@@ -3,19 +3,13 @@
 import { useEffect, useState } from "react";
 import { X, Lock, Sparkles } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import posthog from "posthog-js";
 import {
   trackPaywallShown,
   trackPaywallCtaClicked,
   trackPaywallDismissed,
+  posthog,
 } from "@/lib/posthog";
 import { getPriceForLocale } from "@/lib/ppp-prices";
-
-const PRICING_MAP: Record<string, string> = {
-  "9-99": "$9.99",
-  "14-99": "$14.99",
-  "19-99": "$19.99",
-};
 
 interface PaywallProps {
   isOpen: boolean;
@@ -27,19 +21,20 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
   const t = useTranslations("paywall");
   const locale = useLocale();
   const [price, setPrice] = useState(() => getPriceForLocale(locale).display);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // zh-CN bills in CNY — skip the USD-only PostHog price-display experiment.
-    if (locale === "zh-CN") {
-      setPrice(getPriceForLocale(locale).display);
-      return;
-    }
-    posthog.onFeatureFlags(() => {
-      const flag = posthog.getFeatureFlag("pricing-display");
-      if (typeof flag === "string" && PRICING_MAP[flag]) {
-        setPrice(PRICING_MAP[flag]);
-      }
-    });
+    if (!isOpen) return;
+    fetch(`/api/price?locale=${encodeURIComponent(locale)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.display) setPrice(data.display);
+      })
+      .catch(() => {});
+  }, [isOpen, locale]);
+
+  useEffect(() => {
+    setPrice(getPriceForLocale(locale).display);
   }, [locale]);
 
   useEffect(() => {
@@ -50,14 +45,38 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
 
   if (!isOpen) return null;
 
-  const handleCtaClick = () => {
-    const pricingVariant = posthog.getFeatureFlag("pricing-display");
+  const handleCtaClick = async () => {
     const placementVariant = posthog.getFeatureFlag("paywall-placement");
     trackPaywallCtaClicked(caseSlug, {
       price,
-      pricing_variant: typeof pricingVariant === "string" ? pricingVariant : "default",
       placement_variant: typeof placementVariant === "string" ? placementVariant : "default",
     });
+    setLoading(true);
+    try {
+      posthog.capture("checkout_initiated", {
+        case_id: caseSlug,
+        trigger_location: "post_solve",
+        price,
+        locale,
+      });
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch {
+      alert(t("somethingWentWrong"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDismiss = () => {
@@ -112,9 +131,10 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
 
         <button
           onClick={handleCtaClick}
+          disabled={loading}
           className="w-full py-3 rounded-lg bg-amber-800 hover:bg-amber-700 text-amber-50 font-detective text-lg transition-colors duration-200 shadow-lg"
         >
-          {t("ctaUpgrade")}
+          {loading ? t("redirecting") : t("ctaUpgrade")}
         </button>
 
         <button
