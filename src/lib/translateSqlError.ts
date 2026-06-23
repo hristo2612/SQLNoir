@@ -2,7 +2,7 @@
 //
 // SQL error translator. Ported VERBATIM from Lloyd Hasson's classroom-tested
 // zh-CN fork (originally at src/utils/translateSqlError.ts). His Chinese
-// strings are deliberately preserved word-for-word — they are classroom-proven
+// strings are deliberately preserved word-for-word - they are classroom-proven
 // and must not be rewritten or "cleaned up". New locales can be added as
 // additional branches in `translateSqlError` below.
 
@@ -87,5 +87,5 @@ export function translateZhCN(msg: string): string {
 export function translateSqlError(msg: string, locale: string): string {
   if (locale === "zh-CN") return translateZhCN(msg);
   // Future: pt-br branch can go here
-  return msg; // English default — return sql.js error as-is
+  return msg; // English default - return sql.js error as-is
 }

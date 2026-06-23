@@ -732,7 +732,7 @@ HAVING COUNT(*) > 3;`}
           SQLNoir&apos;s 6 detective cases start with basic WHERE filtering and
           scale to complex queries combining JOINs, GROUP BY, and HAVING to
           crack advanced mysteries. The first two cases are free and
-          browser-based with no signup — a one-time Detective License unlocks
+          browser-based with no signup - a one-time Detective License unlocks
           the rest.
         </p>
         <Link

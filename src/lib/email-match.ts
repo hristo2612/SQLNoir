@@ -3,7 +3,7 @@
  *
  * Used to bind a license claim to the buyer email captured at Stripe checkout
  * (see `src/app/api/claim-license/route.ts`). Null/empty/undefined on EITHER
- * side returns false — a missing buyer email must never match a claimant, so an
+ * side returns false - a missing buyer email must never match a claimant, so an
  * unidentified purchase can't be claimed by anyone.
  */
 export function emailsMatch(a?: string | null, b?: string | null): boolean {

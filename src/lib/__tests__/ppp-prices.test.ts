@@ -124,7 +124,7 @@ describe("getPriceForLocale", () => {
 describe("monetization gate (STRIPE_SECRET_KEY)", () => {
   it("pricing helpers work without Stripe being configured", async () => {
     // The gate is in src/lib/stripe.ts and the route handler. We assert here
-    // that pricing helpers work without Stripe being configured — i.e. they
+    // that pricing helpers work without Stripe being configured - i.e. they
     // do NOT require STRIPE_SECRET_KEY to be set.
     const originalKey = process.env.STRIPE_SECRET_KEY;
     delete process.env.STRIPE_SECRET_KEY;

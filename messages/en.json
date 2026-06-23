@@ -55,7 +55,7 @@
     "faqAccountQ": "Do I need an account to play?",
     "faqAccountA": "You can open and solve cases without creating an account. Sign in to track XP, progress, and solved cases across devices.",
     "faqAccessQ": "How does access work?",
-    "faqAccessA": "All cases are open from the start — there's nothing to unlock. The difficulty levels (beginner, intermediate, advanced) are just a guide: start with a beginner case and progress at your own pace. XP tracks your progress as you solve cases.",
+    "faqAccessA": "All cases are open from the start - there's nothing to unlock. The difficulty levels (beginner, intermediate, advanced) are just a guide: start with a beginner case and progress at your own pace. XP tracks your progress as you solve cases.",
     "faqSqlQ": "What SQL do I need to know?",
     "faqSqlA": "Beginners can start with simple SELECTs. Intermediate and advanced cases introduce joins, grouping, filters, and subqueries as you progress.",
     "faqInterviewQ": "Will this help with interviews?",
@@ -71,7 +71,7 @@
   },
   "cases": {
     "caseFiles": "Case Files",
-    "unsyncedNote": "Unsynced — sign in to save your XP",
+    "unsyncedNote": "Unsynced - sign in to save your XP",
     "beginner": "Beginner",
     "beginnerDesc": "Perfect for SQL newcomers. Learn the basics of querying and data analysis.",
     "intermediate": "Intermediate",
@@ -136,9 +136,12 @@
   "solution": {
     "caseSolved": "Case Solved!",
     "explanation": "Explanation",
-    "saveXpNote": "Note: Create an account to save your XP rewards for solved cases.",
+    "saveXpNote": "Your XP is saved on this device. Sign in anytime to keep it across devices.",
     "unlockRemainingCases": "Unlock the remaining cases",
     "unlockRemainingDesc": "You've solved both free cases. Get a Detective License to crack every intermediate and advanced investigation.",
+    "fullArchiveTitle": "Ready for the full case file?",
+    "fullArchiveDesc": "Unlock every intermediate and advanced investigation with one Detective License.",
+    "unlockAllCasesCta": "Unlock all cases",
     "enjoyedMystery": "Enjoyed the mystery?",
     "shareMessage": "Share SQLNoir with another detective and see if they can solve it too.",
     "shareSqlnoir": "Share SQLNoir",
@@ -285,11 +288,11 @@
   },
   "license": {
     "upgradeTitle": "Upgrade to Detective License",
-    "upgradeSubtitle": "The deeper mysteries await, detective...",
-    "unlockCases": "Unlock 4 advanced cases",
-    "unlockCasesDesc": "Intermediate & advanced investigations with complex SQL challenges",
-    "earnBadges": "Earn exclusive XP badges",
-    "earnBadgesDesc": "Show off your SQL mastery with licensed-only achievements",
+    "upgradeSubtitle": "Unlock the full case archive and every future paid investigation.",
+    "unlockCases": "Unlock every paid case",
+    "unlockCasesDesc": "Intermediate and advanced investigations with deeper SQL challenges",
+    "earnBadges": "Keep building your XP",
+    "earnBadgesDesc": "Track solved cases and progress across the full archive",
     "supportDev": "Support indie development",
     "supportDevDesc": "Help us build more cases and keep SQLNoir growing",
     "oneTimePayment": "One-time payment, forever yours",
@@ -303,6 +306,7 @@
     "caseClassifiedDesc": "This investigation requires a Detective License. Upgrade to access all intermediate and advanced cases.",
     "backToCaseFiles": "Back to Case Files",
     "licenseRequired": "License Required",
+    "unlockCase": "Unlock case",
     "unlockAllCases": "Unlock all cases with a Detective License",
     "unlockAllCasesDesc": "One-time purchase. Full access to all cases, every difficulty tier, unlimited practice.",
     "teamLicense": "Need a team or education license? Email <a>support@sqlnoir.com</a>"
@@ -348,9 +352,9 @@
     "accept": "OK"
   },
   "paywall": {
-    "title": "Unlock All Cases",
-    "subtitle": "You've proven your detective skills. Upgrade to access intermediate and advanced cases, plus future investigations.",
-    "tierName": "Detective Pro",
+    "title": "Unlock the Full Case Archive",
+    "subtitle": "One Detective License opens every intermediate and advanced case, plus future paid investigations.",
+    "tierName": "Detective License",
     "oneTimePayment": "One-time payment, forever yours",
     "feature1": "All intermediate & advanced cases",
     "feature2": "New cases as they launch",
@@ -362,7 +366,7 @@
   "privacy": {
     "metadata": {
       "title": "Privacy Policy",
-      "description": "SQLNoir privacy policy — how we collect, use, and protect your data when you play our interactive SQL detective game."
+      "description": "SQLNoir privacy policy - how we collect, use, and protect your data when you play our interactive SQL detective game."
     },
     "body": {
       "title": "Privacy Policy",
@@ -378,14 +382,14 @@
       "useItem3": "To understand how users interact with the site so we can make it better.",
       "cookiesTitle": "Cookies",
       "cookiesIntro": "SQLNoir uses the following cookies:",
-      "cookiesAuth": "<strong>Authentication cookies</strong> (Supabase) — to keep you signed in across sessions.",
-      "cookiesAnalytics": "<strong>Analytics cookies</strong> (PostHog) — to collect anonymized usage data.",
+      "cookiesAuth": "<strong>Authentication cookies</strong> (Supabase) - to keep you signed in across sessions.",
+      "cookiesAnalytics": "<strong>Analytics cookies</strong> (PostHog) - to collect anonymized usage data.",
       "cookiesDisable": "You can disable cookies in your browser settings. Disabling authentication cookies will require you to sign in again on each visit.",
       "thirdPartyTitle": "Third-Party Services",
-      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) — product analytics.",
-      "thirdPartyVercel": "<strong>Vercel Analytics</strong> — page view analytics.",
-      "thirdPartySupabase": "<strong>Supabase</strong> — authentication and database.",
-      "thirdPartyStripe": "<strong>Stripe</strong> — processes payments for paid Detective Licenses.",
+      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) - product analytics.",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong> - page view analytics.",
+      "thirdPartySupabase": "<strong>Supabase</strong> - authentication and database.",
+      "thirdPartyStripe": "<strong>Stripe</strong> - processes payments for paid Detective Licenses.",
       "thirdPartyNoSell": "We do not sell your data to any third parties.",
       "retentionTitle": "Data Retention",
       "retentionBody": "Account data is retained for as long as your account is active. Analytics data is retained in anonymized form and automatically expires based on PostHog and Vercel's retention policies.",
@@ -403,7 +407,7 @@
   "terms": {
     "metadata": {
       "title": "Terms of Service",
-      "description": "SQLNoir terms of service — rules and conditions for using our interactive SQL learning platform and detective cases."
+      "description": "SQLNoir terms of service - rules and conditions for using our interactive SQL learning platform and detective cases."
     },
     "body": {
       "title": "Terms of Service",
@@ -412,8 +416,8 @@
       "overviewBody": "SQLNoir is an interactive SQL learning platform where you solve detective cases using SQL queries. By using SQLNoir, you agree to these terms. SQLNoir is provided \"as is\" without warranty of any kind.",
       "accountsTitle": "Accounts and Access",
       "accountsIntro": "You can use SQLNoir without creating an account. Signing in with Google OAuth allows you to track progress across devices.",
-      "accountsFreeTier": "<strong>Free access:</strong> The first two cases are free to play — no account or payment required. The remaining cases are unlocked with a one-time Detective License.",
-      "accountsLicense": "<strong>Detective License:</strong> The first two cases are free. Unlocking the remaining cases requires a one-time Detective License — a single lifetime payment, not a subscription. The license never expires and includes future paid cases at no extra cost.",
+      "accountsFreeTier": "<strong>Free access:</strong> The first two cases are free to play - no account or payment required. The remaining cases are unlocked with a one-time Detective License.",
+      "accountsLicense": "<strong>Detective License:</strong> The first two cases are free. Unlocking the remaining cases requires a one-time Detective License - a single lifetime payment, not a subscription. The license never expires and includes future paid cases at no extra cost.",
       "paymentsTitle": "Payments",
       "paymentsBody": "The first two cases are free to play. Unlocking the remaining cases requires a one-time Detective License, a single lifetime payment with no recurring or monthly charges. Payments are processed securely by <stripe>Stripe</stripe>. If you experience any issues, please contact us and we'll do our best to help.",
       "refundTitle": "Refunds",

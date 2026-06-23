@@ -1,19 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Send, CheckCircle, XCircle, Loader2, Share2 } from "lucide-react";
+import { Send, CheckCircle, XCircle, Loader2, Shield } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import type { Case } from "../../types";
-import { SharePopup } from "../SharePopup";
 import { Paywall } from "../Paywall";
 import { track } from "@vercel/analytics/react";
 import { trackCaseCompleted, trackCaseAbandoned } from "../../lib/posthog-events";
-import { posthog } from "../../lib/posthog";
 import { useTranslations, useLocale } from "next-intl";
 import { isCaseFree } from "../../lib/license";
 import { recordLocalSolve } from "../../lib/local-progress";
 import { getPriceForLocale } from "../../lib/ppp-prices";
-import { GetLicenseButton } from "../GetLicenseButton";
 
 interface SolutionSubmissionProps {
   caseData: Case;
@@ -36,8 +33,6 @@ export function SolutionSubmission({
   const [user, setUser] = useState<any>(null); // Storing user data if logged in for conditional rendering XP reward message
   const [hasLicense, setHasLicense] = useState(false);
   const [attempts, setAttempts] = useState(0);
-  const [isShareOpen, setIsShareOpen] = useState(false);
-  const [shareContext, setShareContext] = useState("case-solved");
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const [solutionExplanation, setSolutionExplanation] = useState(caseData.solution.explanation);
   const [solutionSuccessMessage, setSolutionSuccessMessage] = useState(caseData.solution.successMessage);
@@ -99,7 +94,7 @@ export function SolutionSubmission({
 
           if (updateError) throw updateError;
         } else if (isCaseFree(caseData)) {
-          // Anonymous visitor solved a free case — persist locally so it can be
+          // Anonymous visitor solved a free case - persist locally so it can be
           // migrated onto their account when they sign in.
           recordLocalSolve(caseData.id);
         }
@@ -133,16 +128,6 @@ export function SolutionSubmission({
           time_spent_seconds: timeSpent,
           query_count: attemptsNext,
         });
-
-        // Show paywall based on A/B test placement (only when monetization is enabled)
-        if (process.env.NEXT_PUBLIC_ENABLE_MONETIZATION === "1") {
-          const placement = posthog.getFeatureFlag("paywall-placement");
-          const triggerAfterCase1 = placement === "after-case-1" && caseData.id === "case-001";
-          const triggerAfterCase2 = placement !== "after-case-1" && caseData.id === "case-002";
-          if (triggerAfterCase1 || triggerAfterCase2) {
-            setTimeout(() => setIsPaywallOpen(true), 1500);
-          }
-        }
       } else {
         track("case_solve_failure", {
           case_slug: caseData.id,
@@ -186,110 +171,65 @@ export function SolutionSubmission({
   const showSuccess = submitted && isCorrect;
   const showIncorrect = submitted && !isCorrect;
 
-  // Contextual conversion CTA: after the LAST free case (case-002), show a
-  // prominent purchase CTA — but only when monetization is on AND the user does
-  // not already hold a license. Anonymous users (no license) correctly see it.
   const monetizationEnabled =
     process.env.NEXT_PUBLIC_ENABLE_MONETIZATION === "1";
   const showPurchaseCta =
-    monetizationEnabled && caseData.id === "case-002" && !hasLicense;
+    monetizationEnabled && isCaseFree(caseData) && !hasLicense;
   const localizedPrice = getPriceForLocale(locale).display;
 
   if (showSuccess) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div className="bg-green-50 border border-green-200 rounded-xl p-4 sm:p-6 space-y-4">
-          <div className="flex flex-col items-start justify-center gap-3">
-            <div className="flex items-center justify-center gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
-              <h3 className="font-detective text-2xl text-green-900">
+      <div className="max-w-2xl mx-auto">
+        <section className="overflow-hidden rounded-xl border border-emerald-200 bg-white shadow-sm">
+          <div className="flex items-start gap-3 border-b border-emerald-100 bg-emerald-50 px-5 py-4 sm:px-6">
+            <CheckCircle className="mt-0.5 h-6 w-6 flex-shrink-0 text-emerald-600" />
+            <div className="space-y-1">
+              <h3 className="font-detective text-2xl text-emerald-950">
                 {t('solution.caseSolved')}
               </h3>
-            </div>
-            <p className="text-green-800 mt-1">
-              {solutionSuccessMessage}
-            </p>
-          </div>
-
-          <div className="pt-4 border-t border-green-200">
-            <h4 className="font-detective text-lg text-green-900 mb-2">
-              {t('solution.explanation')}
-            </h4>
-            <p className="text-green-800 leading-relaxed">
-              {solutionExplanation}
-            </p>
-          </div>
-
-          {!user && (
-            <div className="bg-white border border-amber-200 rounded-lg p-4">
-              <p className="text-amber-800 text-sm font-medium">
-                {t('solution.saveXpNote')}
+              <p className="text-sm leading-6 text-emerald-900">
+                {solutionSuccessMessage}
               </p>
             </div>
-          )}
+          </div>
 
-          {showPurchaseCta ? (
-            <>
-              {/* Primary: prominent purchase CTA after the last free case */}
-              <div className="bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-300 rounded-lg p-5 space-y-3 shadow-sm">
-                <div className="space-y-1">
-                  <p className="font-detective text-xl text-amber-900">
-                    {t('solution.unlockRemainingCases')} — {localizedPrice}
-                  </p>
-                  <p className="text-amber-700 text-sm">
-                    {t('solution.unlockRemainingDesc')}
-                  </p>
-                </div>
-                <GetLicenseButton source="post-solve-case2" />
-              </div>
-              {/* Secondary: share, demoted */}
-              <div className="flex justify-center">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShareContext("case-solved");
-                    track("share_open", { context: "case-solved", case_slug: caseData.id });
-                    setIsShareOpen(true);
-                  }}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-amber-700 hover:text-amber-900 transition-colors duration-200 text-sm"
-                >
-                  <Share2 className="w-4 h-4" />
-                  <span>{t('solution.shareSqlnoir')}</span>
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3 sm:flex sm:items-center sm:justify-between sm:space-y-0 gap-4">
-              <div>
-                <p className="font-detective text-amber-900">
-                  {t('solution.enjoyedMystery')}
-                </p>
-                <p className="text-amber-700 text-sm">
-                  {t('solution.shareMessage')}
-                </p>
-              </div>
-              <div className="flex sm:block">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShareContext("case-solved");
-                    track("share_open", { context: "case-solved", case_slug: caseData.id });
-                    setIsShareOpen(true);
-                  }}
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-amber-700 text-amber-50 hover:bg-amber-600 transition-colors duration-200 text-sm sm:text-base whitespace-nowrap"
-                >
-                  <Share2 className="w-4 h-4" />
-                  <span>{t('solution.shareSqlnoir')}</span>
-                </button>
-              </div>
+          <div className="space-y-5 px-5 py-5 sm:px-6">
+            <div className="space-y-2">
+              <h4 className="font-detective text-lg text-amber-950">
+                {t('solution.explanation')}
+              </h4>
+              <p className="leading-7 text-amber-900">
+                {solutionExplanation}
+              </p>
             </div>
-          )}
-        </div>
-        <SharePopup
-          isOpen={isShareOpen}
-          onClose={() => setIsShareOpen(false)}
-          context={shareContext}
-        />
+
+            {showPurchaseCta && (
+              <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:gap-5">
+                <div className="space-y-1">
+                  <p className="font-detective text-lg text-amber-950">
+                    {t('solution.fullArchiveTitle')}
+                  </p>
+                  <p className="text-sm leading-6 text-amber-800">
+                    {t('solution.fullArchiveDesc')}
+                  </p>
+                  {!user && (
+                    <p className="text-xs text-amber-700">
+                      {t('solution.saveXpNote')}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsPaywallOpen(true)}
+                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-800 px-5 py-3 font-detective text-amber-50 shadow-sm transition-colors duration-200 hover:bg-amber-700 sm:mt-0 sm:w-auto"
+                >
+                  <Shield className="h-4 w-4" />
+                  <span>{t('solution.unlockAllCasesCta')} - {localizedPrice}</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
         <Paywall
           isOpen={isPaywallOpen}
           onClose={() => setIsPaywallOpen(false)}

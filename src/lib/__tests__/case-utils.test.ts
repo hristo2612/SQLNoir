@@ -108,7 +108,7 @@ describe("getLocalizedCase", () => {
   });
 
   it("falls back to English answer when locale JSON does not provide one (pt-br pattern)", async () => {
-    // Use case-001's real id — pt-br/case-001.json exists but has no solution.answer
+    // Use case-001's real id - pt-br/case-001.json exists but has no solution.answer
     const all = getAllCases();
     const c001 = all.find((c) => c.id === "case-001");
     expect(c001).toBeDefined();
@@ -128,7 +128,7 @@ describe("getLocalizedCase", () => {
 
   it("uses locale JSON answer when provided (zh-CN pattern)", async () => {
     // Uses fixture at messages/cases/__test__/case-001.json which provides
-    // a Chinese solution.answer override — simulates Phase 4 zh-CN data.
+    // a Chinese solution.answer override - simulates Phase 4 zh-CN data.
     const c = makeMockCase({ id: "case-001" });
     const result = await getLocalizedCase(c, "__test__");
     expect(result.solution.answer).toBe("赵俊豪");
@@ -140,7 +140,7 @@ describe("getLocalizedCase", () => {
   // The case-detail page's generateMetadata feeds title/description through
   // getLocalizedCase before building <title>, OG, and Twitter tags. These
   // assertions lock in that it returns localized (non-English) title +
-  // description for the non-default locales — the contract metadata relies on.
+  // description for the non-default locales - the contract metadata relies on.
   // Full metadata-object integration is covered by the render-verification wave.
   it("returns a localized title and description for pt-br (metadata contract)", async () => {
     const c001 = getAllCases().find((c) => c.id === "case-001")!;

@@ -27,8 +27,8 @@
     "startInvestigation": "Iniciar Investigação"
   },
   "home": {
-    "heroTitle": "Aprenda SQL jogando — resolva crimes com suas próprias consultas",
-    "heroSubtitle": "Jogo de SQL detetive 100% em português. 6 casos grátis para resolver. SELECT, JOIN, WHERE — você é o investigador.",
+    "heroTitle": "Aprenda SQL jogando - resolva crimes com suas próprias consultas",
+    "heroSubtitle": "Jogo de SQL detetive 100% em português. 6 casos grátis para resolver. SELECT, JOIN, WHERE - você é o investigador.",
     "startInvestigation": "Iniciar Investigação",
     "welcomeDetective": "Bem-vindo, Detetive",
     "welcomeMessage": "A cidade está agitada. Novas evidências acabaram de chegar à sua mesa.",
@@ -55,7 +55,7 @@
     "faqAccountQ": "Preciso de uma conta para jogar?",
     "faqAccountA": "Você pode abrir e resolver casos sem criar uma conta. Faça login para rastrear XP, progresso e casos resolvidos entre dispositivos.",
     "faqAccessQ": "Como funciona o acesso?",
-    "faqAccessA": "Todos os casos estão disponíveis desde o início — não há nada a desbloquear. Os níveis de dificuldade (iniciante, intermediário, avançado) são apenas um guia: comece por um caso para iniciantes e avance no seu ritmo. O XP acompanha o seu progresso conforme você resolve casos.",
+    "faqAccessA": "Todos os casos estão disponíveis desde o início - não há nada a desbloquear. Os níveis de dificuldade (iniciante, intermediário, avançado) são apenas um guia: comece por um caso para iniciantes e avance no seu ritmo. O XP acompanha o seu progresso conforme você resolve casos.",
     "faqSqlQ": "O que preciso saber de SQL?",
     "faqSqlA": "Iniciantes podem começar com SELECTs simples. Casos intermediários e avançados introduzem joins, agrupamento, filtros e subconsultas conforme você progride.",
     "faqInterviewQ": "Isso ajuda em entrevistas?",
@@ -71,7 +71,7 @@
   },
   "cases": {
     "caseFiles": "Arquivos de Caso",
-    "unsyncedNote": "Não sincronizado — entre para salvar seu XP",
+    "unsyncedNote": "Não sincronizado - entre para salvar seu XP",
     "beginner": "Iniciante",
     "beginnerDesc": "Perfeito para quem está começando com SQL. Aprenda os fundamentos de consultas e análise de dados.",
     "intermediate": "Intermediário",
@@ -136,9 +136,12 @@
   "solution": {
     "caseSolved": "Caso Resolvido!",
     "explanation": "Explicação",
-    "saveXpNote": "Nota: Crie uma conta para salvar suas recompensas de XP por casos resolvidos.",
+    "saveXpNote": "Seu XP está salvo neste dispositivo. Entre quando quiser para manter o progresso entre dispositivos.",
     "unlockRemainingCases": "Desbloqueie os casos restantes",
     "unlockRemainingDesc": "Você resolveu os dois casos gratuitos. Obtenha uma Licença de Detetive para desvendar todas as investigações intermediárias e avançadas.",
+    "fullArchiveTitle": "Pronto para o arquivo completo?",
+    "fullArchiveDesc": "Desbloqueie todas as investigações intermediárias e avançadas com uma Licença de Detetive.",
+    "unlockAllCasesCta": "Desbloquear todos os casos",
     "enjoyedMystery": "Gostou do mistério?",
     "shareMessage": "Compartilhe o SQLNoir com outro detetive e veja se ele também consegue resolver.",
     "shareSqlnoir": "Compartilhar SQLNoir",
@@ -285,11 +288,11 @@
   },
   "license": {
     "upgradeTitle": "Upgrade para Licença de Detetive",
-    "upgradeSubtitle": "Os mistérios mais profundos aguardam, detetive...",
-    "unlockCases": "Desbloqueie 4 casos avançados",
-    "unlockCasesDesc": "Investigações intermediárias e avançadas com desafios complexos de SQL",
-    "earnBadges": "Ganhe badges exclusivos de XP",
-    "earnBadgesDesc": "Mostre seu domínio de SQL com conquistas exclusivas para licenciados",
+    "upgradeSubtitle": "Desbloqueie o arquivo completo de casos e todas as futuras investigações pagas.",
+    "unlockCases": "Desbloqueie todos os casos pagos",
+    "unlockCasesDesc": "Investigações intermediárias e avançadas com desafios mais profundos de SQL",
+    "earnBadges": "Continue acumulando XP",
+    "earnBadgesDesc": "Acompanhe casos resolvidos e progresso no arquivo completo",
     "supportDev": "Apoie o desenvolvimento indie",
     "supportDevDesc": "Ajude-nos a criar mais casos e manter o SQLNoir crescendo",
     "oneTimePayment": "Pagamento único, seu para sempre",
@@ -303,6 +306,7 @@
     "caseClassifiedDesc": "Esta investigação requer uma Licença de Detetive. Faça o upgrade para acessar todos os casos intermediários e avançados.",
     "backToCaseFiles": "Voltar aos Arquivos de Caso",
     "licenseRequired": "Licença Necessária",
+    "unlockCase": "Desbloquear caso",
     "unlockAllCases": "Desbloqueie todos os casos com uma Licença de Detetive",
     "unlockAllCasesDesc": "Compra única. Acesso total a todos os 6 casos, todos os níveis de dificuldade, prática ilimitada.",
     "teamLicense": "Precisa de uma licença para equipe ou instituição de ensino? Escreva para <a>support@sqlnoir.com</a>"
@@ -348,9 +352,9 @@
     "accept": "OK"
   },
   "paywall": {
-    "title": "Desbloqueie Todos os Casos",
-    "subtitle": "Você provou suas habilidades de detetive. Faça upgrade para acessar casos intermediários e avançados, além de futuras investigações.",
-    "tierName": "Detective Pro",
+    "title": "Desbloqueie o Arquivo Completo",
+    "subtitle": "Uma Licença de Detetive abre todos os casos intermediários e avançados, além das futuras investigações pagas.",
+    "tierName": "Licença de Detetive",
     "oneTimePayment": "Pagamento único, seu para sempre",
     "feature1": "Todos os casos intermediários e avançados",
     "feature2": "Novos casos assim que forem lançados",
@@ -362,7 +366,7 @@
   "privacy": {
     "metadata": {
       "title": "Política de Privacidade",
-      "description": "Política de privacidade do SQLNoir — como coletamos, usamos e protegemos seus dados ao jogar nosso jogo interativo de detetive SQL."
+      "description": "Política de privacidade do SQLNoir - como coletamos, usamos e protegemos seus dados ao jogar nosso jogo interativo de detetive SQL."
     },
     "body": {
       "title": "Política de Privacidade",
@@ -378,14 +382,14 @@
       "useItem3": "Para entender como as pessoas interagem com o site e, assim, torná-lo melhor.",
       "cookiesTitle": "Cookies",
       "cookiesIntro": "O SQLNoir utiliza os seguintes cookies:",
-      "cookiesAuth": "<strong>Cookies de autenticação</strong> (Supabase) — para manter você conectado entre as sessões.",
-      "cookiesAnalytics": "<strong>Cookies de análise</strong> (PostHog) — para coletar dados de uso de forma anônima.",
+      "cookiesAuth": "<strong>Cookies de autenticação</strong> (Supabase) - para manter você conectado entre as sessões.",
+      "cookiesAnalytics": "<strong>Cookies de análise</strong> (PostHog) - para coletar dados de uso de forma anônima.",
       "cookiesDisable": "Você pode desativar os cookies nas configurações do seu navegador. Desativar os cookies de autenticação fará com que você precise entrar novamente a cada visita.",
       "thirdPartyTitle": "Serviços de terceiros",
-      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) — análise de produto.",
-      "thirdPartyVercel": "<strong>Vercel Analytics</strong> — análise de visualizações de página.",
-      "thirdPartySupabase": "<strong>Supabase</strong> — autenticação e banco de dados.",
-      "thirdPartyStripe": "<strong>Stripe</strong> — processa os pagamentos das Licenças de Detetive pagas.",
+      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) - análise de produto.",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong> - análise de visualizações de página.",
+      "thirdPartySupabase": "<strong>Supabase</strong> - autenticação e banco de dados.",
+      "thirdPartyStripe": "<strong>Stripe</strong> - processa os pagamentos das Licenças de Detetive pagas.",
       "thirdPartyNoSell": "Não vendemos seus dados a terceiros.",
       "retentionTitle": "Retenção de dados",
       "retentionBody": "Os dados da conta são mantidos enquanto sua conta estiver ativa. Os dados de análise são armazenados de forma anônima e expiram automaticamente de acordo com as políticas de retenção do PostHog e do Vercel.",
@@ -403,7 +407,7 @@
   "terms": {
     "metadata": {
       "title": "Termos de Serviço",
-      "description": "Termos de serviço do SQLNoir — regras e condições para usar nossa plataforma interativa de aprendizado de SQL e casos de detetive."
+      "description": "Termos de serviço do SQLNoir - regras e condições para usar nossa plataforma interativa de aprendizado de SQL e casos de detetive."
     },
     "body": {
       "title": "Termos de Serviço",
@@ -412,10 +416,10 @@
       "overviewBody": "O SQLNoir é uma plataforma interativa de aprendizado de SQL na qual você resolve casos de detetive usando consultas SQL. Ao usar o SQLNoir, você concorda com estes termos. O SQLNoir é fornecido \"no estado em que se encontra\", sem qualquer tipo de garantia.",
       "accountsTitle": "Contas e acesso",
       "accountsIntro": "Você pode usar o SQLNoir sem criar uma conta. Entrar com o Google OAuth permite acompanhar seu progresso entre dispositivos.",
-      "accountsFreeTier": "<strong>Acesso gratuito:</strong> os dois primeiros casos são gratuitos — sem necessidade de conta ou pagamento. Os demais casos são desbloqueados com uma Licença de Detetive de pagamento único.",
-      "accountsLicense": "<strong>Licença de Detetive:</strong> os dois primeiros casos são gratuitos. Para desbloquear os demais casos é necessária uma Licença de Detetive de pagamento único — um único pagamento vitalício, não uma assinatura. A licença nunca expira e inclui futuros casos pagos sem custo adicional.",
+      "accountsFreeTier": "<strong>Acesso gratuito:</strong> os dois primeiros casos são gratuitos - sem necessidade de conta ou pagamento. Os demais casos são desbloqueados com uma Licença de Detetive de pagamento único.",
+      "accountsLicense": "<strong>Licença de Detetive:</strong> os dois primeiros casos são gratuitos. Para desbloquear os demais casos é necessária uma Licença de Detetive de pagamento único - um único pagamento vitalício, não uma assinatura. A licença nunca expira e inclui futuros casos pagos sem custo adicional.",
       "paymentsTitle": "Pagamentos",
-      "paymentsBody": "Os dois primeiros casos são gratuitos. Para desbloquear os demais casos é necessária uma Licença de Detetive de pagamento único — um único pagamento vitalício, sem cobranças recorrentes ou mensais. Os pagamentos são processados de forma segura pela <stripe>Stripe</stripe>. Se você tiver qualquer problema, entre em contato conosco e faremos o possível para ajudar.",
+      "paymentsBody": "Os dois primeiros casos são gratuitos. Para desbloquear os demais casos é necessária uma Licença de Detetive de pagamento único - um único pagamento vitalício, sem cobranças recorrentes ou mensais. Os pagamentos são processados de forma segura pela <stripe>Stripe</stripe>. Se você tiver qualquer problema, entre em contato conosco e faremos o possível para ajudar.",
       "refundTitle": "Reembolsos",
       "refundBody": "Oferecemos reembolso de 14 dias, sem perguntas, e ajudamos qualquer cliente insatisfeito mesmo após esse prazo. Para solicitar um reembolso, escreva para <email>support@sqlnoir.com</email>.",
       "ugcTitle": "Conteúdo gerado pelo usuário",

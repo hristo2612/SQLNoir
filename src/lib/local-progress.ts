@@ -4,7 +4,7 @@ import { getAllCases } from "@/lib/case-utils";
  * Anonymous (logged-out) progress, persisted in localStorage.
  *
  * SECURITY / TRUST MODEL: localStorage is fully client-controlled, so we treat
- * it as untrusted input. We NEVER persist or read an XP number from storage —
+ * it as untrusted input. We NEVER persist or read an XP number from storage -
  * only a set of solved case ids, filtered to KNOWN FREE (beginner) cases. XP is
  * always RECOMPUTED from the canonical case data. This means a tampered
  * localStorage value can at most claim a free case was solved (which credits the
@@ -16,7 +16,7 @@ import { getAllCases } from "@/lib/case-utils";
 const STORAGE_KEY = "sqlnoir_local_progress";
 
 // Canonical FREE-case xp map, derived from real case data (beginner category),
-// e.g. { "case-001": 50, "case-002": 100 }. Derived — not a hardcoded duplicate.
+// e.g. { "case-001": 50, "case-002": 100 }. Derived - not a hardcoded duplicate.
 export const FREE_CASE_XP: Record<string, number> = (() => {
   const map: Record<string, number> = {};
   for (const c of getAllCases()) {
@@ -45,7 +45,7 @@ function readSolvedSet(): Set<string> {
       )
     );
   } catch {
-    // Corrupt JSON / unavailable storage — treat as empty.
+    // Corrupt JSON / unavailable storage - treat as empty.
     return new Set();
   }
 }
@@ -55,7 +55,7 @@ function writeSolvedSet(set: Set<string>): void {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
   } catch {
-    // Private mode / quota exceeded — silently ignore.
+    // Private mode / quota exceeded - silently ignore.
   }
 }
 
@@ -74,7 +74,7 @@ export function recordLocalSolve(caseId: string): void {
 
 /**
  * Read local progress. XP is ALWAYS recomputed from the canonical free-case map
- * — a stored xp number is never trusted (and is never written in the first
+ * - a stored xp number is never trusted (and is never written in the first
  * place). Returns empty progress on the server or when storage is empty/corrupt.
  */
 export function getLocalProgress(): { solvedCaseIds: string[]; xp: number } {

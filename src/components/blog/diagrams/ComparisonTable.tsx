@@ -7,7 +7,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 export interface ComparisonTableProps {
   /** Column headers */
   headers: string[];
-  /** Table rows — each inner array matches the headers */
+  /** Table rows - each inner array matches the headers */
   rows: string[][];
   /** Optional caption shown below the table */
   caption?: string;

@@ -7,7 +7,7 @@ import { rateLimit } from "@/lib/rate-limit";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Defense-in-depth rate limit (best-effort, per-instance — see rate-limit.ts).
+// Defense-in-depth rate limit (best-effort, per-instance - see rate-limit.ts).
 // Claiming is a sensitive, infrequent action; 10 attempts / 60s per IP is
 // generous for legitimate use but throttles brute-forcing of session IDs.
 const CLAIM_RATE_LIMIT = 10;

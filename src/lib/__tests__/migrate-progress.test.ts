@@ -29,7 +29,7 @@ describe("computeMigration", () => {
     expect(r.addedXp).toBe(150);
   });
 
-  it("is idempotent — re-running with everything completed adds nothing", () => {
+  it("is idempotent - re-running with everything completed adds nothing", () => {
     const r = computeMigration(
       FREE,
       ["case-001", "case-002"],

@@ -12,8 +12,8 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
     <div className="prose prose-lg max-w-none">
       <p className="text-xl text-gray-700 leading-relaxed mb-8">
         Um banco de dados relacional é uma forma de organizar informação em
-        tabelas que se conectam entre si. Cada tabela guarda um tipo de dado —
-        suspeitos, depoimentos, provas — e as tabelas se relacionam por meio de
+        tabelas que se conectam entre si. Cada tabela guarda um tipo de dado -
+        suspeitos, depoimentos, provas - e as tabelas se relacionam por meio de
         chaves. É esse modelo de tabelas ligadas que o SQL consulta, e é a base
         de quase todo sistema que você usa no dia a dia.
       </p>
@@ -84,7 +84,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
 
       <p className="text-gray-700 leading-relaxed mb-6">
         Um banco de dados relacional armazena dados em <strong>tabelas</strong>{" "}
-        — estruturas parecidas com planilhas, com linhas e colunas. O que torna
+        - estruturas parecidas com planilhas, com linhas e colunas. O que torna
         o modelo &quot;relacional&quot; é que essas tabelas não vivem isoladas:
         elas se conectam umas às outras por meio de <strong>chaves</strong>.
         Assim, em vez de repetir a mesma informação em vários lugares, você a
@@ -94,7 +94,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
       <p className="text-gray-700 leading-relaxed mb-6">
         Pense numa investigação. Você tem uma tabela de suspeitos, uma tabela de
         depoimentos e uma tabela de provas. O depoimento não repete o nome e a
-        idade do suspeito — ele apenas guarda o <em>id</em> do suspeito e diz
+        idade do suspeito - ele apenas guarda o <em>id</em> do suspeito e diz
         &quot;este depoimento pertence ao suspeito 7&quot;. Quando você quer ver
         tudo junto, o SQL segue essa ligação. Esse é o coração do modelo
         relacional.
@@ -167,7 +167,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
         </div>
         <p className="text-gray-600 text-sm mt-2">
           Cada linha é um suspeito. Cada coluna é uma característica. A coluna{" "}
-          <code>id</code> dá a cada linha um número único — e isso vai ser
+          <code>id</code> dá a cada linha um número único - e isso vai ser
           importante na próxima seção.
         </p>
       </div>
@@ -196,7 +196,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
       <p className="text-gray-700 leading-relaxed mb-6">
         A <strong>chave estrangeira</strong> (foreign key) é uma coluna numa
         tabela que aponta para a chave primária de outra tabela. A tabela{" "}
-        <code>depoimentos</code> tem uma coluna <code>suspeito_id</code> — essa
+        <code>depoimentos</code> tem uma coluna <code>suspeito_id</code> - essa
         coluna é uma chave estrangeira que diz a qual suspeito o depoimento
         pertence. É assim que o depoimento &quot;sabe&quot; de quem ele é, sem
         precisar copiar o nome e a idade do suspeito.
@@ -205,7 +205,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
       <DetectiveTip variant="clue" title="A ideia central das chaves">
         Guarde cada informação <strong>uma única vez</strong> e use chaves para
         apontar para ela. Se o nome de um suspeito mudar, você corrige em um só
-        lugar — e todos os depoimentos ligados a ele continuam corretos
+        lugar - e todos os depoimentos ligados a ele continuam corretos
         automaticamente.
       </DetectiveTip>
 
@@ -289,7 +289,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
         Na prática, você não precisa decorar a teoria matemática. O que importa
         entender é que o modelo relacional organiza dados em tabelas com regras
         claras e permite combiná-las de forma previsível com SQL. As ligações
-        entre tabelas são uma consequência maravilhosa do modelo — só não são a
+        entre tabelas são uma consequência maravilhosa do modelo - só não são a
         razão exata do nome.
       </p>
 
@@ -303,7 +303,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
 
       <p className="text-gray-700 leading-relaxed mb-6">
         Você provavelmente já ouviu falar de bancos &quot;NoSQL&quot; ou não
-        relacionais, como MongoDB. Eles não são melhores nem piores — são
+        relacionais, como MongoDB. Eles não são melhores nem piores - são
         ferramentas para problemas diferentes. Veja a comparação:
       </p>
 
@@ -346,8 +346,8 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
       />
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Para a grande maioria das aplicações — sistemas de pedidos, cadastros,
-        relatórios, qualquer coisa com dados bem estruturados e relacionados —
+        Para a grande maioria das aplicações - sistemas de pedidos, cadastros,
+        relatórios, qualquer coisa com dados bem estruturados e relacionados -
         o banco relacional é a escolha padrão. E é por isso que aprender SQL
         continua sendo uma das habilidades mais pedidas no mercado.
       </p>
@@ -402,7 +402,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
             label: "ligado a",
           },
         ]}
-        caption="Três tabelas conectadas por chaves — um banco de dados relacional em miniatura"
+        caption="Três tabelas conectadas por chaves - um banco de dados relacional em miniatura"
       />
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -410,7 +410,7 @@ export default function BancoDeDadosRelacionalExplicadoContent() {
         tabela. A coluna <code>suspeito_id</code> em <code>depoimentos</code> e
         em <code>provas</code> é uma chave estrangeira que aponta de volta para{" "}
         <code>suspeitos.id</code>. Cada suspeito pode ter vários depoimentos e
-        várias provas — dois relacionamentos 1:N.
+        várias provas - dois relacionamentos 1:N.
       </p>
 
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
@@ -479,7 +479,7 @@ WHERE s.cidade = 'São Paulo';`}
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
           No SQLNoir, cada caso de detetive é um banco de dados relacional de
           verdade. Você explora tabelas, segue chaves estrangeiras e usa JOINs
-          para resolver crimes — direto no navegador, sem cadastro.
+          para resolver crimes - direto no navegador, sem cadastro.
         </p>
         <Link
           href="/pt-br/cases"
@@ -567,7 +567,7 @@ WHERE s.cidade = 'São Paulo';`}
           fundamentos de SQL para iniciantes
         </Link>
         . A melhor forma de fixar o modelo relacional é consultar um de
-        verdade — depois é só partir para os{" "}
+        verdade - depois é só partir para os{" "}
         <Link
           href="/pt-br/cases"
           className="text-amber-700 hover:text-amber-900 underline"

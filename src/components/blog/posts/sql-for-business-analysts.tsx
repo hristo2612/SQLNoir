@@ -83,7 +83,7 @@ export default function SqlForBusinessAnalystsContent() {
         <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
           SQLNoir&apos;s detective cases
         </Link>{" "}
-        let you write the same JOINs, aggregations, and multi-table queries by solving crime mysteries — the SQL skills transfer directly to the stakeholder questions and data exploration tasks you&apos;ll face as a BA.
+        let you write the same JOINs, aggregations, and multi-table queries by solving crime mysteries - the SQL skills transfer directly to the stakeholder questions and data exploration tasks you&apos;ll face as a BA.
       </p>
 
       <h2 id="five-sql-skills" className="text-3xl font-detective text-amber-900 mt-12 mb-6">The 5 SQL Skills Every Business Analyst Needs</h2>
@@ -311,7 +311,7 @@ ORDER BY total_revenue DESC;`}
             Practice the Same SQL Patterns with Detective Cases
           </p>
           <p className="text-amber-700 text-sm">
-            The JOINs, GROUP BY, and aggregations you just learned work identically whether you&apos;re analyzing business data or solving crimes. SQLNoir gives you real databases to query — you&apos;ll write multi-table queries, find patterns, and build the SQL muscle memory every BA needs.
+            The JOINs, GROUP BY, and aggregations you just learned work identically whether you&apos;re analyzing business data or solving crimes. SQLNoir gives you real databases to query - you&apos;ll write multi-table queries, find patterns, and build the SQL muscle memory every BA needs.
           </p>
         </div>
         <Link
@@ -514,7 +514,7 @@ WHERE created_date >= CURRENT_DATE - INTERVAL '7 days';`}
           Build SQL Muscle Memory with Detective Cases
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          You&apos;ve learned the syntax — JOINs, aggregations, date functions, and subqueries. Now practice those exact same patterns by querying real databases. The SQL skills you drill solving mysteries in SQLNoir transfer directly to stakeholder meetings, KPI reports, and business analysis work.
+          You&apos;ve learned the syntax - JOINs, aggregations, date functions, and subqueries. Now practice those exact same patterns by querying real databases. The SQL skills you drill solving mysteries in SQLNoir transfer directly to stakeholder meetings, KPI reports, and business analysis work.
         </p>
         <Link
           href="/cases"

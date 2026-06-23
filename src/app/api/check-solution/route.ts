@@ -4,7 +4,7 @@ import { getAllCases, getLocalizedCase } from "@/lib/case-utils";
 import { isCaseFree } from "@/lib/license";
 import { rateLimit } from "@/lib/rate-limit";
 
-// Defense-in-depth rate limit (best-effort, per-instance — see rate-limit.ts).
+// Defense-in-depth rate limit (best-effort, per-instance - see rate-limit.ts).
 // Answer-checking is interactive; 30 attempts / 60s per IP throttles automated
 // answer-guessing while leaving normal play untouched.
 const CHECK_RATE_LIMIT = 30;

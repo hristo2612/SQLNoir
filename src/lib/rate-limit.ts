@@ -1,10 +1,10 @@
 /**
  * ============================================================================
- * BEST-EFFORT, IN-MEMORY RATE LIMITER — READ THIS BEFORE RELYING ON IT
+ * BEST-EFFORT, IN-MEMORY RATE LIMITER - READ THIS BEFORE RELYING ON IT
  * ============================================================================
  *
  * This is a dependency-free, in-memory fixed-window rate limiter. It exists as
- * DEFENSE-IN-DEPTH only — a cheap speed bump against brute-force / hammering of
+ * DEFENSE-IN-DEPTH only - a cheap speed bump against brute-force / hammering of
  * unauthenticated-ish endpoints. It is NOT a strong global rate limit.
  *
  * WHY IT IS BEST-EFFORT (PER-INSTANCE):
@@ -20,7 +20,7 @@
  *
  * THE REAL PROTECTION FOR CLAIM-LICENSE IS NOT THIS LIMITER:
  *   The license-theft vector is closed by the email-match gate in
- *   `src/app/api/claim-license/route.ts` (Task B5) — the signed-in user's email
+ *   `src/app/api/claim-license/route.ts` (Task B5) - the signed-in user's email
  *   must equal the buyer email captured at Stripe checkout. This limiter merely
  *   slows down abusive request volume; it is intentionally a secondary control.
  * ============================================================================
@@ -58,7 +58,7 @@ export interface RateLimitResult {
  * Fixed-window rate limit check. Increments the counter for `key` and reports
  * whether the request is allowed.
  *
- * Pruning: expired entries are removed opportunistically — the key's own entry
+ * Pruning: expired entries are removed opportunistically - the key's own entry
  * on access, plus a light sweep so the Map can't grow unbounded under many
  * distinct keys.
  */

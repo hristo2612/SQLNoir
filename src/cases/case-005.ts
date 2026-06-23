@@ -21,8 +21,8 @@ Tina Ruiz mentioned seeing someone with a keycard marked “QX-” followed by a
 Carl Jenkins reported unusual server activity linked to a server in Helsinki. Searching the computer access logs for Helsinki access again returned too many entries.
 However, performing a JOIN between the keycard access and computer access logs narrowed the list down to Elizabeth Gordon.
 Investigating her further, you reviewed her witness statement. She claimed she had received an email warning her about an alarm near the chip, prompting her to go check.
-Searching the email logs, you discovered that she had received the email from Norman Owens — who himself had received two suspicious messages from a sender with ID NULL. One email told Norman to “move L into place,” and the other instructed him to unlock Facility 18 so someone else could “finish things.”
-This led you to check the facility access logs for that day. Only two individuals accessed Facility 18: Elizabeth Gordon and one other shortly afterward — Hristo Bogoev.`,
+Searching the email logs, you discovered that she had received the email from Norman Owens - who himself had received two suspicious messages from a sender with ID NULL. One email told Norman to “move L into place,” and the other instructed him to unlock Facility 18 so someone else could “finish things.”
+This led you to check the facility access logs for that day. Only two individuals accessed Facility 18: Elizabeth Gordon and one other shortly afterward - Hristo Bogoev.`,
   },
 };
 

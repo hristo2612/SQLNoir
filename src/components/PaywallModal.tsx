@@ -83,100 +83,97 @@ export function PaywallModal({
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-zinc-950/65 backdrop-blur-sm"
         onClick={handleDismiss}
       />
-      <div className="relative w-full max-w-lg overflow-hidden rounded-xl border-2 border-amber-700/50 shadow-2xl">
-        <div className="paper-texture-dark px-6 py-5 text-center relative">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-2xl">
+        <div className="relative bg-zinc-950 px-6 py-6 text-center">
           <button
             onClick={handleDismiss}
-            className="absolute top-4 right-4 text-amber-200/70 hover:text-amber-100 transition-colors"
+            className="absolute right-4 top-4 rounded-full p-1 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
           >
             <X className="w-5 h-5" />
           </button>
-          <div className="flex justify-center mb-3">
-            <div className="bg-amber-400/20 p-3 rounded-full border border-amber-400/30">
-              <Shield className="w-8 h-8 text-amber-300" />
+          <div className="mb-4 flex justify-center">
+            <div className="rounded-full border border-emerald-400/30 bg-emerald-400/10 p-3">
+              <Shield className="h-8 w-8 text-emerald-300" />
             </div>
           </div>
-          <h2 className="font-detective text-2xl text-amber-100 mb-1">
+          <h2 className="mb-2 font-detective text-2xl text-white">
             {t('upgradeTitle')}
           </h2>
-          <p className="text-amber-300/80 text-sm font-detective">
+          <p className="mx-auto max-w-sm text-sm leading-6 text-zinc-300">
             {t('upgradeSubtitle')}
           </p>
         </div>
 
-        <div className="paper-texture px-6 py-6">
-          <div className="space-y-4 mb-6">
+        <div className="px-6 py-6">
+          <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 px-5 py-4 text-center">
+            <div className="inline-flex items-baseline gap-1">
+              <span className="font-detective text-4xl text-amber-950">
+                {price}
+              </span>
+            </div>
+            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-amber-700">
+              {t('oneTimePayment')}
+            </p>
+          </div>
+
+          <div className="mb-6 space-y-3">
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 bg-amber-100 p-1.5 rounded-lg border border-amber-300">
-                <Lock className="w-4 h-4 text-amber-700" />
+              <div className="mt-0.5 rounded-lg border border-emerald-200 bg-emerald-50 p-1.5">
+                <Lock className="h-4 w-4 text-emerald-700" />
               </div>
               <div>
-                <p className="font-detective text-amber-900 text-sm">
+                <p className="font-detective text-sm text-zinc-950">
                   {t('unlockCases')}
                 </p>
-                <p className="text-amber-700/70 text-xs mt-0.5">
+                <p className="mt-0.5 text-xs leading-5 text-zinc-600">
                   {t('unlockCasesDesc')}
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 bg-amber-100 p-1.5 rounded-lg border border-amber-300">
-                <Award className="w-4 h-4 text-amber-700" />
+              <div className="mt-0.5 rounded-lg border border-emerald-200 bg-emerald-50 p-1.5">
+                <Award className="h-4 w-4 text-emerald-700" />
               </div>
               <div>
-                <p className="font-detective text-amber-900 text-sm">
+                <p className="font-detective text-sm text-zinc-950">
                   {t('earnBadges')}
                 </p>
-                <p className="text-amber-700/70 text-xs mt-0.5">
+                <p className="mt-0.5 text-xs leading-5 text-zinc-600">
                   {t('earnBadgesDesc')}
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 bg-amber-100 p-1.5 rounded-lg border border-amber-300">
-                <Heart className="w-4 h-4 text-amber-700" />
+              <div className="mt-0.5 rounded-lg border border-emerald-200 bg-emerald-50 p-1.5">
+                <Heart className="h-4 w-4 text-emerald-700" />
               </div>
               <div>
-                <p className="font-detective text-amber-900 text-sm">
+                <p className="font-detective text-sm text-zinc-950">
                   {t('supportDev')}
                 </p>
-                <p className="text-amber-700/70 text-xs mt-0.5">
+                <p className="mt-0.5 text-xs leading-5 text-zinc-600">
                   {t('supportDevDesc')}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="text-center mb-5">
-            <div className="inline-flex items-baseline gap-1">
-              <span className="font-detective text-3xl text-amber-900">
-                {price}
-              </span>
-            </div>
-            <p className="text-amber-700/70 text-xs mt-1 font-detective">
-              {t('oneTimePayment')}
-            </p>
-          </div>
-
           <button
             onClick={handleCtaClick}
             disabled={loading}
-            className={`w-full py-3 px-6 rounded-lg font-detective text-lg text-amber-50
-                     bg-amber-800 hover:bg-amber-700 transition-colors
-                     border-2 border-amber-900/50 shadow-lg hover:shadow-xl
-                     flex items-center justify-center gap-2
+            className={`flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-950 px-6 py-3 font-detective text-lg text-white shadow-lg transition-colors hover:bg-zinc-800
                      ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-amber-200 border-t-transparent rounded-full animate-spin" />
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-200 border-t-transparent" />
             ) : (
               <>
-                <Shield className="w-5 h-5" />
+                <Shield className="h-5 w-5" />
                 {t('getYourLicense')}
               </>
             )}
@@ -184,18 +181,17 @@ export function PaywallModal({
 
           <button
             onClick={handleDismiss}
-            className="w-full mt-3 py-2 text-center text-amber-700/70 hover:text-amber-800
-                     text-sm font-detective transition-colors"
+            className="mt-3 w-full py-2 text-center font-detective text-sm text-zinc-500 transition-colors hover:text-zinc-800"
           >
             {t('continueWithFree')}
           </button>
 
-          <p className="mt-4 text-center text-xs text-amber-700/60">
+          <p className="mt-4 text-center text-xs text-zinc-500">
             {t.rich('teamLicense', {
               a: (chunks) => (
                 <a
                   href="mailto:support@sqlnoir.com"
-                  className="underline hover:text-amber-800"
+                  className="underline hover:text-zinc-800"
                 >
                   {chunks}
                 </a>

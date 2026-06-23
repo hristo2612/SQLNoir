@@ -7,14 +7,14 @@ import { TrackedLink } from "@/components/TrackedLink";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "SQL para Iniciantes — Aprenda SQL do Zero em Português",
+    title: "SQL para Iniciantes - Aprenda SQL do Zero em Português",
     description:
       "Guia de SQL para iniciantes em português. Aprenda SQL do zero: o que é, comandos básicos, como praticar. Comece resolvendo casos de detetive de graça.",
     alternates: { canonical: "/pt-br/sql-para-iniciantes" },
     openGraph: {
       type: "article",
       title:
-        "SQL para Iniciantes — Aprenda SQL do Zero em Português | SQLNoir",
+        "SQL para Iniciantes - Aprenda SQL do Zero em Português | SQLNoir",
       description:
         "Guia de SQL para iniciantes em português. Aprenda SQL do zero: o que é, comandos básicos, como praticar. Comece resolvendo casos de detetive de graça.",
       url: "https://www.sqlnoir.com/pt-br/sql-para-iniciantes",
@@ -23,14 +23,14 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/open-graph-image.png",
           width: 1200,
           height: 630,
-          alt: "SQL para Iniciantes — Aprenda SQL do Zero com SQLNoir",
+          alt: "SQL para Iniciantes - Aprenda SQL do Zero com SQLNoir",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
       title:
-        "SQL para Iniciantes — Aprenda SQL do Zero em Português | SQLNoir",
+        "SQL para Iniciantes - Aprenda SQL do Zero em Português | SQLNoir",
       description:
         "Guia de SQL para iniciantes em português. Aprenda SQL do zero: o que é, comandos básicos, como praticar. Comece resolvendo casos de detetive de graça.",
       images: ["/open-graph-image.png"],
@@ -60,7 +60,7 @@ export default async function SqlParaIniciantesPage() {
     {
       question: "SQL é difícil de aprender?",
       answer:
-        "Não. SQL é uma das linguagens mais acessíveis para quem está começando: a sintaxe é parecida com inglês e os primeiros resultados aparecem rápido. A parte que exige mais prática são os JOINs e as consultas com várias tabelas — mas isso vem naturalmente com repetição.",
+        "Não. SQL é uma das linguagens mais acessíveis para quem está começando: a sintaxe é parecida com inglês e os primeiros resultados aparecem rápido. A parte que exige mais prática são os JOINs e as consultas com várias tabelas - mas isso vem naturalmente com repetição.",
     },
     {
       question: "SQL é gratuito?",
@@ -127,7 +127,7 @@ export default async function SqlParaIniciantesPage() {
               SQL é a linguagem usada para conversar com bancos de dados:
               com ela você busca, filtra, cruza e resume informações
               guardadas em tabelas. É a forma padrão de fazer perguntas aos
-              dados — e aprender SQL do zero é mais simples do que parece.
+              dados - e aprender SQL do zero é mais simples do que parece.
               Este guia mostra o que é SQL, os comandos básicos e como
               praticar até ganhar fluência.
             </p>
@@ -154,7 +154,7 @@ export default async function SqlParaIniciantesPage() {
             <p className="text-amber-800 leading-relaxed">
               SQL (Structured Query Language) é a linguagem padrão para
               trabalhar com bancos de dados relacionais. Um banco relacional
-              guarda informações em tabelas — pense em planilhas com linhas e
+              guarda informações em tabelas - pense em planilhas com linhas e
               colunas. Cada tabela representa algo (clientes, pedidos,
               suspeitos de um crime) e o SQL é como você faz perguntas a
               esses dados: &quot;quais clientes compraram em março?&quot;,
@@ -178,8 +178,8 @@ export default async function SqlParaIniciantesPage() {
               e aparece muito além da área de dados. Desenvolvedores,
               analistas, profissionais de marketing, product managers e
               cientistas de dados usam SQL todos os dias. É uma linguagem
-              estável — o que você aprende hoje continua valendo daqui a dez
-              anos — e está presente em praticamente toda empresa que guarda
+              estável - o que você aprende hoje continua valendo daqui a dez
+              anos - e está presente em praticamente toda empresa que guarda
               dados.
             </p>
             <p className="text-amber-800 leading-relaxed">
@@ -200,7 +200,7 @@ export default async function SqlParaIniciantesPage() {
             <div className="bg-white border border-amber-200 rounded-2xl shadow-sm p-6 space-y-5">
               <div>
                 <h3 className="font-detective text-xl text-amber-900">
-                  SELECT — buscar dados
+                  SELECT - buscar dados
                 </h3>
                 <p className="text-amber-800 leading-relaxed">
                   Escolhe quais colunas você quer ver.
@@ -211,7 +211,7 @@ export default async function SqlParaIniciantesPage() {
               </div>
               <div>
                 <h3 className="font-detective text-xl text-amber-900">
-                  WHERE — filtrar
+                  WHERE - filtrar
                 </h3>
                 <p className="text-amber-800 leading-relaxed">
                   Mantém só as linhas que atendem a uma condição.
@@ -225,7 +225,7 @@ export default async function SqlParaIniciantesPage() {
               </div>
               <div>
                 <h3 className="font-detective text-xl text-amber-900">
-                  ORDER BY — ordenar
+                  ORDER BY - ordenar
                 </h3>
                 <p className="text-amber-800 leading-relaxed">
                   Organiza os resultados em ordem crescente ou decrescente.
@@ -236,7 +236,7 @@ export default async function SqlParaIniciantesPage() {
               </div>
               <div>
                 <h3 className="font-detective text-xl text-amber-900">
-                  JOIN — cruzar tabelas
+                  JOIN - cruzar tabelas
                 </h3>
                 <p className="text-amber-800 leading-relaxed">
                   Combina dados de duas tabelas relacionadas.
@@ -250,7 +250,7 @@ export default async function SqlParaIniciantesPage() {
               </div>
               <div>
                 <h3 className="font-detective text-xl text-amber-900">
-                  GROUP BY e agregações — resumir dados
+                  GROUP BY e agregações - resumir dados
                 </h3>
                 <p className="text-amber-800 leading-relaxed">
                   Agrupa linhas e calcula totais com COUNT, SUM ou AVG.
@@ -277,43 +277,43 @@ export default async function SqlParaIniciantesPage() {
                 <span className="font-detective text-amber-900">
                   1. Entenda o modelo de tabelas
                 </span>{" "}
-                — saiba o que são linhas, colunas e a relação entre tabelas.
+                - saiba o que são linhas, colunas e a relação entre tabelas.
               </p>
               <p className="text-amber-800 leading-relaxed">
                 <span className="font-detective text-amber-900">
                   2. Domine SELECT e WHERE
                 </span>{" "}
-                — pratique buscar e filtrar até virar automático.
+                - pratique buscar e filtrar até virar automático.
               </p>
               <p className="text-amber-800 leading-relaxed">
                 <span className="font-detective text-amber-900">
                   3. Aprenda ORDER BY e LIMIT
                 </span>{" "}
-                — controle a ordem e a quantidade dos resultados.
+                - controle a ordem e a quantidade dos resultados.
               </p>
               <p className="text-amber-800 leading-relaxed">
                 <span className="font-detective text-amber-900">
                   4. Avance para JOINs
                 </span>{" "}
-                — o passo que mais separa iniciante de intermediário.
+                - o passo que mais separa iniciante de intermediário.
               </p>
               <p className="text-amber-800 leading-relaxed">
                 <span className="font-detective text-amber-900">
                   5. Pratique agregações
                 </span>{" "}
-                — GROUP BY, COUNT, SUM, AVG para análises reais.
+                - GROUP BY, COUNT, SUM, AVG para análises reais.
               </p>
               <p className="text-amber-800 leading-relaxed">
                 <span className="font-detective text-amber-900">
                   6. Resolva problemas de verdade
                 </span>{" "}
-                — aplique tudo em casos com dados reais, não só exercícios
+                - aplique tudo em casos com dados reais, não só exercícios
                 isolados.
               </p>
             </div>
             <p className="text-amber-800 leading-relaxed">
               O erro mais comum de quem aprende SQL do zero é estudar só
-              teoria. Escreva consultas desde o primeiro dia — é praticando
+              teoria. Escreva consultas desde o primeiro dia - é praticando
               que o conhecimento fixa.
             </p>
           </section>
@@ -326,7 +326,7 @@ export default async function SqlParaIniciantesPage() {
               O SQLNoir foi feito exatamente para a etapa de prática. Em vez
               de listas de exercícios secas, você assume o papel de detetive
               e resolve crimes consultando bancos de dados reais. Cada caso
-              te dá um objetivo claro — descobrir o culpado — e você só
+              te dá um objetivo claro - descobrir o culpado - e você só
               avança quando a sua consulta retorna a pista certa.
             </p>
             <p className="text-amber-800 leading-relaxed">

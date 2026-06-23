@@ -124,7 +124,7 @@ AND i.alibi IS NOT NULL;`}
           </li>
           <li>
             • <strong>Free to start:</strong> The first two cases are free, no
-            signup needed — a one-time Detective License unlocks the rest
+            signup needed - a one-time Detective License unlocks the rest
           </li>
           <li>
             • <strong>No setup:</strong> Just open your browser and start

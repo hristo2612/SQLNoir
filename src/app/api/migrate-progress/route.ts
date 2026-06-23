@@ -8,12 +8,12 @@ import { computeMigration, getFreeCaseXpMap } from "@/lib/migrate-progress";
  * Migrates an anonymous user's locally-stored solved FREE cases onto their
  * account after they sign in.
  *
- * SECURITY: the client sends ONLY case ids — never xp numbers. The server is the
+ * SECURITY: the client sends ONLY case ids - never xp numbers. The server is the
  * sole source of truth:
  *   - the caller is authenticated via a Bearer access token (writes go ONLY to
  *     that user's own row);
- *   - incoming ids are filtered to KNOWN FREE (beginner) cases — paid cases
- *     (003–006) can never be credited here;
+ *   - incoming ids are filtered to KNOWN FREE (beginner) cases - paid cases
+ *     (003-006) can never be credited here;
  *   - xp is recomputed from canonical case data, not from the request;
  *   - the merge is a set-union APPEND (never an overwrite) and is idempotent, so
  *     replaying the request credits nothing new.

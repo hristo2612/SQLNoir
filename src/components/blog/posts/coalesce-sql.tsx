@@ -653,7 +653,7 @@ LEFT JOIN employees m ON e.manager_id = m.id;`}
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
           COALESCE shows up constantly in real SQL work, from cleaning reports to
           fixing JOIN results. SQLNoir gives you detective mysteries where NULL
-          handling, JOINs, and data gaps are part of every investigation — the
+          handling, JOINs, and data gaps are part of every investigation - the
           first two cases are free, with a one-time Detective License to unlock
           the rest.
         </p>

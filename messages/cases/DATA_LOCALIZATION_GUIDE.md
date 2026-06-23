@@ -6,12 +6,12 @@ This document identifies all text strings within the case SQL databases (schemas
 
 ## General Notes
 
-- Database column names (e.g., `description`, `transcript`) should NOT be translated — they are part of the SQL schema players query
-- Table names should NOT be translated — players reference them in SQL queries
-- Column names should NOT be translated — players reference them in WHERE clauses, JOINs, etc.
-- Person names should generally NOT be translated — they are used as answers to cases
+- Database column names (e.g., `description`, `transcript`) should NOT be translated - they are part of the SQL schema players query
+- Table names should NOT be translated - players reference them in SQL queries
+- Column names should NOT be translated - players reference them in WHERE clauses, JOINs, etc.
+- Person names should generally NOT be translated - they are used as answers to cases
 - Location names MAY be translated but must remain consistent across all tables within a case
-- The `answer` field in each case definition (e.g., "Vincent Malone") must NEVER change — it's the solution check
+- The `answer` field in each case definition (e.g., "Vincent Malone") must NEVER change - it's the solution check
 
 ---
 
@@ -21,13 +21,13 @@ This document identifies all text strings within the case SQL databases (schemas
 
 | Table | Column | Type of Text | Clue Level | Notes |
 |-------|--------|-------------|------------|-------|
-| `crime_scene` | `type` | Crime type labels | 🟡 Medium | Values: "theft", "murder", "bribery" — used in WHERE filters |
+| `crime_scene` | `type` | Crime type labels | 🟡 Medium | Values: "theft", "murder", "bribery" - used in WHERE filters |
 | `crime_scene` | `location` | Place names | 🔴 CRITICAL | "Blue Note Lounge" is a key clue players must find |
 | `crime_scene` | `description` | Narrative descriptions | 🔴 CRITICAL | Contains witness descriptions that lead to the suspect (e.g., "man in a trench coat with a scar on his left cheek") |
 | `suspects` | `name` | Person names | ⚫ DO NOT TRANSLATE | "Vincent Malone" is the case answer |
 | `suspects` | `attire` | Clothing descriptions | 🔴 CRITICAL | "trench coat" must match the crime scene clue |
 | `suspects` | `scar` | Body feature descriptions | 🔴 CRITICAL | "left cheek" must match the crime scene clue |
-| `interviews` | `transcript` | Dialog/testimony text | 🔴 CRITICAL | Contains confessions — "I wasn't going to steal it, but I did." |
+| `interviews` | `transcript` | Dialog/testimony text | 🔴 CRITICAL | Contains confessions - "I wasn't going to steal it, but I did." |
 
 ### Cross-reference constraints
 - Crime scene description mentions "trench coat" + "scar on left cheek" → must match suspects table
@@ -134,8 +134,8 @@ This document identifies all text strings within the case SQL databases (schemas
 ## Translation Strategy Recommendations
 
 ### Phase 1: Safe translations (can be done without breaking gameplay)
-- Case narratives (brief, objectives, success messages, explanations) — in `/messages/cases/`
-- UI strings — in `/messages/en.json`
+- Case narratives (brief, objectives, success messages, explanations) - in `/messages/cases/`
+- UI strings - in `/messages/en.json`
 
 ### Phase 2: Careful translations (requires cross-referencing)
 - Crime scene descriptions, witness statements, interview transcripts
@@ -166,8 +166,8 @@ For East-Asian locales, the rules above are inverted:
 - `solution.answer` is overridden per-locale in `messages/cases/{locale}/case-NNN.json`.
 
 Rationale: CEO decision (2026-05-11). Native names and full immersion drive
-conversion in CJK markets. The trade-off — that students write SQL with
-non-ASCII identifiers — is deliberate and pedagogically supported in Lloyd
+conversion in CJK markets. The trade-off - that students write SQL with
+non-ASCII identifiers - is deliberate and pedagogically supported in Lloyd
 Hasson's classroom-tested original.
 
 pt-br and other Romance/Germanic locales continue to follow the original

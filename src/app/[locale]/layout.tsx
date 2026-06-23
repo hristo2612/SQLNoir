@@ -47,7 +47,7 @@ const localeMeta: Record<string, { title: string; description: string; keywords:
     keywords: ["jogo de SQL", "aprender SQL", "tutorial interativo de SQL", "praticar SQL", "jogo de detetive SQL"],
   },
   "zh-CN": {
-    title: "SQL 推理游戏 — 边破案边学 SQL ｜ SQLNoir",
+    title: "SQL 推理游戏 - 边破案边学 SQL ｜ SQLNoir",
     description: "SQLNoir 是一款 SQL 推理游戏，也是 SQL 侦探游戏：用 SQL 查询语句侦破犯罪和神秘案件。化身侦探，边破案边学 SQL，轻松掌握查询技能。",
     keywords: ["SQL 推理游戏", "SQL 侦探", "SQL 游戏", "学习 SQL", "SQL 练习", "SQL 侦探游戏"],
   },

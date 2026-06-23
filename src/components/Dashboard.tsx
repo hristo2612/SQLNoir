@@ -118,7 +118,12 @@ export function Dashboard({
                   <div className="space-y-4">
                     {((localizedCases || cases)[category.id as keyof typeof cases] || []).map(
                       (caseData) => (
-                        <div key={caseData.id} className="relative">
+                        <div
+                          key={caseData.id}
+                          className={`relative rounded-lg transition-transform duration-200 ${
+                            isLocked ? "group/locked hover:-translate-y-0.5" : ""
+                          }`}
+                        >
                           <CaseFile
                             caseData={caseData}
                             onClick={() =>
@@ -129,13 +134,14 @@ export function Dashboard({
                             isSolved={solvedCases.includes(caseData.id)}
                           />
                           {isLocked && (
-                            <div className="absolute inset-0 bg-amber-900/10 backdrop-blur-[1px] rounded-lg flex items-center justify-center cursor-pointer"
+                            <div
+                              className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-lg bg-amber-950/10 backdrop-blur-[1px] transition-all duration-200 group-hover/locked:bg-amber-950/25 group-hover/locked:backdrop-blur-[2px] group-hover/locked:ring-2 group-hover/locked:ring-amber-500/50"
                               onClick={() => onLockedCaseClick(caseData)}
                             >
-                              <div className="bg-amber-100 px-4 py-2 rounded-full flex items-center shadow-lg transform -rotate-12">
+                              <div className="flex -rotate-6 items-center rounded-full bg-white/95 px-4 py-2 shadow-lg transition-all duration-200 group-hover/locked:rotate-0 group-hover/locked:scale-105 group-hover/locked:bg-amber-50">
                                 <Lock className="w-4 h-4 mr-2 text-amber-700" />
                                 <span className="font-detective text-amber-900">
-                                  {t('common.locked')}
+                                  {t('license.unlockCase')}
                                 </span>
                               </div>
                             </div>

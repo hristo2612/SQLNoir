@@ -7,7 +7,7 @@ import {
   getPriceForLocale,
 } from "@/lib/ppp-prices";
 
-const PRODUCT_NAME = "SQLNoir Detective License";
+const PRODUCT_NAME = "Detective License";
 const DEFAULT_PUBLIC_SITE_URL = "https://www.sqlnoir.com";
 
 function stripTrailingSlash(value: string): string {
@@ -39,16 +39,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Parse body (locale is optional — defaults to "en" for backwards compat).
+    // Parse body (locale is optional - defaults to "en" for backwards compat).
     let body: { locale?: string } = {};
     try {
       body = (await req.json()) as { locale?: string };
     } catch {
-      // No body or invalid JSON — fine, locale defaults to "en".
+      // No body or invalid JSON - fine, locale defaults to "en".
     }
     const locale = body.locale || "en";
 
-    // Check if user is signed in (optional — not required for checkout)
+    // Check if user is signed in (optional - not required for checkout)
     const supabase = createServerSupabaseClient();
     const {
       data: { session },
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     const currency = getCurrencyForLocale(locale);
     const localizedPrice = getPriceForLocale(locale, country);
 
-    // Dynamic pricing via Stripe `price_data` — no pre-created Price objects.
+    // Dynamic pricing via Stripe `price_data` - no pre-created Price objects.
     // The PPP amount (in cents) and currency come straight from the resolved
     // locale/country tier; zh-CN bills ¥99 in CNY, everyone else USD per tier.
     const priceData: {
@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
       // Force `customer_creation: "always"` so Stripe reliably creates a
       // Customer and captures the buyer email into `customer_details.email` on
       // the completed session. The webhook persists that email onto the
-      // pending_licenses row, and claim-license binds the claim to it — so the
+      // pending_licenses row, and claim-license binds the claim to it - so the
       // email MUST be present for the anonymous path to be claimable.
       checkoutParams.customer_creation = "always";
       checkoutParams.metadata.anonymous = "true";
