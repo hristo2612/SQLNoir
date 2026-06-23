@@ -11,6 +11,9 @@ import { trackCaseCompleted, trackCaseAbandoned } from "../../lib/posthog-events
 import { posthog } from "../../lib/posthog";
 import { useTranslations, useLocale } from "next-intl";
 import { isCaseFree } from "../../lib/license";
+import { recordLocalSolve } from "../../lib/local-progress";
+import { getPriceForLocale } from "../../lib/ppp-prices";
+import { GetLicenseButton } from "../GetLicenseButton";
 
 interface SolutionSubmissionProps {
   caseData: Case;
@@ -31,6 +34,7 @@ export function SolutionSubmission({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null); // Storing user data if logged in for conditional rendering XP reward message
+  const [hasLicense, setHasLicense] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [shareContext, setShareContext] = useState("case-solved");
@@ -77,39 +81,27 @@ export function SolutionSubmission({
       }
 
       if (isAnswerCorrect) {
-        const user = supabase ? (await supabase.auth.getUser()).data.user : null;
+        const solvedUser = supabase
+          ? (await supabase.auth.getUser()).data.user
+          : null;
 
-        if (user && supabase) {
-          // Get current user info to check if case was already solved
-          const { data: userInfo, error: fetchError } = await supabase
-            .from("user_info")
-            .select("completed_cases")
-            .eq("id", user.id)
-            .single();
+        if (solvedUser && supabase) {
+          // The hardened RPC looks up the xp reward server-side and is
+          // idempotent (dedup + append handled in SQL), so no client-side
+          // completed_cases pre-fetch is needed and no client xp is trusted.
+          const { error: updateError } = await supabase.rpc(
+            "increment_user_xp",
+            {
+              user_id: solvedUser.id,
+              case_id: caseData.id,
+            }
+          );
 
-          if (fetchError) throw fetchError;
-
-          const completedCases = Array.isArray(userInfo?.completed_cases)
-            ? userInfo.completed_cases
-            : [];
-
-          // Only update if case hasn't been solved before
-          if (!completedCases.includes(caseData.id)) {
-            completedCases.push(caseData.id);
-
-            // Use SQL's addition operator to increment XP
-            const { error: updateError } = await supabase.rpc(
-              "increment_user_xp",
-              {
-                user_id: user.id,
-                xp_amount: caseData.xpReward,
-                case_id: caseData.id,
-                cases_array: completedCases,
-              }
-            );
-
-            if (updateError) throw updateError;
-          }
+          if (updateError) throw updateError;
+        } else if (isCaseFree(caseData)) {
+          // Anonymous visitor solved a free case — persist locally so it can be
+          // migrated onto their account when they sign in.
+          recordLocalSolve(caseData.id);
         }
       }
 
@@ -178,13 +170,30 @@ export function SolutionSubmission({
   // This will allow us to show the XP reward message conditionally
   useEffect(() => {
     if (!supabase) return;
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       setUser(data.user);
+      if (data.user && supabase) {
+        const { data: info } = await supabase
+          .from("user_info")
+          .select("has_license")
+          .eq("id", data.user.id)
+          .single();
+        setHasLicense(Boolean(info?.has_license));
+      }
     });
   }, []);
 
   const showSuccess = submitted && isCorrect;
   const showIncorrect = submitted && !isCorrect;
+
+  // Contextual conversion CTA: after the LAST free case (case-002), show a
+  // prominent purchase CTA — but only when monetization is on AND the user does
+  // not already hold a license. Anonymous users (no license) correctly see it.
+  const monetizationEnabled =
+    process.env.NEXT_PUBLIC_ENABLE_MONETIZATION === "1";
+  const showPurchaseCta =
+    monetizationEnabled && caseData.id === "case-002" && !hasLicense;
+  const localizedPrice = getPriceForLocale(locale).display;
 
   if (showSuccess) {
     return (
@@ -219,30 +228,62 @@ export function SolutionSubmission({
             </div>
           )}
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3 sm:flex sm:items-center sm:justify-between sm:space-y-0 gap-4">
-            <div>
-              <p className="font-detective text-amber-900">
-                {t('solution.enjoyedMystery')}
-              </p>
-              <p className="text-amber-700 text-sm">
-                {t('solution.shareMessage')}
-              </p>
+          {showPurchaseCta ? (
+            <>
+              {/* Primary: prominent purchase CTA after the last free case */}
+              <div className="bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-300 rounded-lg p-5 space-y-3 shadow-sm">
+                <div className="space-y-1">
+                  <p className="font-detective text-xl text-amber-900">
+                    {t('solution.unlockRemainingCases')} — {localizedPrice}
+                  </p>
+                  <p className="text-amber-700 text-sm">
+                    {t('solution.unlockRemainingDesc')}
+                  </p>
+                </div>
+                <GetLicenseButton source="post-solve-case2" />
+              </div>
+              {/* Secondary: share, demoted */}
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShareContext("case-solved");
+                    track("share_open", { context: "case-solved", case_slug: caseData.id });
+                    setIsShareOpen(true);
+                  }}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-amber-700 hover:text-amber-900 transition-colors duration-200 text-sm"
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span>{t('solution.shareSqlnoir')}</span>
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3 sm:flex sm:items-center sm:justify-between sm:space-y-0 gap-4">
+              <div>
+                <p className="font-detective text-amber-900">
+                  {t('solution.enjoyedMystery')}
+                </p>
+                <p className="text-amber-700 text-sm">
+                  {t('solution.shareMessage')}
+                </p>
+              </div>
+              <div className="flex sm:block">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShareContext("case-solved");
+                    track("share_open", { context: "case-solved", case_slug: caseData.id });
+                    setIsShareOpen(true);
+                  }}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-amber-700 text-amber-50 hover:bg-amber-600 transition-colors duration-200 text-sm sm:text-base whitespace-nowrap"
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span>{t('solution.shareSqlnoir')}</span>
+                </button>
+              </div>
             </div>
-            <div className="flex sm:block">
-              <button
-                type="button"
-                onClick={() => {
-                  setShareContext("case-solved");
-                  track("share_open", { context: "case-solved", case_slug: caseData.id });
-                  setIsShareOpen(true);
-                }}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-amber-700 text-amber-50 hover:bg-amber-600 transition-colors duration-200 text-sm sm:text-base whitespace-nowrap"
-              >
-                <Share2 className="w-4 h-4" />
-                <span>{t('solution.shareSqlnoir')}</span>
-              </button>
-            </div>
-          </div>
+          )}
         </div>
         <SharePopup
           isOpen={isShareOpen}

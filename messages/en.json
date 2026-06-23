@@ -71,6 +71,7 @@
   },
   "cases": {
     "caseFiles": "Case Files",
+    "unsyncedNote": "Unsynced — sign in to save your XP",
     "beginner": "Beginner",
     "beginnerDesc": "Perfect for SQL newcomers. Learn the basics of querying and data analysis.",
     "intermediate": "Intermediate",
@@ -136,6 +137,8 @@
     "caseSolved": "Case Solved!",
     "explanation": "Explanation",
     "saveXpNote": "Note: Create an account to save your XP rewards for solved cases.",
+    "unlockRemainingCases": "Unlock the remaining cases",
+    "unlockRemainingDesc": "You've solved both free cases. Get a Detective License to crack every intermediate and advanced investigation.",
     "enjoyedMystery": "Enjoyed the mystery?",
     "shareMessage": "Share SQLNoir with another detective and see if they can solve it too.",
     "shareSqlnoir": "Share SQLNoir",

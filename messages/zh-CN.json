@@ -71,6 +71,7 @@
   },
   "cases": {
     "caseFiles": "SQL 案件档案",
+    "unsyncedNote": "未同步 — 登录以保存你的经验值",
     "beginner": "初级",
     "beginnerDesc": "适合 SQL 新手。学习查询与数据分析的基本功。",
     "intermediate": "中级",
@@ -136,6 +137,8 @@
     "caseSolved": "案件已侦破！",
     "explanation": "解析说明",
     "saveXpNote": "提示：注册账号后，可以保存已破解案件的经验值奖励。",
+    "unlockRemainingCases": "解锁剩余案件",
+    "unlockRemainingDesc": "你已破解两个免费案件。获取侦探执照即可侦破所有中级和高级调查。",
     "enjoyedMystery": "喜欢这个谜案吗？",
     "shareMessage": "把 SQLNoir 分享给另一位侦探，看他能不能也破解它。",
     "shareSqlnoir": "分享 SQLNoir",

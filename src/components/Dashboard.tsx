@@ -1,10 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { CaseFile } from "./CaseFile";
 import { Lock } from "lucide-react";
 import { cases, categories } from "../cases";
 import { GetLicenseButton } from "./GetLicenseButton";
 import { isCategoryLocked } from "@/lib/license";
+import { getLocalProgress } from "@/lib/local-progress";
 import type { Case } from "@/types";
 import { useTranslations } from "next-intl";
 
@@ -24,16 +26,43 @@ export function Dashboard({
   localizedCases,
 }: DashboardProps) {
   const t = useTranslations();
-  const currentXP = userInfo?.xp || 0;
-  const solvedCases = userInfo?.completed_cases || [];
+
+  // Anonymous (logged-out) local progress. Initialized empty so SSR and the
+  // first client render match (hydration-safe); the real value is read from
+  // localStorage inside an effect.
+  const isAnon = !userInfo;
+  const [anonProgress, setAnonProgress] = useState<{
+    solvedCaseIds: string[];
+    xp: number;
+  }>({ solvedCaseIds: [], xp: 0 });
+
+  useEffect(() => {
+    if (isAnon) {
+      setAnonProgress(getLocalProgress());
+    }
+  }, [isAnon]);
+
+  const solvedCases: string[] = isAnon
+    ? anonProgress.solvedCaseIds
+    : userInfo?.completed_cases || [];
+  const showUnsyncedBadge = isAnon && anonProgress.solvedCaseIds.length > 0;
 
   return (
     <div className="min-h-screen bg-amber-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
+        <div className="mb-8 space-y-2">
           <h1 className="font-detective text-3xl text-amber-900 leading-none">
             {t('cases.caseFiles')}
           </h1>
+          {showUnsyncedBadge && (
+            <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 border border-amber-200 px-3 py-1 text-xs text-amber-800">
+              <span className="font-detective">
+                {anonProgress.xp} {t('common.xp')}
+              </span>
+              <span aria-hidden="true">·</span>
+              <span>{t('cases.unsyncedNote')}</span>
+            </div>
+          )}
         </div>
 
         {process.env.NEXT_PUBLIC_ENABLE_MONETIZATION === "1" && !userInfo?.has_license && (

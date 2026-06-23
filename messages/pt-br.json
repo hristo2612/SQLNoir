@@ -71,6 +71,7 @@
   },
   "cases": {
     "caseFiles": "Arquivos de Caso",
+    "unsyncedNote": "Não sincronizado — entre para salvar seu XP",
     "beginner": "Iniciante",
     "beginnerDesc": "Perfeito para quem está começando com SQL. Aprenda os fundamentos de consultas e análise de dados.",
     "intermediate": "Intermediário",
@@ -136,6 +137,8 @@
     "caseSolved": "Caso Resolvido!",
     "explanation": "Explicação",
     "saveXpNote": "Nota: Crie uma conta para salvar suas recompensas de XP por casos resolvidos.",
+    "unlockRemainingCases": "Desbloqueie os casos restantes",
+    "unlockRemainingDesc": "Você resolveu os dois casos gratuitos. Obtenha uma Licença de Detetive para desvendar todas as investigações intermediárias e avançadas.",
     "enjoyedMystery": "Gostou do mistério?",
     "shareMessage": "Compartilhe o SQLNoir com outro detetive e veja se ele também consegue resolver.",
     "shareSqlnoir": "Compartilhar SQLNoir",
