@@ -151,7 +151,7 @@ function computeConnectionPaths(
   return paths;
 }
 
-// ─── SVG Connection overlay (lines only — no text) ──────────────────────────
+// ─── SVG Connection overlay (lines only - no text) ──────────────────────────
 
 function ConnectionsSVG({
   paths,

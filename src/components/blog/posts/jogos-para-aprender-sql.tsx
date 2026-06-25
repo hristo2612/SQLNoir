@@ -10,7 +10,7 @@ export default function JogosParaAprenderSqlContent() {
         Em vez de penar com mais um tutorial sem graça, você pode aprender SQL
         resolvendo crimes, sobrevivendo em ilhas ou competindo com outros
         programadores. Estes 5 jogos de SQL deixam o aprendizado de banco de
-        dados realmente divertido — e funcionam melhor que os métodos
+        dados realmente divertido - e funcionam melhor que os métodos
         tradicionais.
       </p>
 
@@ -81,7 +81,7 @@ export default function JogosParaAprenderSqlContent() {
         </strong>{" "}
         é a minha tentativa de tornar o aprendizado de SQL realmente divertido.
         Eu o criei porque estava cansado de tutoriais entediantes. Você joga
-        como um detetive resolvendo crimes com consultas SQL — cada caso tem
+        como um detetive resolvendo crimes com consultas SQL - cada caso tem
         bancos de dados realistas com suspeitos, provas e depoimentos de
         testemunhas.
       </p>
@@ -118,15 +118,16 @@ AND i.alibi IS NOT NULL;`}
           </li>
           <li>
             • <strong>Estruturas de banco de dados reais:</strong> nada de
-            exemplos de brinquedo — esquemas que fazem sentido
+            exemplos de brinquedo - esquemas que fazem sentido
           </li>
           <li>
             • <strong>Você sabe na hora se errou:</strong> sem esperar um
             professor corrigir seu trabalho
           </li>
           <li>
-            • <strong>É gratuito:</strong> sem paywall, sem &quot;recursos
-            premium&quot;
+            • <strong>Gratuito para começar:</strong> os dois primeiros casos
+            são grátis, sem cadastro, e uma Licença de Detetive única libera os
+            demais
           </li>
           <li>
             • <strong>Sem instalação:</strong> é só abrir o navegador e começar
@@ -319,7 +320,7 @@ LIMIT 1;`}
           </a>
         </strong>{" "}
         é o jogo de SQL original que começou tudo. A Northwestern University
-        criou esse jogo e ele tem apenas um caso — resolver um assassinato na
+        criou esse jogo e ele tem apenas um caso - resolver um assassinato na
         SQL City. O conceito é simples, mas é muito bem feito e ensina JOINs
         melhor do que qualquer tutorial que eu já vi. Aliás, o SQL Noir foi
         inspirado nesse jogo.
@@ -890,7 +891,7 @@ AND population < (
                 SQL Noir
               </td>
               <td className="border border-gray-300 p-3 text-green-600">
-                Gratuito
+                Freemium
               </td>
               <td className="border border-gray-300 p-3">
                 Iniciante a avançado
@@ -1006,7 +1007,7 @@ AND population < (
       <p className="text-gray-700 leading-relaxed mb-6">
         O mais importante é realmente começar. Eu perdi meses adiando o
         aprendizado de SQL porque os livros pareciam intimidadores. Esses jogos
-        deixam tudo mais fácil — você simplesmente entra e começa a brincar com
+        deixam tudo mais fácil - você simplesmente entra e começa a brincar com
         as consultas.
       </p>
 
@@ -1020,7 +1021,7 @@ AND population < (
           </li>
           <li>2. Passe 30 minutos jogando ele hoje</li>
           <li>
-            3. Se você travar, é normal — continue
+            3. Se você travar, é normal - continue
           </li>
           <li>
             4. Experimente outro jogo se o primeiro não te conquistar

@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   )}&w=1200&q=90`;
 
   // Blog posts are single-locale: each post exists only under its own locale
-  // prefix and 404s elsewhere, so a self-referential canonical only — no
+  // prefix and 404s elsewhere, so a self-referential canonical only - no
   // cross-locale hreflang alternates pointing at non-existent versions.
   const postPath = `${localePrefix(locale)}/blog/${post.slug}`;
 

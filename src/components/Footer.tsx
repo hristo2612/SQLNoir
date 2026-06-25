@@ -29,6 +29,12 @@ export function Footer() {
           >
             {t('footer.contact')}
           </Link>
+          <Link
+            href="/faq"
+            className="hover:text-amber-900 underline underline-offset-2"
+          >
+            {t('footer.faq')}
+          </Link>
         </nav>
       </div>
       {locale === "zh-CN" && (

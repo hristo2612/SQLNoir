@@ -52,7 +52,7 @@ export default async function TermsPage() {
   );
   const emailTag = (chunks: React.ReactNode) => (
     <a
-      href="mailto:hristoapps@gmail.com"
+      href="mailto:support@sqlnoir.com"
       className="text-amber-700 hover:text-amber-900 underline"
     >
       {chunks}
@@ -107,6 +107,15 @@ export default async function TermsPage() {
             </h2>
             <p className="text-amber-800 leading-relaxed">
               {t.rich("paymentsBody", { stripe: stripeTag })}
+            </p>
+          </section>
+
+          <section className="bg-amber-100/50 border border-amber-200 rounded-lg p-6 space-y-3">
+            <h2 className="font-detective text-2xl text-amber-900">
+              {t("refundTitle")}
+            </h2>
+            <p className="text-amber-800 leading-relaxed">
+              {t.rich("refundBody", { email: emailTag })}
             </p>
           </section>
 

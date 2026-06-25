@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import enMessages from "../../../messages/en.json";
 import ptBrMessages from "../../../messages/pt-br.json";
+import zhCnMessages from "../../../messages/zh-CN.json";
 
 function flattenKeys(obj: Record<string, any>, prefix = ""): string[] {
   const keys: string[] = [];
@@ -15,54 +16,75 @@ function flattenKeys(obj: Record<string, any>, prefix = ""): string[] {
   return keys;
 }
 
-describe("i18n completeness", () => {
-  const enKeys = flattenKeys(enMessages);
-  const ptBrKeys = flattenKeys(ptBrMessages);
+function valueAt(messages: Record<string, any>, dottedKey: string): unknown {
+  return dottedKey.split(".").reduce((obj: any, key) => obj?.[key], messages);
+}
 
-  it("en.json has all keys", () => {
+const enKeys = flattenKeys(enMessages);
+
+// Every non-English locale is checked against en.json as the source of truth.
+// zh-CN must be here: without it, a missing/empty zh key (the paywall.redirecting
+// bug class, where the raw key string leaks into the UI) would pass CI unnoticed.
+const LOCALES: Array<{ name: string; messages: Record<string, any> }> = [
+  { name: "pt-br", messages: ptBrMessages },
+  { name: "zh-CN", messages: zhCnMessages },
+];
+
+describe("i18n completeness", () => {
+  it("en.json has a substantial key set", () => {
     expect(enKeys.length).toBeGreaterThan(100);
   });
 
-  it("pt-br.json has all keys that en.json has", () => {
-    const missingInPtBr = enKeys.filter((k) => !ptBrKeys.includes(k));
-    if (missingInPtBr.length > 0) {
-      console.log("Missing in pt-br.json:", missingInPtBr);
-    }
-    expect(missingInPtBr).toEqual([]);
-  });
-
-  it("pt-br.json has no extra keys that en.json lacks", () => {
-    const extraInPtBr = ptBrKeys.filter((k) => !enKeys.includes(k));
-    if (extraInPtBr.length > 0) {
-      console.log("Extra in pt-br.json:", extraInPtBr);
-    }
-    expect(extraInPtBr).toEqual([]);
-  });
-
   it("no values in en.json are empty strings", () => {
-    const emptyKeys = enKeys.filter((k) => {
-      const val = k.split(".").reduce((obj: any, key) => obj?.[key], enMessages);
-      return val === "";
-    });
+    const emptyKeys = enKeys.filter((k) => valueAt(enMessages, k) === "");
     expect(emptyKeys).toEqual([]);
   });
 
-  it("no values in pt-br.json are empty strings", () => {
-    const emptyKeys = ptBrKeys.filter((k) => {
-      const val = k.split(".").reduce((obj: any, key) => obj?.[key], ptBrMessages);
-      return val === "";
-    });
-    expect(emptyKeys).toEqual([]);
-  });
+  for (const { name, messages } of LOCALES) {
+    describe(`${name}.json`, () => {
+      const localeKeys = flattenKeys(messages);
 
-  it("critical sections exist in both locales", () => {
+      it(`has every key en.json has`, () => {
+        const missing = enKeys.filter((k) => !localeKeys.includes(k));
+        if (missing.length > 0) console.log(`Missing in ${name}.json:`, missing);
+        expect(missing).toEqual([]);
+      });
+
+      it(`has no extra keys en.json lacks`, () => {
+        const extra = localeKeys.filter((k) => !enKeys.includes(k));
+        if (extra.length > 0) console.log(`Extra in ${name}.json:`, extra);
+        expect(extra).toEqual([]);
+      });
+
+      it(`has no empty-string values`, () => {
+        const emptyKeys = localeKeys.filter((k) => valueAt(messages, k) === "");
+        if (emptyKeys.length > 0) console.log(`Empty in ${name}.json:`, emptyKeys);
+        expect(emptyKeys).toEqual([]);
+      });
+    });
+  }
+
+  it("critical sections exist in every locale", () => {
     const requiredSections = [
       "common", "nav", "home", "cases", "caseSolver", "caseStudy",
       "solution", "auth", "help", "blog", "gameApp", "license", "checkout",
+      "paywall", "footer",
     ];
     for (const section of requiredSections) {
       expect(enMessages).toHaveProperty(section);
-      expect(ptBrMessages).toHaveProperty(section);
+      for (const { messages } of LOCALES) {
+        expect(messages).toHaveProperty(section);
+      }
+    }
+  });
+
+  it("paywall.redirecting exists and is non-empty in every locale", () => {
+    // Regression guard for the specific bug where a missing zh-CN paywall key
+    // rendered the raw "paywall.redirecting" string in the UI.
+    for (const messages of [enMessages, ptBrMessages, zhCnMessages]) {
+      const v = valueAt(messages, "paywall.redirecting");
+      expect(typeof v).toBe("string");
+      expect((v as string).length).toBeGreaterThan(0);
     }
   });
 });

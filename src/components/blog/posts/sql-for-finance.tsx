@@ -80,7 +80,7 @@ export default function SqlForFinanceContent() {
         <Link href="/cases" className="text-amber-700 hover:text-amber-900 underline font-medium">
           SQLNoir&apos;s detective cases
         </Link>{" "}
-        let you write real queries to solve mysteries — the same aggregations, JOINs, and window functions you&apos;d use in finance work, just applied to crime data instead of revenue tables.
+        let you write real queries to solve mysteries - the same aggregations, JOINs, and window functions you&apos;d use in finance work, just applied to crime data instead of revenue tables.
       </p>
 
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
@@ -244,7 +244,7 @@ ORDER BY fiscal_quarter;`}
             Practice these SQL patterns by solving detective mysteries
           </p>
           <p className="text-amber-700 text-sm">
-            SQLNoir cases teach you the same skills — write JOINs to connect witnesses to crime scenes, window functions to track patterns over time, and aggregations to spot anomalies. The SQL muscle memory transfers directly to financial analysis work.
+            SQLNoir cases teach you the same skills - write JOINs to connect witnesses to crime scenes, window functions to track patterns over time, and aggregations to spot anomalies. The SQL muscle memory transfers directly to financial analysis work.
           </p>
         </div>
         <Link
@@ -608,7 +608,7 @@ ORDER BY trade_date DESC;`}
           Build Your SQL Muscle Memory by Solving Mysteries
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
-          You&apos;ve learned the syntax. Now drill the patterns with real database queries. SQLNoir cases make you write the same JOINs, window functions, aggregations, and date logic you&apos;d use for revenue variance, customer segmentation, and reconciliation — just with detective data instead of financial tables. The skills transfer completely.
+          You&apos;ve learned the syntax. Now drill the patterns with real database queries. SQLNoir cases make you write the same JOINs, window functions, aggregations, and date logic you&apos;d use for revenue variance, customer segmentation, and reconciliation - just with detective data instead of financial tables. The skills transfer completely.
         </p>
         <Link
           href="/cases"

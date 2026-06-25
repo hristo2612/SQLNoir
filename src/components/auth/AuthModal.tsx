@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { supabase } from "../../lib/supabase";
-import { trackSignUpCompleted } from "../../lib/posthog-events";
+import { trackSignUpCompleted, trackLogin } from "../../lib/posthog-events";
 import { useTranslations } from "next-intl";
 
 interface AuthModalProps {
@@ -96,6 +96,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               throw error;
           }
         }
+        // Successful login (no error thrown)
+        trackLogin();
       } else {
         const { error } = await supabase.auth.signUp({
           email,

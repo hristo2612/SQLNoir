@@ -43,9 +43,9 @@ export const blogPostsMeta: BlogPostMeta[] = [
   {
     slug: "curso-sql-gratis-investigando-crimes",
     title:
-      "Curso de SQL Grátis em Português — Aprenda Investigando 6 Crimes",
+      "Curso de SQL Grátis em Português - Aprenda Investigando Crimes",
     excerpt:
-      "Curso gratuito de SQL com casos reais de detetive. 6 mistérios para resolver, do básico ao JOIN. Sem cadastro, sem cartão — só você, o SQL e o caso.",
+      "Curso de SQL com casos reais de detetive. Comece de graça e sem cadastro, resolvendo mistérios do básico ao JOIN. Os dois primeiros casos são grátis.",
     date: "2026-05-14",
     readTime: "9 min de leitura",
     author: "Hristo Bogoev",
@@ -70,7 +70,7 @@ export const blogPostsMeta: BlogPostMeta[] = [
     slug: "jogos-para-aprender-sql",
     title: "Os Melhores Jogos para Aprender SQL em 2026",
     excerpt:
-      "Aprender SQL jogando funciona. Conheça os melhores jogos de SQL — incluindo o SQLNoir, o jogo de detetive onde você resolve crimes com consultas.",
+      "Aprender SQL jogando funciona. Conheça os melhores jogos de SQL - incluindo o SQLNoir, o jogo de detetive onde você resolve crimes com consultas.",
     date: "2026-05-14",
     readTime: "12 min de leitura",
     author: "Hristo Bogoev",
@@ -80,7 +80,7 @@ export const blogPostsMeta: BlogPostMeta[] = [
   },
   {
     slug: "sqlnoir-vs-leetcode-sql",
-    title: "SQLNoir vs LeetCode SQL — 用案件代替刷题，哪种更适合学 SQL?",
+    title: "SQLNoir vs LeetCode SQL - 用案件代替刷题，哪种更适合学 SQL?",
     excerpt:
       "LeetCode SQL 题目枯燥? 试试用侦探案件学 SQL。SQLNoir vs LeetCode SQL 详细对比:难度曲线、趣味性、面试与笔试准备效果。",
     date: "2026-05-14",

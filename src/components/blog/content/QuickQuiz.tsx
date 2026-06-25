@@ -18,7 +18,7 @@ export interface QuizQuestion {
 export interface QuickQuizProps {
   /** Quiz questions (2-4 recommended) */
   questions: QuizQuestion[];
-  /** Optional title — defaults to "🔍 Detective's Quiz" */
+  /** Optional title - defaults to "🔍 Detective's Quiz" */
   title?: string;
 }
 
@@ -137,7 +137,7 @@ export function QuickQuiz({ questions, title }: QuickQuizProps) {
           <div className="px-5 py-4 bg-amber-100/50 border-t border-amber-200 flex items-center justify-between gap-3 flex-wrap">
             <p className="text-sm font-detective text-amber-900">
               Case closed: {score}/{questions.length} correct
-              {score === questions.length && " — Perfect detective work! 🕵️"}
+              {score === questions.length && " - Perfect detective work! 🕵️"}
             </p>
             <button
               onClick={handleReset}

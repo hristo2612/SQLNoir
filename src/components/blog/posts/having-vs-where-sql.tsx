@@ -731,8 +731,9 @@ HAVING COUNT(*) > 3;`}
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
           SQLNoir&apos;s 6 detective cases start with basic WHERE filtering and
           scale to complex queries combining JOINs, GROUP BY, and HAVING to
-          crack advanced mysteries. Free, browser-based, no signup required for
-          beginner cases.
+          crack advanced mysteries. The first two cases are free and
+          browser-based with no signup - a one-time Detective License unlocks
+          the rest.
         </p>
         <Link
           href="/cases"

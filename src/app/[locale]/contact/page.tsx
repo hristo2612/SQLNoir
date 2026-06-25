@@ -66,10 +66,10 @@ export default async function ContactPage() {
                   {t("emailLabel")}
                 </span>
                 <a
-                  href="mailto:hristoapps@gmail.com"
+                  href="mailto:support@sqlnoir.com"
                   className="text-amber-700 hover:text-amber-900 underline"
                 >
-                  hristoapps@gmail.com
+                  support@sqlnoir.com
                 </a>
               </div>
               <div className="flex items-start gap-3">

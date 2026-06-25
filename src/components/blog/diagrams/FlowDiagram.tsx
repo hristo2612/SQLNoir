@@ -98,7 +98,7 @@ function DiamondNode({ node }: { node: FlowNode }) {
 
   return (
     <div className="flex flex-col items-center w-full max-w-sm">
-      {/* Hidden measurement element — mirrors visible content styling */}
+      {/* Hidden measurement element - mirrors visible content styling */}
       <div
         ref={measureRef}
         aria-hidden="true"

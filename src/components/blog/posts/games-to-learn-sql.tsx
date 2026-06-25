@@ -123,7 +123,8 @@ AND i.alibi IS NOT NULL;`}
             for a teacher to grade your work
           </li>
           <li>
-            • <strong>It&apos;s free:</strong> No paywall, no &quot;premium features&quot;
+            • <strong>Free to start:</strong> The first two cases are free, no
+            signup needed - a one-time Detective License unlocks the rest
           </li>
           <li>
             • <strong>No setup:</strong> Just open your browser and start
@@ -870,7 +871,7 @@ AND population < (
                 SQL Noir
               </td>
               <td className="border border-gray-300 p-3 text-green-600">
-                Free
+                Freemium
               </td>
               <td className="border border-gray-300 p-3">
                 Beginner-Advanced

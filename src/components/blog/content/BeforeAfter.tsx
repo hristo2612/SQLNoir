@@ -7,7 +7,7 @@ import React from "react";
 export interface BeforePanel {
   /** SQL code (the "wrong" way) */
   code: string;
-  /** Optional panel label — defaults to "Before" */
+  /** Optional panel label - defaults to "Before" */
   label?: string;
   /** Optional list of issues with this approach */
   issues?: string[];
@@ -16,7 +16,7 @@ export interface BeforePanel {
 export interface AfterPanel {
   /** SQL code (the "right" way) */
   code: string;
-  /** Optional panel label — defaults to "After" */
+  /** Optional panel label - defaults to "After" */
   label?: string;
   /** Optional list of improvements */
   improvements?: string[];

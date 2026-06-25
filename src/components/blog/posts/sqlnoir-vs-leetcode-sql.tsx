@@ -100,17 +100,17 @@ export default function SqlnoirVsLeetcodeSqlContent() {
       </h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        SQLNoir 是一款用 SQL 破案的网页游戏。你扮演侦探，面对一个真实结构的犯罪数据库——
-        嫌疑人、证物、证词、现场记录——通过写 SQL 查询逐步排查线索，最终锁定真凶。
-        目前共有 6 个侦探案件，全部免费，浏览器内置 SQL 编辑器，
-        打开即玩、无需注册。
+        SQLNoir 是一款用 SQL 破案的网页游戏。你扮演侦探，面对一个真实结构的犯罪数据库：
+        嫌疑人、证物、证词、现场记录。通过写 SQL 查询逐步排查线索，最终锁定真凶。
+        目前共有 6 个侦探案件，前两个免费，其余需一次性「侦探执照」解锁。
+        浏览器内置 SQL 编辑器，打开即玩、无需注册。
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
         <strong>它擅长的：</strong>有剧情、有目标，每写对一条查询都在推进案情，
         正反馈强、容易坚持；难度循序渐进，从简单的 <code>SELECT</code> 起步，逐步
         引入 <code>JOIN</code>、聚合和子查询；数据库结构真实，不是「员工/订单」那种
-        玩具表；即时判定对错，不用等人批改；全部案件免费，无需注册即可上手（登录后才会保存 XP 和进度，注册是可选的）。
+        玩具表；即时判定对错，不用等人批改；前两个案件免费、无需注册即可上手，其余案件需一次性付费解锁（登录后才会保存 XP 和进度，注册是可选的）。
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -138,8 +138,8 @@ export default function SqlnoirVsLeetcodeSqlContent() {
           ["核心形式", "连贯的侦探案件，破案驱动", "孤立的题目，逐题通过测试"],
           [
             "趣味性",
-            "高——有剧情、有代入感",
-            "低——偏机械，靠自律支撑",
+            "高：有剧情、有代入感",
+            "低：偏机械，靠自律支撑",
           ],
           [
             "难度曲线",
@@ -163,7 +163,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
           ],
           [
             "上手成本",
-            "全部案件免费，无需注册即玩",
+            "前两个案件免费，无需注册；其余需一次性付费",
             "免费题有限，完整题库需会员",
           ],
           [
@@ -206,7 +206,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
         >
           入门侦探案件
         </Link>
-        上手——案件的剧情会给你继续下去的理由，而你练的依然是真正的 SQL。
+        上手，案件的剧情会给你继续下去的理由，而你练的依然是真正的 SQL。
       </p>
 
       <h3 className="text-xl font-bold text-amber-800 mt-8 mb-4">
@@ -261,7 +261,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
       <ul className="text-gray-700 space-y-2 mb-6 list-none pl-0">
         <li>
           🔎 <strong>SELECT 与 WHERE：</strong>从证物表里筛出符合证词描述的记录，
-          就是在练条件筛选——笔试里最基础、占比也最高的部分。
+          就是在练条件筛选，也是笔试里最基础、占比最高的部分。
         </li>
         <li>
           🔗 <strong>JOIN：</strong>把嫌疑人、证词、现场三张表关联起来追线索，
@@ -274,7 +274,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
         </li>
         <li>
           🧩 <strong>子查询与逻辑推理：</strong>「找出有作案时间但没有不在场证明的人」
-          这种问题，天然需要嵌套查询和集合思维——和 LeetCode Medium 的内核一致。
+          这种问题，天然需要嵌套查询和集合思维，和 LeetCode Medium 的内核一致。
         </li>
       </ul>
 
@@ -295,7 +295,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
       <p className="text-gray-700 leading-relaxed mb-6">
         来看一条在 SQLNoir 案件里很典型的查询：根据目击者描述的特征，找出有嫌疑、
         且没有留下任何笔录的人。它同时用到了 <code>JOIN</code>、<code>WHERE</code>{" "}
-        的条件筛选和 <code>NULL</code> 判断——这些都是笔试常客。
+        的条件筛选和 <code>NULL</code> 判断，这些都是笔试常客。
       </p>
 
       <SQLQueryBreakdown
@@ -326,7 +326,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
             annotation: "只保留没有留下任何笔录的人",
           },
         ]}
-        caption="一条查询同时覆盖 JOIN、条件筛选和 NULL 判断——典型的笔试考点组合"
+        caption="一条查询同时覆盖 JOIN、条件筛选和 NULL 判断，典型的笔试考点组合"
       />
 
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
@@ -345,7 +345,7 @@ WHERE s.疤痕类型 = '左脸颊'
       </div>
 
       <DetectiveTip variant="warning" title="别忘了 NULL 的坑">
-        无论是刷题还是破案，<code>笔录 = NULL</code> 永远查不出结果——在 SQL
+        无论是刷题还是破案，<code>笔录 = NULL</code> 永远查不出结果。在 SQL
         里任何值都不等于 <code>NULL</code>。要判断空值，必须用{" "}
         <code>IS NULL</code> 或 <code>IS NOT NULL</code>。这是笔试高频失分点。
       </DetectiveTip>
@@ -385,7 +385,7 @@ WHERE s.疤痕类型 = '左脸颊'
             SQLNoir 是免费的吗？
           </h3>
           <p className="text-gray-700 leading-relaxed">
-            是的，完全免费。目前共有 6 个侦探案件，全部免费，无需注册即可直接游玩。
+            前两个案件免费、无需注册即可游玩；其余 4 个案件需一次性「侦探执照」（终身有效，非订阅）。
           </p>
         </div>
 
@@ -408,7 +408,7 @@ WHERE s.疤痕类型 = '左脸颊'
         </p>
         <p className="text-amber-700 mb-5 max-w-lg mx-auto">
           SQLNoir 把 SQL 练习变成侦探工作。你会对着真实的犯罪数据库写下真实的查询，
-          从简单的 SELECT 一路练到多表 JOIN——无需注册，打开就能开始第一案。
+          从简单的 SELECT 一路练到多表 JOIN。无需注册，打开就能开始第一案。
         </p>
         <Link
           href="/zh-CN/cases"

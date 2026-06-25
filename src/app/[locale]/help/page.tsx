@@ -117,7 +117,7 @@ export default async function HelpPage() {
             <p>SQLNoir 的中文版要特别感谢 Lloyd Hasson（GitHub: @SatyrFrost）。</p>
             <p>
               Lloyd 是一位在中国教 SQL 的老师。他不只把游戏翻译成了中文，
-              更把整个故事世界搬到了 1980 年代的上海——衡山路的黑胶唱片店、
+              更把整个故事世界搬到了 1980 年代的上海：衡山路的黑胶唱片店、
               兰亭会所的假面舞会、量芯科技的芯片疑云。他还把所有数据库的
               表名、字段名都译成中文，让学生可以用母语思考、用 SQL 破案。
             </p>

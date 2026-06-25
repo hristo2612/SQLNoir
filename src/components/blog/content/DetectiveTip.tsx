@@ -5,7 +5,7 @@ import React from "react";
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 
 export interface DetectiveTipProps {
-  /** Callout title — defaults to "Detective's Note" */
+  /** Callout title - defaults to "Detective's Note" */
   title?: string;
   /** Tip content (supports rich text/JSX) */
   children: React.ReactNode;

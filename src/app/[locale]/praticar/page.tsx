@@ -7,14 +7,14 @@ import { TrackedLink } from "@/components/TrackedLink";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Praticar SQL Online Grátis — Casos Reais no Navegador",
+    title: "Praticar SQL Online Grátis - Casos Reais no Navegador",
     description:
       "Pratique SQL online no navegador. Casos de detetive reais para resolver com SELECT, JOIN e WHERE. Comece a praticar sem instalar nada, sem cadastro.",
     alternates: { canonical: "/pt-br/praticar" },
     openGraph: {
       type: "website",
       title:
-        "Praticar SQL Online Grátis — Casos Reais no Navegador | SQLNoir",
+        "Praticar SQL Online Grátis - Casos Reais no Navegador | SQLNoir",
       description:
         "Pratique SQL online no navegador. Casos de detetive reais para resolver com SELECT, JOIN e WHERE. Comece a praticar sem instalar nada, sem cadastro.",
       url: "https://www.sqlnoir.com/pt-br/praticar",
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title:
-        "Praticar SQL Online Grátis — Casos Reais no Navegador | SQLNoir",
+        "Praticar SQL Online Grátis - Casos Reais no Navegador | SQLNoir",
       description:
         "Pratique SQL online no navegador. Casos de detetive reais para resolver com SELECT, JOIN e WHERE. Comece a praticar sem instalar nada, sem cadastro.",
       images: ["/open-graph-image.png"],
@@ -50,12 +50,12 @@ export default async function PraticarPage() {
     {
       question: "Preciso instalar algo para praticar SQL?",
       answer:
-        "Não. O SQLNoir roda inteiro no navegador. Você abre um caso e já começa a escrever consultas SQL — sem instalar banco de dados, sem configurar ambiente, sem download.",
+        "Não. O SQLNoir roda inteiro no navegador. Você abre um caso e já começa a escrever consultas SQL - sem instalar banco de dados, sem configurar ambiente, sem download.",
     },
     {
       question: "Praticar SQL no SQLNoir é grátis?",
       answer:
-        "Sim. Todos os 6 casos são gratuitos e não exigem cadastro. Você pode praticar SELECT, WHERE e JOIN de graça, direto no navegador.",
+        "Os dois primeiros casos são gratuitos e não exigem cadastro; os demais liberam com uma Licença de Detetive única. Você pode começar a praticar SELECT, WHERE e JOIN de graça, direto no navegador.",
     },
     {
       question: "O que dá para praticar no SQLNoir?",
@@ -111,13 +111,13 @@ export default async function PraticarPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
           <header className="space-y-5">
             <h1 className="font-detective text-4xl md:text-5xl text-amber-900 leading-tight">
-              Praticar SQL Online — Grátis e no Navegador
+              Praticar SQL Online - Grátis e no Navegador
             </h1>
             <p className="text-amber-800 text-lg md:text-xl">
               Pare de decorar comandos. No SQLNoir você pratica SQL online
               resolvendo casos de detetive de verdade: cada consulta que você
               escreve revela uma pista e te aproxima de fechar o caso. É
-              prática de SQL com propósito — direto no navegador, sem instalar
+              prática de SQL com propósito - direto no navegador, sem instalar
               nada e sem cadastro.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
@@ -144,13 +144,13 @@ export default async function PraticarPage() {
               Cada caso do SQLNoir é um mistério com um banco de dados real por
               trás: registros de suspeitos, álibis, transações, testemunhas.
               Para descobrir o culpado, você precisa interrogar esses dados com
-              SQL. Não existe botão de &quot;próximo&quot; — você só avança
+              SQL. Não existe botão de &quot;próximo&quot; - você só avança
               quando a sua consulta retorna a informação certa.
             </p>
             <p className="text-amber-800 leading-relaxed">
               Esse formato transforma a prática em algo que gruda: você não
               está repetindo exercícios soltos, está investigando. E é assim
-              que o SQL realmente se aprende — usando para resolver um
+              que o SQL realmente se aprende - usando para resolver um
               problema concreto.
             </p>
           </section>
@@ -161,22 +161,22 @@ export default async function PraticarPage() {
             </h2>
             <div className="bg-white border border-amber-200 rounded-2xl shadow-sm p-6 space-y-3">
               <p className="text-amber-800 leading-relaxed">
-                <span className="font-detective text-amber-900">SELECT</span> —
+                <span className="font-detective text-amber-900">SELECT</span> -
                 buscar e exibir exatamente os dados que importam para o caso.
               </p>
               <p className="text-amber-800 leading-relaxed">
-                <span className="font-detective text-amber-900">WHERE</span> —
+                <span className="font-detective text-amber-900">WHERE</span> -
                 filtrar suspeitos, datas e locais para isolar a pista certa.
               </p>
               <p className="text-amber-800 leading-relaxed">
-                <span className="font-detective text-amber-900">JOIN</span> —
+                <span className="font-detective text-amber-900">JOIN</span> -
                 cruzar várias tabelas para conectar pessoas, eventos e provas.
               </p>
               <p className="text-amber-800 leading-relaxed">
                 <span className="font-detective text-amber-900">
                   Agregações
                 </span>{" "}
-                — usar COUNT, SUM, AVG e GROUP BY para encontrar padrões
+                - usar COUNT, SUM, AVG e GROUP BY para encontrar padrões
                 escondidos nos dados.
               </p>
             </div>
@@ -191,7 +191,7 @@ export default async function PraticarPage() {
               artificial e uma resposta. Você resolve, esquece e passa para a
               próxima. No SQLNoir cada consulta tem consequência narrativa: o
               resultado é uma pista, e a pista move a história. Isso mantém
-              você engajado por muito mais tempo — e a repetição com contexto é
+              você engajado por muito mais tempo - e a repetição com contexto é
               o que fixa o conhecimento.
             </p>
             <p className="text-amber-800 leading-relaxed">
@@ -209,8 +209,8 @@ export default async function PraticarPage() {
               Você não precisa de PostgreSQL, MySQL nem de nenhum cliente de
               banco de dados instalado. O SQLNoir roda 100% no navegador: abra
               um caso e o editor de SQL já está pronto, com o banco carregado.
-              Todos os casos são gratuitos e não pedem cadastro — dá para
-              praticar SQL online de graça agora mesmo.
+              Os dois primeiros casos são gratuitos e não pedem cadastro - dá
+              para começar a praticar SQL de graça agora mesmo.
             </p>
           </section>
 

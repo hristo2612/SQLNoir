@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Navbar } from "@/components/Navbar";
@@ -20,6 +20,7 @@ export default function CheckoutSuccessPage() {
   const [loading, setLoading] = useState(true);
   const [claimed, setClaimed] = useState(false);
   const [claiming, setClaiming] = useState(false);
+  const [claimError, setClaimError] = useState<string | null>(null);
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
@@ -42,35 +43,86 @@ export default function CheckoutSuccessPage() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const confirmActiveLicense = useCallback(async () => {
+    if (!supabase || !user) return false;
+    const { data } = await supabase
+      .from("user_info")
+      .select("has_license")
+      .eq("id", user.id)
+      .single();
+    return Boolean(data?.has_license);
+  }, [user]);
+
+  const claimLicense = useCallback(async () => {
+    setClaiming(true);
+    setClaimError(null);
+
+    // Stripe redirects here immediately, often BEFORE the async webhook has
+    // granted the license (signed-in path) or written the pending row
+    // (anonymous path). So poll for up to ~14s instead of failing on the first
+    // miss; only show an error once the window is exhausted.
+    const MAX_ATTEMPTS = 7;
+    const DELAY_MS = 2000;
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        // 1. Session-id claim (anonymous purchase). Succeeds once the webhook
+        //    has written the pending_licenses row for this checkout.
+        if (stripeSessionId) {
+          const res = await fetch("/api/claim-license", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ stripeSessionId }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            setClaimed(true);
+            setClaiming(false);
+            return;
+          }
+          // Email mismatch is terminal: retrying never helps, so stop and tell
+          // the buyer to sign in with the email they paid with.
+          if (res.status === 403) {
+            setClaimError(data.error || tCheckout("activationFailed"));
+            setClaiming(false);
+            return;
+          }
+          // 404 (pending row not written yet) falls through to the grant check
+          // and another attempt.
+        }
+
+        // 2. Direct grant check (signed-in purchase: the webhook sets
+        //    has_license itself, no pending row; also catches an email-mode
+        //    auto-claim that already ran on sign-in).
+        if (await confirmActiveLicense()) {
+          setClaimed(true);
+          setClaiming(false);
+          return;
+        }
+      } catch {
+        // Transient network/DB hiccup: just retry.
+      }
+
+      if (attempt < MAX_ATTEMPTS) await sleep(DELAY_MS);
+    }
+
+    // Webhook is taking unusually long. Offer a manual retry (the button reruns
+    // this same loop) rather than leaving the buyer stuck.
+    setClaimError(tCheckout("activationFailed"));
+    setClaiming(false);
+  }, [confirmActiveLicense, stripeSessionId, tCheckout]);
+
   useEffect(() => {
-    if (user && !claimed && stripeSessionId) {
+    if (user && !claimed && !claiming && !claimError) {
       claimLicense();
     }
-  }, [user, claimed, stripeSessionId]);
-
-  const claimLicense = async () => {
-    if (!stripeSessionId) return;
-    setClaiming(true);
-    try {
-      const res = await fetch("/api/claim-license", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stripeSessionId }),
-      });
-      const data = await res.json();
-      if (data.success || data.error === "No pending license found for this purchase") {
-        setClaimed(true);
-      }
-    } catch {
-      setClaimed(true);
-    } finally {
-      setClaiming(false);
-    }
-  };
+  }, [user, claimed, claiming, claimError, claimLicense]);
 
   const showSignInPrompt = !loading && !user;
   const showClaimingState = user && claiming;
-  const showSuccess = user && (claimed || !claiming);
+  const showClaimError = user && claimError && !claiming;
+  const showSuccess = user && claimed && !claiming;
 
   return (
     <>
@@ -100,6 +152,8 @@ export default function CheckoutSuccessPage() {
                 ? tCheckout("signInToActivate")
                 : showClaimingState
                 ? tCheckout("activatingLicense")
+                : showClaimError
+                ? claimError
                 : tCheckout("licenseActive")}
             </p>
           </div>
@@ -117,6 +171,24 @@ export default function CheckoutSuccessPage() {
           {showClaimingState && (
             <div className="flex justify-center">
               <div className="w-8 h-8 border-2 border-amber-300 border-t-amber-700 rounded-full animate-spin" />
+            </div>
+          )}
+
+          {showClaimError && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-5 space-y-4 text-left">
+              <p className="font-detective text-red-900 text-lg">
+                {tCheckout("activationIssue")}
+              </p>
+              <p className="text-red-800 text-sm">
+                {tCheckout("activationIssueHelp")}
+              </p>
+              <button
+                type="button"
+                onClick={claimLicense}
+                className="inline-flex items-center justify-center px-5 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white font-detective transition-colors"
+              >
+                {tCheckout("retryActivation")}
+              </button>
             </div>
           )}
 
@@ -154,6 +226,19 @@ export default function CheckoutSuccessPage() {
               </Link>
             </>
           )}
+
+          <p className="text-amber-700/60 text-xs">
+            {tCheckout.rich("teamLicense", {
+              a: (chunks) => (
+                <a
+                  href="mailto:support@sqlnoir.com"
+                  className="underline hover:text-amber-800"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
+          </p>
 
           <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} />
         </div>

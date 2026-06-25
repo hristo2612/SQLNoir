@@ -55,7 +55,7 @@
     "faqAccountQ": "Do I need an account to play?",
     "faqAccountA": "You can open and solve cases without creating an account. Sign in to track XP, progress, and solved cases across devices.",
     "faqAccessQ": "How does access work?",
-    "faqAccessA": "All cases are open from the start — there's nothing to unlock. The difficulty levels (beginner, intermediate, advanced) are just a guide: start with a beginner case and progress at your own pace. XP tracks your progress as you solve cases.",
+    "faqAccessA": "The beginner cases are free to play, no account needed. The intermediate and advanced cases unlock with a one-time Detective License, a single lifetime purchase rather than a subscription. XP tracks your progress as you solve cases.",
     "faqSqlQ": "What SQL do I need to know?",
     "faqSqlA": "Beginners can start with simple SELECTs. Intermediate and advanced cases introduce joins, grouping, filters, and subqueries as you progress.",
     "faqInterviewQ": "Will this help with interviews?",
@@ -71,6 +71,7 @@
   },
   "cases": {
     "caseFiles": "Case Files",
+    "unsyncedNote": "Unsynced - sign in to save your XP",
     "beginner": "Beginner",
     "beginnerDesc": "Perfect for SQL newcomers. Learn the basics of querying and data analysis.",
     "intermediate": "Intermediate",
@@ -134,14 +135,20 @@
   },
   "solution": {
     "caseSolved": "Case Solved!",
+    "caseClosedStamp": "Case Closed",
     "explanation": "Explanation",
-    "saveXpNote": "Note: Create an account to save your XP rewards for solved cases.",
+    "saveXpNote": "Your XP is saved on this device. Sign in anytime to keep it across devices.",
+    "unlockRemainingCases": "Unlock the remaining cases",
+    "unlockRemainingDesc": "You've solved both free cases. Get a Detective License to crack every intermediate and advanced investigation.",
+    "fullArchiveTitle": "Ready for the full case file?",
+    "fullArchiveDesc": "Unlock every intermediate and advanced investigation with one Detective License.",
+    "unlockAllCasesCta": "Unlock all cases",
     "enjoyedMystery": "Enjoyed the mystery?",
     "shareMessage": "Share SQLNoir with another detective and see if they can solve it too.",
     "shareSqlnoir": "Share SQLNoir",
     "submitFindings": "Submit Your Findings",
-    "notQuiteRight": "Not Quite Right",
-    "tryAgainMessage": "Try again with a different answer.",
+    "notQuiteRight": "The Trail's Gone Cold",
+    "tryAgainMessage": "Re-examine the evidence and follow a fresh lead.",
     "tryAgain": "Try Again",
     "submitDescription": "Submit the suspect you discovered through your investigation to see if you cracked the case.",
     "yourAnswer": "Your Answer",
@@ -282,11 +289,11 @@
   },
   "license": {
     "upgradeTitle": "Upgrade to Detective License",
-    "upgradeSubtitle": "The deeper mysteries await, detective...",
-    "unlockCases": "Unlock 4 advanced cases",
-    "unlockCasesDesc": "Intermediate & advanced investigations with complex SQL challenges",
-    "earnBadges": "Earn exclusive XP badges",
-    "earnBadgesDesc": "Show off your SQL mastery with licensed-only achievements",
+    "upgradeSubtitle": "Unlock the full case archive and every future paid investigation.",
+    "unlockCases": "Unlock every paid case",
+    "unlockCasesDesc": "Intermediate and advanced investigations with deeper SQL challenges",
+    "earnBadges": "Keep building your XP",
+    "earnBadgesDesc": "Track solved cases and progress across the full archive",
     "supportDev": "Support indie development",
     "supportDevDesc": "Help us build more cases and keep SQLNoir growing",
     "oneTimePayment": "One-time payment, forever yours",
@@ -300,8 +307,10 @@
     "caseClassifiedDesc": "This investigation requires a Detective License. Upgrade to access all intermediate and advanced cases.",
     "backToCaseFiles": "Back to Case Files",
     "licenseRequired": "License Required",
+    "unlockCase": "Unlock case",
     "unlockAllCases": "Unlock all cases with a Detective License",
-    "unlockAllCasesDesc": "One-time purchase. Full access to all cases, every difficulty tier, unlimited practice."
+    "unlockAllCasesDesc": "One-time purchase. Full access to all cases, every difficulty tier, unlimited practice.",
+    "teamLicense": "Need a team or education license? Email <a>support@sqlnoir.com</a>"
   },
   "checkout": {
     "paymentReceived": "Payment Received!",
@@ -309,13 +318,19 @@
     "signInToActivate": "Sign in to activate your Detective License and unlock all cases.",
     "activatingLicense": "Activating your license...",
     "licenseActive": "Your Detective License is now active. All 6 cases are unlocked and waiting for you.",
+    "activationMissingSession": "This checkout link is missing its Stripe session. Open the link from your Stripe receipt or contact support.",
+    "activationFailed": "We couldn't activate this license automatically.",
+    "activationIssue": "License activation needs attention",
+    "activationIssueHelp": "Make sure you're signed in with the same email you used at checkout. If it still doesn't activate, email support@sqlnoir.com and we'll fix it.",
+    "retryActivation": "Retry activation",
     "signInButton": "Sign In to Activate License",
     "whatYouGet": "What you get:",
     "accessAllCases": "Access to all 6 detective cases",
     "allDifficulties": "Beginner through Advanced difficulty",
     "unlimitedPractice": "Unlimited SQL practice with real schemas",
     "xpTracking": "XP tracking and progress badges",
-    "openCaseFiles": "Open the Case Files"
+    "openCaseFiles": "Open the Case Files",
+    "teamLicense": "Questions about team or bulk licenses? Email <a>support@sqlnoir.com</a>"
   },
   "localeSwitcher": {
     "switchToPortuguese": "Switch to Portuguese",
@@ -329,7 +344,9 @@
     "copyright": "© {year} SQLNoir",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "contact": "Contact"
+    "contact": "Contact",
+    "faq": "FAQ",
+    "purchaseAgreement": "By purchasing, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
   },
   "cookieConsent": {
     "message": "We use cookies for analytics. DNT is respected.",
@@ -337,24 +354,27 @@
     "accept": "OK"
   },
   "paywall": {
-    "title": "Unlock All Cases",
-    "subtitle": "You've proven your detective skills. Upgrade to access intermediate and advanced cases, plus future investigations.",
-    "tierName": "Detective Pro",
-    "perMonth": "per month",
+    "title": "Unlock the Full Case Archive",
+    "subtitle": "One Detective License opens every intermediate and advanced case, plus future paid investigations.",
+    "tierName": "Detective License",
+    "oneTimePayment": "One-time payment, forever yours",
     "feature1": "All intermediate & advanced cases",
     "feature2": "New cases as they launch",
     "feature3": "Detailed solution explanations",
     "ctaUpgrade": "Upgrade Now",
-    "ctaMaybeLater": "Maybe later"
+    "ctaMaybeLater": "Maybe later",
+    "redirecting": "Redirecting...",
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "teamLicense": "Need a team or education license? Email <a>support@sqlnoir.com</a>"
   },
   "privacy": {
     "metadata": {
       "title": "Privacy Policy",
-      "description": "SQLNoir privacy policy — how we collect, use, and protect your data when you play our interactive SQL detective game."
+      "description": "SQLNoir privacy policy - how we collect, use, and protect your data when you play our interactive SQL detective game."
     },
     "body": {
       "title": "Privacy Policy",
-      "lastUpdated": "Last updated: March 15, 2026",
+      "lastUpdated": "Last updated: June 22, 2026",
       "collectionTitle": "What We Collect",
       "collectionIntro": "When you use SQLNoir, we may collect the following information:",
       "collectionAccount": "<strong>Account data:</strong> If you sign in with Google OAuth (via Supabase), we store your email address and a user ID.",
@@ -366,14 +386,14 @@
       "useItem3": "To understand how users interact with the site so we can make it better.",
       "cookiesTitle": "Cookies",
       "cookiesIntro": "SQLNoir uses the following cookies:",
-      "cookiesAuth": "<strong>Authentication cookies</strong> (Supabase) — to keep you signed in across sessions.",
-      "cookiesAnalytics": "<strong>Analytics cookies</strong> (PostHog) — to collect anonymized usage data.",
+      "cookiesAuth": "<strong>Authentication cookies</strong> (Supabase) - to keep you signed in across sessions.",
+      "cookiesAnalytics": "<strong>Analytics cookies</strong> (PostHog) - to collect anonymized usage data.",
       "cookiesDisable": "You can disable cookies in your browser settings. Disabling authentication cookies will require you to sign in again on each visit.",
       "thirdPartyTitle": "Third-Party Services",
-      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) — product analytics.",
-      "thirdPartyVercel": "<strong>Vercel Analytics</strong> — page view analytics.",
-      "thirdPartySupabase": "<strong>Supabase</strong> — authentication and database.",
-      "thirdPartyStripe": "<strong>Stripe</strong> — would process payments if paid plans are introduced. Paid checkout is not currently active, so no payment data is processed today.",
+      "thirdPartyPosthog": "<strong>PostHog</strong> (<posthog>posthog.com</posthog>) - product analytics.",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong> - page view analytics.",
+      "thirdPartySupabase": "<strong>Supabase</strong> - authentication and database.",
+      "thirdPartyStripe": "<strong>Stripe</strong> - processes payments for paid Detective Licenses.",
       "thirdPartyNoSell": "We do not sell your data to any third parties.",
       "retentionTitle": "Data Retention",
       "retentionBody": "Account data is retained for as long as your account is active. Analytics data is retained in anonymized form and automatically expires based on PostHog and Vercel's retention policies.",
@@ -385,25 +405,27 @@
       "rightsItem4": "Opt out of analytics tracking by enabling the <strong>Do Not Track</strong> setting in your browser. PostHog respects the DNT signal.",
       "rightsExercise": "To exercise any of these rights, contact us at the email below.",
       "contactTitle": "Contact",
-      "contactBody": "If you have any questions about this privacy policy or want to request data deletion, contact us at <email>hristoapps@gmail.com</email>."
+      "contactBody": "If you have any questions about this privacy policy or want to request data deletion, contact us at <email>support@sqlnoir.com</email>."
     }
   },
   "terms": {
     "metadata": {
       "title": "Terms of Service",
-      "description": "SQLNoir terms of service — rules and conditions for using our interactive SQL learning platform and detective cases."
+      "description": "SQLNoir terms of service - rules and conditions for using our interactive SQL learning platform and detective cases."
     },
     "body": {
       "title": "Terms of Service",
-      "lastUpdated": "Last updated: March 15, 2026",
+      "lastUpdated": "Last updated: June 22, 2026",
       "overviewTitle": "Overview",
       "overviewBody": "SQLNoir is an interactive SQL learning platform where you solve detective cases using SQL queries. By using SQLNoir, you agree to these terms. SQLNoir is provided \"as is\" without warranty of any kind.",
       "accountsTitle": "Accounts and Access",
       "accountsIntro": "You can use SQLNoir without creating an account. Signing in with Google OAuth allows you to track progress across devices.",
-      "accountsFreeTier": "<strong>Free access:</strong> All cases are currently available for free — no payment is required to play any of them.",
-      "accountsLicense": "<strong>Future plans:</strong> A paid option may be introduced later. If it is, these terms will be updated before any case becomes paid.",
+      "accountsFreeTier": "<strong>Free access:</strong> The first two cases are free to play - no account or payment required. The remaining cases are unlocked with a one-time Detective License.",
+      "accountsLicense": "<strong>Detective License:</strong> The first two cases are free. Unlocking the remaining cases requires a one-time Detective License - a single lifetime payment, not a subscription. The license never expires and includes future paid cases at no extra cost.",
       "paymentsTitle": "Payments",
-      "paymentsBody": "SQLNoir is currently free to use. If a paid option is introduced in the future, payments would be processed securely by <stripe>Stripe</stripe>, and these terms would be updated accordingly. If you experience any issues, please contact us and we'll do our best to help.",
+      "paymentsBody": "The first two cases are free to play. Unlocking the remaining cases requires a one-time Detective License, a single lifetime payment with no recurring or monthly charges. Payments are processed securely by <stripe>Stripe</stripe>. If you experience any issues, please contact us and we'll do our best to help.",
+      "refundTitle": "Refunds",
+      "refundBody": "We offer a 14-day, no-questions-asked refund, and we'll help any unhappy customer even after that window. To request a refund, email <email>support@sqlnoir.com</email>.",
       "ugcTitle": "User-Generated Content",
       "ugcBody": "SQL queries you write in SQLNoir are executed locally in your browser using SQL.js. We do not store, collect, or share your queries.",
       "acceptableUseTitle": "Acceptable Use",
@@ -418,7 +440,7 @@
       "changesTitle": "Changes to These Terms",
       "changesBody": "We may update these terms from time to time. Continued use of SQLNoir after changes constitutes acceptance of the updated terms.",
       "contactTitle": "Contact",
-      "contactBody": "Questions about these terms? Contact us at <email>hristoapps@gmail.com</email>."
+      "contactBody": "Questions about these terms? Contact us at <email>support@sqlnoir.com</email>."
     }
   },
   "contact": {
@@ -444,5 +466,47 @@
     "siteTitle": "Interactive SQL Game | Learn SQL by Solving Detective Cases | SQLNoir",
     "siteDescription": "SQLNoir is an interactive SQL game where you solve crimes and mysteries using SQL queries. Learn SQL by playing detective in this engaging SQL learning game.",
     "ogAlt": "SQLNoir interactive SQL detective game"
+  },
+  "faq": {
+    "metadata": {
+      "title": "FAQ",
+      "description": "Answers to common questions about SQLNoir's lifetime Detective License, refunds, country pricing, free cases, offline play, and support."
+    },
+    "body": {
+      "title": "Frequently Asked Questions",
+      "intro": "Common questions about buying and playing SQLNoir. Can't find what you need? Email support@sqlnoir.com.",
+      "q1": {
+        "question": "Is this a subscription or a one-time purchase?",
+        "answer": "It's a one-time purchase, not a subscription. You buy a lifetime Detective License once and it never expires. The license also includes future paid cases we release, at no extra cost. There are no recurring charges."
+      },
+      "q2": {
+        "question": "I paid but can't access the cases. What do I do?",
+        "answer": "This usually happens when the purchase was made anonymously, before signing in. Sign in with any account, reopen a locked case, and click Get License to claim your purchase. If you're still locked out, email <email>support@sqlnoir.com</email> and we'll sort it out."
+      },
+      "q3": {
+        "question": "Can I get a refund?",
+        "answer": "Yes. We offer a 14-day, no-questions-asked refund, and we'll help any unhappy customer even after that window. Just email <email>support@sqlnoir.com</email>."
+      },
+      "q4": {
+        "question": "Why is the price different in my country?",
+        "answer": "We use fair purchasing-power pricing. The price is automatically adjusted to the local purchasing power of your country, so it may differ from what others see. This is intentional, not a bug."
+      },
+      "q5": {
+        "question": "Which cases are free?",
+        "answer": "The first two cases are free to play. The remaining cases require a Detective License."
+      },
+      "q6": {
+        "question": "Can I play offline?",
+        "answer": "You can work on a case in your browser without a connection, but checking your answers requires an internet connection."
+      },
+      "q7": {
+        "question": "Do you offer team, classroom, or education licenses?",
+        "answer": "Yes, with discounts. Email <email>support@sqlnoir.com</email> for a quote and we'll set you up."
+      },
+      "q8": {
+        "question": "How do I get help or report a bug?",
+        "answer": "Email <email>support@sqlnoir.com</email> or join our <discord>Discord</discord> community. We're happy to help."
+      }
+    }
   }
 }

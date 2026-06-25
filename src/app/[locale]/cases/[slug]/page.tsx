@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CasePageClient } from "@/components/CasePageClient";
-import { findCaseBySlug, getAllCases, getCaseSlug, getLocalizedCase } from "@/lib/case-utils";
+import { findCaseBySlug, getAllCases, getCaseSlug } from "@/lib/case-utils";
+import { getLocalizedCase } from "@/lib/case-localization";
 import { isCaseFree } from "@/lib/license";
 import { getTranslations, getLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";

@@ -55,7 +55,7 @@
     "faqAccountQ": "玩游戏需要账号吗？",
     "faqAccountA": "不注册也可以打开并破解案件。登录后可以跨设备同步经验值、进度和已侦破的案件。",
     "faqAccessQ": "案件需要解锁吗？",
-    "faqAccessA": "所有案件从一开始就向你开放，无需解锁。难度等级（初级、中级、高级）只是一个参考——建议从初级案件起步，按自己的节奏推进。经验值则记录你的破案进度。",
+    "faqAccessA": "初级案件免费游玩，无需注册。中级和高级案件需要一次性的侦探执照解锁，这是终身买断，并非订阅。经验值则记录你的破案进度。",
     "faqSqlQ": "我需要会哪些 SQL？",
     "faqSqlA": "新手从简单的 SELECT 开始即可。中级与高级案件会循序渐进地引入 JOIN、分组、筛选和子查询。",
     "faqInterviewQ": "这对面试有帮助吗？",
@@ -71,6 +71,7 @@
   },
   "cases": {
     "caseFiles": "SQL 案件档案",
+    "unsyncedNote": "未同步 - 登录以保存你的经验值",
     "beginner": "初级",
     "beginnerDesc": "适合 SQL 新手。学习查询与数据分析的基本功。",
     "intermediate": "中级",
@@ -134,14 +135,20 @@
   },
   "solution": {
     "caseSolved": "案件已侦破！",
+    "caseClosedStamp": "结案",
     "explanation": "解析说明",
-    "saveXpNote": "提示：注册账号后，可以保存已破解案件的经验值奖励。",
+    "saveXpNote": "你的经验值已保存在这台设备上。登录后可在多台设备间保留进度。",
+    "unlockRemainingCases": "解锁剩余案件",
+    "unlockRemainingDesc": "你已破解两个免费案件。获取侦探执照即可侦破所有中级和高级调查。",
+    "fullArchiveTitle": "准备打开完整案卷了吗？",
+    "fullArchiveDesc": "购买一张侦探证，即可解锁全部中级与高级调查。",
+    "unlockAllCasesCta": "解锁全部案件",
     "enjoyedMystery": "喜欢这个谜案吗？",
     "shareMessage": "把 SQLNoir 分享给另一位侦探，看他能不能也破解它。",
     "shareSqlnoir": "分享 SQLNoir",
     "submitFindings": "提交你的调查结果",
-    "notQuiteRight": "答案不对",
-    "tryAgainMessage": "请再试试其他答案。",
+    "notQuiteRight": "线索断了",
+    "tryAgainMessage": "重新审视证据，循着新的线索再查一次。",
     "tryAgain": "再试一次",
     "submitDescription": "提交你在调查中锁定的嫌疑人，看看是否成功破案。",
     "yourAnswer": "你的答案",
@@ -158,7 +165,7 @@
   },
   "share": {
     "title": "一起破解谜案吧！",
-    "shareTitle": "SQL Noir —— 在破案中学习 SQL",
+    "shareTitle": "SQL Noir：在破案中学习 SQL",
     "twitter": "Twitter",
     "facebook": "Facebook",
     "linkedin": "LinkedIn",
@@ -219,7 +226,7 @@
   "blog": {
     "title": "侦探手记",
     "subtitle": "SQL 博客",
-    "pageTitle": "侦探手记 — 第 {pageNum} 页",
+    "pageTitle": "侦探手记 - 第 {pageNum} 页",
     "readFullArticle": "阅读全文",
     "previous": "上一页",
     "next": "下一页",
@@ -229,7 +236,7 @@
       "title": "侦探手记 | SQL 博客",
       "description": "来自 SQLNoir 侦探手记的 SQL 教程、技巧与游戏推荐。",
       "ogAlt": "SQLNoir 博客",
-      "rssTitle": "SQLNoir — 侦探手记",
+      "rssTitle": "SQLNoir - 侦探手记",
       "rssDescription": "来自 SQLNoir 侦探手记的 SQL 教程、技巧与游戏推荐。"
     }
   },
@@ -282,11 +289,11 @@
   },
   "license": {
     "upgradeTitle": "升级侦探证",
-    "upgradeSubtitle": "更深的谜案在前方等你，侦探……",
-    "unlockCases": "解锁 4 个高阶案件",
-    "unlockCasesDesc": "中级与高级调查，带来更复杂的 SQL 挑战",
-    "earnBadges": "获得专属经验值徽章",
-    "earnBadgesDesc": "用持照侦探专属成就展示你的 SQL 功底",
+    "upgradeSubtitle": "解锁完整案件档案，以及未来发布的付费调查。",
+    "unlockCases": "解锁所有付费案件",
+    "unlockCasesDesc": "中级与高级调查，带来更深入的 SQL 挑战",
+    "earnBadges": "继续积累经验值",
+    "earnBadgesDesc": "在完整案件档案中追踪已侦破案件和进度",
     "supportDev": "支持独立开发",
     "supportDevDesc": "帮助我们打造更多案件，让 SQLNoir 持续成长",
     "oneTimePayment": "一次付费，永久持有",
@@ -300,8 +307,10 @@
     "caseClassifiedDesc": "这桩调查需要侦探证。升级后即可解锁全部中级与高级案件。",
     "backToCaseFiles": "返回案件档案",
     "licenseRequired": "需要执照",
+    "unlockCase": "解锁案件",
     "unlockAllCases": "使用侦探证解锁全部案件",
-    "unlockAllCasesDesc": "一次性购买。完整解锁所有案件、所有难度，无限练习。"
+    "unlockAllCasesDesc": "一次性购买。完整解锁所有案件、所有难度，无限练习。",
+    "teamLicense": "需要团队或教育授权？请联系 <a>support@sqlnoir.com</a>"
   },
   "checkout": {
     "paymentReceived": "付款已收到！",
@@ -309,13 +318,19 @@
     "signInToActivate": "登录以激活你的侦探证并解锁全部案件。",
     "activatingLicense": "正在激活你的执照...",
     "licenseActive": "你的侦探证已激活。全部 6 桩案件都已解锁，等你来破。",
+    "activationMissingSession": "这个结账链接缺少 Stripe 会话信息。请从 Stripe 收据打开链接，或联系支持。",
+    "activationFailed": "我们无法自动激活这张侦探证。",
+    "activationIssue": "执照激活需要处理",
+    "activationIssueHelp": "请确认你使用的是结账时填写的同一个邮箱。如果仍无法激活，请发送邮件到 support@sqlnoir.com，我们会帮你处理。",
+    "retryActivation": "重试激活",
     "signInButton": "登录以激活执照",
     "whatYouGet": "你将获得：",
     "accessAllCases": "解锁全部 6 桩侦探案件",
     "allDifficulties": "从初级到高级全部难度",
     "unlimitedPractice": "无限次 SQL 练习，真实数据库结构",
     "xpTracking": "经验值追踪与进度徽章",
-    "openCaseFiles": "翻开案件档案"
+    "openCaseFiles": "翻开案件档案",
+    "teamLicense": "对团队或批量授权有疑问？请联系 <a>support@sqlnoir.com</a>"
   },
   "localeSwitcher": {
     "switchToPortuguese": "切换为葡萄牙语",
@@ -329,7 +344,9 @@
     "copyright": "© {year} SQLNoir",
     "privacy": "隐私政策",
     "terms": "服务条款",
-    "contact": "联系我们"
+    "contact": "联系我们",
+    "faq": "常见问题",
+    "purchaseAgreement": "购买即表示您同意我们的<terms>服务条款</terms>和<privacy>隐私政策</privacy>。"
   },
   "cookieConsent": {
     "message": "我们使用 Cookie 进行数据分析，并尊重浏览器的 DNT 设置。",
@@ -337,24 +354,27 @@
     "accept": "好的"
   },
   "paywall": {
-    "title": "解锁全部案件",
-    "subtitle": "你已证明了侦探实力。升级后即可解锁中级与高级案件，以及未来更多调查。",
-    "tierName": "Detective Pro",
-    "perMonth": "每月",
+    "title": "解锁完整案件档案",
+    "subtitle": "一张侦探证即可打开所有中级与高级案件，并包含未来发布的付费调查。",
+    "tierName": "侦探证",
+    "oneTimePayment": "一次付费，永久持有",
     "feature1": "全部中级与高级案件",
     "feature2": "新案件上线即可玩",
     "feature3": "详尽的解题说明",
     "ctaUpgrade": "立即升级",
-    "ctaMaybeLater": "再说吧"
+    "ctaMaybeLater": "再说吧",
+    "redirecting": "正在跳转...",
+    "somethingWentWrong": "出了点问题，请重试。",
+    "teamLicense": "需要团队或教育授权？请联系 <a>support@sqlnoir.com</a>"
   },
   "privacy": {
     "metadata": {
       "title": "隐私政策",
-      "description": "SQLNoir 隐私政策 — 我们如何在你玩这款互动式 SQL 侦探游戏时收集、使用与保护你的数据。"
+      "description": "SQLNoir 隐私政策 - 我们如何在你玩这款互动式 SQL 侦探游戏时收集、使用与保护你的数据。"
     },
     "body": {
       "title": "隐私政策",
-      "lastUpdated": "最后更新：2026 年 3 月 15 日",
+      "lastUpdated": "最后更新：2026 年 6 月 22 日",
       "collectionTitle": "我们收集的信息",
       "collectionIntro": "当你使用 SQLNoir 时，我们可能会收集以下信息：",
       "collectionAccount": "<strong>账户数据：</strong>当你使用 Google OAuth（通过 Supabase）登录时，我们会保存你的电子邮箱地址和用户 ID。",
@@ -366,14 +386,14 @@
       "useItem3": "用于了解用户如何与网站互动，以便我们持续优化产品。",
       "cookiesTitle": "Cookie",
       "cookiesIntro": "SQLNoir 使用以下 Cookie：",
-      "cookiesAuth": "<strong>身份验证 Cookie</strong>（Supabase）——用于在多次会话间保持你的登录状态。",
-      "cookiesAnalytics": "<strong>分析 Cookie</strong>（PostHog）——用于收集匿名化的使用数据。",
+      "cookiesAuth": "<strong>身份验证 Cookie</strong>（Supabase）：用于在多次会话间保持你的登录状态。",
+      "cookiesAnalytics": "<strong>分析 Cookie</strong>（PostHog）：用于收集匿名化的使用数据。",
       "cookiesDisable": "你可以在浏览器设置中禁用 Cookie。禁用身份验证 Cookie 后，每次访问都需要重新登录。",
       "thirdPartyTitle": "第三方服务",
-      "thirdPartyPosthog": "<strong>PostHog</strong>（<posthog>posthog.com</posthog>）——产品分析。",
-      "thirdPartyVercel": "<strong>Vercel Analytics</strong>——页面浏览分析。",
-      "thirdPartySupabase": "<strong>Supabase</strong>——身份验证与数据库。",
-      "thirdPartyStripe": "<strong>Stripe</strong>——如果未来推出付费方案，将由其处理付款。目前未启用付费结账，因此当前不会处理任何付款数据。",
+      "thirdPartyPosthog": "<strong>PostHog</strong>（<posthog>posthog.com</posthog>）：产品分析。",
+      "thirdPartyVercel": "<strong>Vercel Analytics</strong>：页面浏览分析。",
+      "thirdPartySupabase": "<strong>Supabase</strong>：身份验证与数据库。",
+      "thirdPartyStripe": "<strong>Stripe</strong>：处理付费侦探执照的付款。",
       "thirdPartyNoSell": "我们不会向任何第三方出售你的数据。",
       "retentionTitle": "数据保留",
       "retentionBody": "账户数据将在你的账户处于活跃状态期间予以保留。分析数据以匿名化形式保存，并根据 PostHog 与 Vercel 的保留策略自动过期。",
@@ -385,25 +405,27 @@
       "rightsItem4": "通过在浏览器中启用 <strong>Do Not Track</strong> 设置来拒绝分析跟踪。PostHog 会遵守 DNT 信号。",
       "rightsExercise": "如需行使上述任何权利，请通过下方邮箱与我们联系。",
       "contactTitle": "联系我们",
-      "contactBody": "如对本隐私政策有任何疑问，或希望请求删除数据，请通过 <email>hristoapps@gmail.com</email> 与我们联系。"
+      "contactBody": "如对本隐私政策有任何疑问，或希望请求删除数据，请通过 <email>support@sqlnoir.com</email> 与我们联系。"
     }
   },
   "terms": {
     "metadata": {
       "title": "服务条款",
-      "description": "SQLNoir 服务条款 — 使用我们互动式 SQL 学习平台与侦探案件时所需遵守的规则与条件。"
+      "description": "SQLNoir 服务条款 - 使用我们互动式 SQL 学习平台与侦探案件时所需遵守的规则与条件。"
     },
     "body": {
       "title": "服务条款",
-      "lastUpdated": "最后更新：2026 年 3 月 15 日",
+      "lastUpdated": "最后更新：2026 年 6 月 22 日",
       "overviewTitle": "概述",
       "overviewBody": "SQLNoir 是一款互动式 SQL 学习平台，你可以通过编写 SQL 查询来破解侦探案件。使用 SQLNoir 即表示你同意本条款。SQLNoir 按\"现状\"提供，不附带任何形式的担保。",
       "accountsTitle": "账户与访问",
       "accountsIntro": "无需创建账户即可使用 SQLNoir。使用 Google OAuth 登录可在多台设备间同步你的学习进度。",
-      "accountsFreeTier": "<strong>免费使用：</strong>目前所有案件均可免费游玩，玩任何案件都无需付费。",
-      "accountsLicense": "<strong>未来计划：</strong>未来可能会推出付费选项。如果推出，我们会在任何案件变为付费之前更新本条款。",
+      "accountsFreeTier": "<strong>免费使用：</strong>前两个案件可免费游玩，无需注册账户或付费。其余案件需通过一次性的侦探执照解锁。",
+      "accountsLicense": "<strong>侦探执照：</strong>前两个案件可免费游玩。解锁其余案件需要一次性的侦探执照，一次付费，永久有效，并非订阅。执照永不过期，并包含我们未来发布的付费案件，无需额外付费。",
       "paymentsTitle": "付款",
-      "paymentsBody": "SQLNoir 目前完全免费。如果未来推出付费选项，付款将由 <stripe>Stripe</stripe> 安全处理，并会相应更新本条款。如遇到任何问题，请联系我们，我们将尽力协助解决。",
+      "paymentsBody": "前两个案件可免费游玩。解锁其余案件需要一次性的侦探执照，一次付费，永久有效，没有任何周期性或按月扣费。付款由 <stripe>Stripe</stripe> 安全处理。如遇到任何问题，请联系我们，我们将尽力协助解决。",
+      "refundTitle": "退款",
+      "refundBody": "我们提供 14 天无理由退款，即使超过该期限，我们也会帮助任何不满意的客户。如需退款，请发送邮件至 <email>support@sqlnoir.com</email>。",
       "ugcTitle": "用户生成内容",
       "ugcBody": "你在 SQLNoir 中编写的 SQL 查询将通过 SQL.js 在你的浏览器本地执行。我们不会存储、收集或分享你的查询内容。",
       "acceptableUseTitle": "可接受使用",
@@ -418,7 +440,7 @@
       "changesTitle": "条款变更",
       "changesBody": "我们可能会不定期更新本条款。条款变更后继续使用 SQLNoir 即视为你接受更新后的条款。",
       "contactTitle": "联系我们",
-      "contactBody": "对本条款有任何疑问？请通过 <email>hristoapps@gmail.com</email> 联系我们。"
+      "contactBody": "对本条款有任何疑问？请通过 <email>support@sqlnoir.com</email> 联系我们。"
     }
   },
   "contact": {
@@ -444,5 +466,47 @@
     "siteTitle": "SQL 推理游戏 | 在侦探案件中学 SQL | SQLNoir",
     "siteDescription": "SQLNoir 是一款 SQL 推理游戏，也是 SQL 侦探游戏：用 SQL 查询破解犯罪与谜案。化身侦探，用 SELECT、JOIN、WHERE 边破案边学 SQL。",
     "ogAlt": "SQLNoir 互动式 SQL 侦探游戏"
+  },
+  "faq": {
+    "metadata": {
+      "title": "常见问题",
+      "description": "关于 SQLNoir 终身侦探许可证、退款、各国定价、免费案件、离线游玩和支持的常见问题解答。"
+    },
+    "body": {
+      "title": "常见问题",
+      "intro": "关于购买和游玩 SQLNoir 的常见问题。没找到需要的内容？请发送邮件至 support@sqlnoir.com。",
+      "q1": {
+        "question": "这是订阅还是一次性购买？",
+        "answer": "这是一次性购买，而非订阅。你只需购买一次终身侦探许可证，它永不过期。该许可证还包含我们未来发布的付费案件，无需额外付费。没有任何周期性扣费。"
+      },
+      "q2": {
+        "question": "我付款了但无法访问案件，该怎么办？",
+        "answer": "这通常是因为在登录之前以匿名方式完成了购买。请使用任意账户登录，重新打开一个已锁定的案件，然后点击“获取许可证”来认领你的购买。如果仍然无法访问，请发送邮件至 <email>support@sqlnoir.com</email>，我们会为你解决。"
+      },
+      "q3": {
+        "question": "我可以退款吗？",
+        "answer": "可以。我们提供 14 天无理由退款，即使超过该期限，我们也会帮助任何不满意的客户。只需发送邮件至 <email>support@sqlnoir.com</email>。"
+      },
+      "q4": {
+        "question": "为什么我所在国家的价格不同？",
+        "answer": "我们采用公平的购买力定价。价格会根据你所在国家的本地购买力自动调整，因此可能与其他人看到的不同。这是有意为之，并非错误。"
+      },
+      "q5": {
+        "question": "哪些案件是免费的？",
+        "answer": "前两个案件可免费游玩，其余案件需要侦探许可证。"
+      },
+      "q6": {
+        "question": "我可以离线游玩吗？",
+        "answer": "你可以在浏览器中离线处理案件，但核对答案需要联网。"
+      },
+      "q7": {
+        "question": "你们提供团队、课堂或教育许可证吗？",
+        "answer": "提供，并有折扣。请发送邮件至 <email>support@sqlnoir.com</email> 获取报价，我们会为你安排。"
+      },
+      "q8": {
+        "question": "如何获取帮助或报告漏洞？",
+        "answer": "请发送邮件至 <email>support@sqlnoir.com</email>，或加入我们的 <discord>Discord</discord> 社区。我们很乐意提供帮助。"
+      }
+    }
   }
 }

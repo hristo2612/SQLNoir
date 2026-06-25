@@ -16,9 +16,10 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
   return (
     <div className="prose prose-lg max-w-none">
       <p className="text-xl text-gray-700 leading-relaxed mb-8">
-        O SQLNoir é um curso de SQL grátis em português onde você aprende
-        resolvendo 6 crimes de verdade. Sem cadastro, sem cartão de crédito e
-        sem instalar nada — você abre o navegador, escolhe um caso e começa a
+        O SQLNoir é um curso de SQL em português onde você aprende resolvendo
+        crimes de verdade. Os dois primeiros casos são grátis, sem cadastro nem
+        cartão; os demais liberam com uma Licença de Detetive única. Sem
+        instalar nada - você abre o navegador, escolhe um caso e começa a
         escrever consultas para encontrar o culpado. É o jeito mais rápido de
         sair do zero ao JOIN sem morrer de tédio.
       </p>
@@ -31,7 +32,7 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
           <li>
             •{" "}
             <a href="#por-que-gratis" className="hover:underline">
-              Por que esse curso de SQL é realmente gratuito
+              Por que esse curso de SQL é gratuito para começar
             </a>
           </li>
           <li>
@@ -78,30 +79,31 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
         id="por-que-gratis"
         className="text-3xl font-detective text-amber-900 mt-12 mb-6"
       >
-        Por Que Esse Curso de SQL é Realmente Gratuito
+        Por Que Esse Curso de SQL é Gratuito Para Começar
       </h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
         Existe muito &quot;curso de SQL gratuito&quot; por aí que pede e-mail,
         trava metade do conteúdo atrás de um plano premium ou exige instalar um
-        banco de dados na máquina. O SQLNoir é diferente: todos os 6 casos são
-        100% livres, o editor de SQL roda direto no navegador e você não
-        precisa criar conta para resolver seu primeiro mistério.
+        banco de dados na máquina. O SQLNoir é diferente: os dois primeiros
+        casos são 100% gratuitos e o editor de SQL roda direto no navegador; os
+        demais exigem uma Licença de Detetive única. Você não precisa criar
+        conta para resolver seu primeiro mistério.
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
         A ideia é simples. Aprender SQL não deveria depender de configurar
         ambiente, baixar arquivos ou assistir três horas de vídeo antes de
         digitar a primeira linha. Aqui você escreve consultas de verdade contra
-        um banco de dados de verdade desde o primeiro minuto — só que, em vez de
+        um banco de dados de verdade desde o primeiro minuto - só que, em vez de
         tabelas chatas de &quot;funcionários&quot; e &quot;produtos&quot;, você
         investiga suspeitos, álibis e provas.
       </p>
 
       <DetectiveTip variant="tip" title="Sem pegadinha">
-        Todos os 6 casos do SQLNoir são gratuitos — sem paywall e sem cartão de
-        crédito. Você aprende SELECT, WHERE, JOIN e agregações inteiras sem
-        gastar nada.
+        Os dois primeiros casos são gratuitos - sem cadastro nem cartão. Os
+        casos seguintes exigem uma Licença de Detetive única (pagamento
+        vitalício, sem assinatura).
       </DetectiveTip>
 
       {/* ─── Seção 2 ─── */}
@@ -115,7 +117,7 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
       <p className="text-gray-700 leading-relaxed mb-6">
         O curso cobre exatamente os comandos que aparecem em vagas de analista
         de dados, analista de negócios e desenvolvedor. Você não vai decorar
-        sintaxe solta — vai usar cada comando para responder uma pergunta da
+        sintaxe solta - vai usar cada comando para responder uma pergunta da
         investigação.
       </p>
 
@@ -153,7 +155,7 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
             "Cruzar a descrição da testemunha com os arquivos",
           ],
         ]}
-        caption="Os comandos essenciais cobertos pelo curso — todos aplicados na prática"
+        caption="Os comandos essenciais cobertos pelo curso - todos aplicados na prática"
       />
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -174,7 +176,7 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
 
       <p className="text-gray-700 leading-relaxed mb-6">
         A maioria dos cursos de SQL é passiva: você assiste, copia o exemplo e
-        esquece tudo na semana seguinte. O problema não é o conteúdo — é a falta
+        esquece tudo na semana seguinte. O problema não é o conteúdo - é a falta
         de motivo para escrever a consulta. Quando o objetivo é só
         &quot;praticar SELECT&quot;, seu cérebro não se engaja. Quando o
         objetivo é descobrir quem roubou o diamante, ele engaja.
@@ -191,7 +193,7 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
         </li>
         <li>
           • <strong>Contexto real:</strong> os bancos de dados têm estrutura de
-          verdade — chaves, relacionamentos, tabelas conectadas. Não são
+          verdade - chaves, relacionamentos, tabelas conectadas. Não são
           exemplos de brinquedo.
         </li>
         <li>
@@ -266,11 +268,11 @@ export default function CursoSqlGratisInvestigandoCrimesContent() {
       />
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        São 6 casos de detetive disponíveis, do roubo ao assassinato. Cada um
-        leva entre 30 e 60 minutos e pode ser feito no seu ritmo — pare quando
-        quiser, volte depois, refaça se travar. Não há cronômetro nem nota. Seu
-        progresso e XP só ficam salvos se você criar uma conta gratuita
-        (opcional).
+        São 6 casos de detetive disponíveis, do roubo ao assassinato - os dois
+        primeiros são gratuitos. Cada um leva entre 30 e 60 minutos e pode ser
+        feito no seu ritmo - pare quando quiser, volte depois, refaça se travar.
+        Não há cronômetro nem nota. Seu progresso e XP só ficam salvos se você
+        criar uma conta gratuita (opcional).
       </p>
 
       {/* ─── Seção 5 ─── */}
@@ -324,14 +326,14 @@ WHERE s.descricao LIKE '%cicatriz%'
         </pre>
         <p className="text-gray-600 text-sm mt-2">
           Essa consulta encontra suspeitos com &quot;cicatriz&quot; na descrição
-          que <strong>não têm álibi</strong> — exatamente as pessoas que merecem
+          que <strong>não têm álibi</strong> - exatamente as pessoas que merecem
           mais atenção na investigação. Você escreve isso no editor do
           navegador, roda, e vê o resultado na hora.
         </p>
       </div>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Repare como cada linha tem um motivo claro. Não é sintaxe decorada — é
+        Repare como cada linha tem um motivo claro. Não é sintaxe decorada - é
         uma pergunta da investigação traduzida para SQL. Esse é o coração do
         curso.
       </p>
@@ -365,7 +367,7 @@ WHERE s.descricao LIKE '%cicatriz%'
           caso.
         </li>
         <li>
-          2. <strong>Leia o briefing da investigação</strong> — ele te diz o que
+          2. <strong>Leia o briefing da investigação</strong> - ele te diz o que
           você precisa descobrir.
         </li>
         <li>
@@ -451,11 +453,12 @@ WHERE s.descricao LIKE '%cicatriz%'
       <div className="space-y-6 mb-8">
         <div className="bg-gray-50 p-6 rounded-lg">
           <h3 className="font-bold text-gray-900 mb-2">
-            O curso de SQL é realmente gratuito?
+            O curso de SQL é gratuito para começar?
           </h3>
           <p className="text-gray-700 leading-relaxed">
-            Sim. Todos os 6 casos do SQLNoir são gratuitos e cobrem SELECT,
-            WHERE, JOIN e agregações. Não há plano pago nem cartão de crédito.
+            Você começa de graça: os dois primeiros casos são gratuitos e sem
+            cadastro. Os demais exigem uma Licença de Detetive única (pagamento
+            único, sem assinatura).
           </p>
         </div>
 
@@ -521,7 +524,7 @@ WHERE s.descricao LIKE '%cicatriz%'
         >
           casos do SQLNoir
         </Link>{" "}
-        e escreva sua primeira consulta agora — e sempre que quiser{" "}
+        e escreva sua primeira consulta agora - e sempre que quiser{" "}
         <Link
           href="/pt-br/praticar"
           className="text-amber-700 hover:text-amber-900 underline"
