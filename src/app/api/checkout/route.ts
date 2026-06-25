@@ -96,14 +96,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const paymentMethodTypes =
-      locale === "zh-CN"
-        ? (["card", "alipay", "wechat_pay"] as const)
-        : (["card"] as const);
-
     const checkoutParams: any = {
       mode: "payment" as const,
-      payment_method_types: paymentMethodTypes,
       line_items: lineItems,
       success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cases`,
@@ -117,8 +111,15 @@ export async function POST(req: NextRequest) {
       } as Record<string, string>,
     };
 
-    // wechat_pay requires explicit client setting per Stripe docs.
+    // Default: omit `payment_method_types` so Checkout shows the methods enabled
+    // in the Stripe Dashboard dynamically (card + Apple Pay + Link + Google Pay +
+    // any region-eligible methods), ordered by likelihood to convert. Hardcoding
+    // a list would suppress wallets and ignore the dashboard config.
+    //
+    // zh-CN is the one exception: pin the explicit list so Alipay/WeChat Pay are
+    // guaranteed for Chinese buyers (WeChat also needs the `client` option).
     if (locale === "zh-CN") {
+      checkoutParams.payment_method_types = ["card", "alipay", "wechat_pay"];
       checkoutParams.payment_method_options = {
         wechat_pay: { client: "web" },
       };
