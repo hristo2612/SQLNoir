@@ -111,19 +111,12 @@ export async function POST(req: NextRequest) {
       } as Record<string, string>,
     };
 
-    // Default: omit `payment_method_types` so Checkout shows the methods enabled
+    // Omit `payment_method_types` entirely so Checkout shows the methods enabled
     // in the Stripe Dashboard dynamically (card + Apple Pay + Link + Google Pay +
-    // any region-eligible methods), ordered by likelihood to convert. Hardcoding
-    // a list would suppress wallets and ignore the dashboard config.
-    //
-    // zh-CN is the one exception: pin the explicit list so Alipay/WeChat Pay are
-    // guaranteed for Chinese buyers (WeChat also needs the `client` option).
-    if (locale === "zh-CN") {
-      checkoutParams.payment_method_types = ["card", "alipay", "wechat_pay"];
-      checkoutParams.payment_method_options = {
-        wechat_pay: { client: "web" },
-      };
-    }
+    // any region-eligible methods like Alipay/WeChat Pay for CNY), ordered by
+    // likelihood to convert. Hardcoding a list would suppress wallets, ignore the
+    // dashboard config, and throw if a pinned method weren't enabled. This means
+    // the dashboard fully governs payment methods for every locale, zh-CN included.
 
     if (session?.user) {
       // Signed-in user: attach user_id and pre-fill email
