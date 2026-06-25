@@ -158,6 +158,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, claimed: 0 });
     }
 
+    // Stable no-op once licensed. This runs on every sign-in (LicenseSync), so if
+    // the user already holds a license we must NOT consume their remaining pending
+    // purchases: a buyer can have more than one purchase on the same email (an
+    // accidental double-buy), and the extras are kept UNCLAIMED on purpose so a
+    // later refund can roll the license over to a still-valid purchase instead of
+    // pulling access (see revokeLicenseByPaymentIntent). Consuming them here would
+    // also rewrite user_info.payment_intent backwards on each sign-in.
+    const { data: current } = await supabaseAdmin
+      .from("user_info")
+      .select("has_license")
+      .eq("id", session.user.id)
+      .maybeSingle();
+    if (current?.has_license) {
+      return NextResponse.json({
+        success: true,
+        claimed: 0,
+        alreadyLicensed: true,
+      });
+    }
+
     const { data: pendings, error: pendingsError } = await supabaseAdmin
       .from("pending_licenses")
       .select("*")
@@ -179,6 +199,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, claimed: 0 });
     }
 
+    // Back the license with exactly ONE purchase (the newest). One license unlocks
+    // everything, so a second purchase adds nothing but insurance. Claiming only the
+    // newest keeps user_info.payment_intent a clean 1:1 with the backing purchase;
+    // any older same-email purchases stay UNCLAIMED as refund-rollover candidates.
     const newest = pendings[0];
     const { error: grantError } = await supabaseAdmin
       .from("user_info")
@@ -204,19 +228,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Mark every matched pending row claimed (only after a successful grant).
+    // Mark only the backing (newest) pending row claimed (after a successful grant).
     await supabaseAdmin
       .from("pending_licenses")
       .update({
         claimed_at: new Date().toISOString(),
         claimed_by: session.user.id,
       })
-      .in(
-        "id",
-        pendings.map((p) => p.id)
-      );
+      .eq("id", newest.id);
 
-    return NextResponse.json({ success: true, claimed: pendings.length });
+    return NextResponse.json({ success: true, claimed: 1 });
   } catch (error: any) {
     console.error("Claim license error:", error);
     return NextResponse.json(

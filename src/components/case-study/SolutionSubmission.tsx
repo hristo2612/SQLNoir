@@ -293,7 +293,7 @@ export function SolutionSubmission({
                   onClick={() => setIsPaywallOpen(true)}
                   className="mt-3 inline-flex w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-amber-800 px-5 py-3 font-detective leading-none text-amber-50 shadow-sm transition-[background-color,transform] duration-200 hover:bg-amber-700 active:scale-[0.96] sm:mt-0 sm:w-auto"
                 >
-                  <Shield className="h-4 w-4 shrink-0" />
+                  <Shield className="h-4 w-4 shrink-0 translate-y-[1px]" />
                   <span className="leading-none">
                     {t('solution.unlockAllCasesCta')}
                   </span>
@@ -334,7 +334,7 @@ export function SolutionSubmission({
               <button
                 type="button"
                 onClick={() => setSubmitted(false)}
-                className="font-detective text-amber-800 underline-offset-2 hover:text-amber-900 hover:underline"
+                className="inline-flex items-center justify-center rounded-lg bg-amber-800 px-5 py-2.5 font-detective leading-none text-amber-50 shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:bg-amber-700 hover:shadow-md active:scale-[0.96]"
               >
                 {t('solution.tryAgain')}
               </button>
@@ -374,21 +374,19 @@ export function SolutionSubmission({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`
-                    bg-amber-700 hover:bg-amber-600 text-amber-100 px-6 py-2 rounded-lg
-                    flex items-center justify-center font-detective transition-colors
-                    ${isLoading ? "opacity-75 cursor-not-allowed" : ""}
-                  `}
+                  className={`inline-flex items-center justify-center gap-2 rounded-lg bg-amber-700 px-6 py-3 font-detective leading-none text-amber-100 shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:bg-amber-600 hover:shadow-md active:scale-[0.96] ${
+                    isLoading ? "opacity-75 cursor-not-allowed" : ""
+                  }`}
                 >
                   {isLoading ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      {t('solution.submitting')}
+                      <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+                      <span className="leading-none">{t('solution.submitting')}</span>
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4 mr-2" />
-                      {t('solution.submitSolution')}
+                      <Send className="h-4 w-4 shrink-0 translate-y-[1px]" />
+                      <span className="leading-none">{t('solution.submitSolution')}</span>
                     </>
                   )}
                 </button>

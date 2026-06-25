@@ -43,7 +43,7 @@ export const blogPostsMeta: BlogPostMeta[] = [
   {
     slug: "curso-sql-gratis-investigando-crimes",
     title:
-      "Curso de SQL Grátis em Português - Aprenda Investigando 6 Crimes",
+      "Curso de SQL Grátis em Português - Aprenda Investigando Crimes",
     excerpt:
       "Curso de SQL com casos reais de detetive. Comece de graça e sem cadastro, resolvendo mistérios do básico ao JOIN. Os dois primeiros casos são grátis.",
     date: "2026-05-14",
