@@ -871,7 +871,7 @@ AND population < (
                 SQL Noir
               </td>
               <td className="border border-gray-300 p-3 text-green-600">
-                Free
+                Freemium
               </td>
               <td className="border border-gray-300 p-3">
                 Beginner-Advanced

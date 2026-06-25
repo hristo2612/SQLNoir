@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X, Lock, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { X, Lock } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   trackPaywallShown,
   trackPaywallCtaClicked,
@@ -10,6 +12,7 @@ import {
   posthog,
 } from "@/lib/posthog";
 import { getPriceForLocale } from "@/lib/ppp-prices";
+import { detectCountry } from "@/lib/geo";
 
 interface PaywallProps {
   isOpen: boolean;
@@ -19,13 +22,25 @@ interface PaywallProps {
 
 export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
   const t = useTranslations("paywall");
+  const tFooter = useTranslations("footer");
   const locale = useLocale();
-  const [price, setPrice] = useState(() => getPriceForLocale(locale).display);
+  // Start null (same on server and client) to avoid a hydration mismatch and to
+  // never paint the US "$14.99" before the localized price. The effect fills it
+  // synchronously from the client-detected country, then refines via /api/price.
+  const [price, setPrice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const country = detectCountry();
 
   useEffect(() => {
     if (!isOpen) return;
-    fetch(`/api/price?locale=${encodeURIComponent(locale)}`)
+    // Synchronous, no-network: show the country-localized price immediately so
+    // there is no US flash. detectCountry runs in the effect (not the useState
+    // initializer) to keep SSR/CSR initial state identical (null).
+    const c = detectCountry();
+    setPrice(getPriceForLocale(locale, c, { localizeByCountry: true }).display);
+    fetch(
+      `/api/price?locale=${encodeURIComponent(locale)}${country ? `&country=${country}` : ""}`
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.display) setPrice(data.display);
@@ -34,7 +49,10 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
   }, [isOpen, locale]);
 
   useEffect(() => {
-    setPrice(getPriceForLocale(locale).display);
+    // Keep the displayed price localized when the locale changes too, so a
+    // locale switch never falls back to the US price.
+    const c = detectCountry();
+    setPrice(getPriceForLocale(locale, c, { localizeByCountry: true }).display);
   }, [locale]);
 
   useEffect(() => {
@@ -62,7 +80,7 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ locale }),
+        body: JSON.stringify({ locale, ...(country ? { country } : {}) }),
       });
       const data = await res.json();
       if (data.error) {
@@ -85,82 +103,118 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/65 p-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-md overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-amber-950/60 p-4 backdrop-blur-sm">
+      <div className="relative w-full max-w-md overflow-hidden rounded-xl border border-amber-900/20 bg-amber-50 shadow-2xl">
         <button
           onClick={handleDismiss}
-          className="absolute right-4 top-4 z-10 rounded-full p-1 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+          aria-label={t("ctaMaybeLater")}
+          className="absolute right-2.5 top-2.5 z-10 grid h-10 w-10 place-items-center rounded-full text-amber-200 transition-[color,background-color,transform] hover:bg-amber-50/10 hover:text-amber-50 active:scale-[0.96]"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="bg-zinc-950 px-6 py-6 text-center">
-          <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-400/10">
-            <Sparkles className="h-7 w-7 text-emerald-300" />
+        <div className="bg-amber-900 px-6 py-6 text-center">
+          <div className="mb-4 flex justify-center">
+            <Image
+              src="/detective-license-badge.png"
+              alt="Detective License badge"
+              width={88}
+              height={88}
+              className="rounded-md drop-shadow-md"
+            />
           </div>
-          <h2 className="font-detective text-2xl text-white">
+          <h2 className="text-balance font-detective text-2xl text-amber-50">
             {t("title")}
           </h2>
-          <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-zinc-300">
+          <p className="mx-auto mt-2 max-w-sm text-pretty text-sm leading-6 text-amber-100/90">
             {t("subtitle")}
           </p>
         </div>
 
         <div className="space-y-6 px-6 py-6">
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-center">
+          <div className="rounded-lg border border-amber-900/15 bg-amber-100 p-5 text-center">
             <p className="text-xs font-medium uppercase tracking-wide text-amber-700">
               {t("tierName")}
             </p>
-            <p className="mt-1 font-detective text-4xl text-amber-950">
-              {price}
-            </p>
+            {price === null ? (
+              <span
+                aria-hidden="true"
+                className="mt-1 inline-block h-10 w-28 animate-pulse rounded bg-amber-200/60"
+              />
+            ) : (
+              <p className="mt-1 font-detective text-4xl tabular-nums text-amber-950">
+                {price}
+              </p>
+            )}
             <p className="mt-1 text-xs text-amber-700">
               {t("oneTimePayment")}
             </p>
           </div>
 
-          <ul className="space-y-3 text-sm text-zinc-700">
-            <li className="flex items-start gap-3">
-              <span className="mt-0.5 rounded-md border border-emerald-200 bg-emerald-50 p-1">
-                <Lock className="h-4 w-4 text-emerald-700" />
+          <ul className="space-y-3 text-sm text-amber-900">
+            <li className="flex items-center gap-3">
+              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-lg border border-amber-900/15 bg-amber-100">
+                <Lock className="h-4 w-4 text-amber-800" />
               </span>
-              <span>{t("feature1")}</span>
+              <span className="leading-none">{t("feature1")}</span>
             </li>
-            <li className="flex items-start gap-3">
-              <span className="mt-0.5 rounded-md border border-emerald-200 bg-emerald-50 p-1">
-                <Lock className="h-4 w-4 text-emerald-700" />
+            <li className="flex items-center gap-3">
+              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-lg border border-amber-900/15 bg-amber-100">
+                <Lock className="h-4 w-4 text-amber-800" />
               </span>
-              <span>{t("feature2")}</span>
+              <span className="leading-none">{t("feature2")}</span>
             </li>
-            <li className="flex items-start gap-3">
-              <span className="mt-0.5 rounded-md border border-emerald-200 bg-emerald-50 p-1">
-                <Lock className="h-4 w-4 text-emerald-700" />
+            <li className="flex items-center gap-3">
+              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-lg border border-amber-900/15 bg-amber-100">
+                <Lock className="h-4 w-4 text-amber-800" />
               </span>
-              <span>{t("feature3")}</span>
+              <span className="leading-none">{t("feature3")}</span>
             </li>
           </ul>
 
-          <button
-            onClick={handleCtaClick}
-            disabled={loading}
-            className="w-full rounded-lg bg-zinc-950 py-3 font-detective text-lg text-white shadow-lg transition-colors duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {loading ? t("redirecting") : t("ctaUpgrade")}
-          </button>
+          <div className="space-y-2">
+            <button
+              onClick={handleCtaClick}
+              disabled={loading}
+              className="w-full rounded-lg bg-amber-800 py-3 font-detective text-lg text-amber-50 shadow-lg transition-[background-color,transform] duration-200 hover:bg-amber-700 active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {loading ? t("redirecting") : t("ctaUpgrade")}
+            </button>
+            <p className="text-center text-xs text-amber-700">
+              {tFooter.rich("purchaseAgreement", {
+                terms: (chunks) => (
+                  <Link
+                    href="/terms"
+                    className="underline hover:text-amber-900"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+                privacy: (chunks) => (
+                  <Link
+                    href="/privacy"
+                    className="underline hover:text-amber-900"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </p>
+          </div>
 
           <button
             onClick={handleDismiss}
-            className="w-full text-center text-sm text-zinc-500 transition-colors hover:text-zinc-800"
+            className="w-full text-center text-sm text-amber-700 transition-colors hover:text-amber-900"
           >
             {t("ctaMaybeLater")}
           </button>
 
-          <p className="text-center text-xs text-zinc-500">
+          <p className="text-center text-xs text-amber-600">
             {t.rich("teamLicense", {
               a: (chunks) => (
                 <a
                   href="mailto:support@sqlnoir.com"
-                  className="underline hover:text-zinc-800"
+                  className="underline hover:text-amber-900"
                 >
                   {chunks}
                 </a>

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { CaseFile } from "./CaseFile";
 import { Lock } from "lucide-react";
 import { cases, categories } from "../cases";
-import { GetLicenseButton } from "./GetLicenseButton";
 import { isCategoryLocked } from "@/lib/license";
 import { getLocalProgress } from "@/lib/local-progress";
 import type { Case } from "@/types";
@@ -56,40 +55,15 @@ export function Dashboard({
           </h1>
           {showUnsyncedBadge && (
             <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 border border-amber-200 px-3 py-1 text-xs text-amber-800">
-              <span className="font-detective">
+              <span className="leading-none tabular-nums">
                 {anonProgress.xp} {t('common.xp')}
               </span>
-              <span aria-hidden="true">·</span>
-              <span>{t('cases.unsyncedNote')}</span>
+              <span aria-hidden="true" className="leading-none">·</span>
+              <span className="leading-none">{t('cases.unsyncedNote')}</span>
             </div>
           )}
         </div>
 
-        {process.env.NEXT_PUBLIC_ENABLE_MONETIZATION === "1" && !userInfo?.has_license && (
-          <div className="mb-8 bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-200 rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
-            <div className="space-y-1">
-              <p className="font-detective text-xl text-amber-900">
-                {t('license.unlockAllCases')}
-              </p>
-              <p className="text-amber-700 text-sm">
-                {t('license.unlockAllCasesDesc')}
-              </p>
-              <p className="text-amber-700/70 text-xs">
-                {t.rich('license.teamLicense', {
-                  a: (chunks) => (
-                    <a
-                      href="mailto:support@sqlnoir.com"
-                      className="underline hover:text-amber-900"
-                    >
-                      {chunks}
-                    </a>
-                  ),
-                })}
-              </p>
-            </div>
-            <GetLicenseButton source="dashboard-banner" />
-          </div>
-        )}
         <div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {categories.map((category) => {

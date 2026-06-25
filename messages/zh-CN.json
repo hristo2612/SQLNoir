@@ -55,7 +55,7 @@
     "faqAccountQ": "玩游戏需要账号吗？",
     "faqAccountA": "不注册也可以打开并破解案件。登录后可以跨设备同步经验值、进度和已侦破的案件。",
     "faqAccessQ": "案件需要解锁吗？",
-    "faqAccessA": "所有案件从一开始就向你开放，无需解锁。难度等级（初级、中级、高级）只是一个参考，建议从初级案件起步，按自己的节奏推进。经验值则记录你的破案进度。",
+    "faqAccessA": "初级案件免费游玩，无需注册。中级和高级案件需要一次性的侦探执照解锁，这是终身买断，并非订阅。经验值则记录你的破案进度。",
     "faqSqlQ": "我需要会哪些 SQL？",
     "faqSqlA": "新手从简单的 SELECT 开始即可。中级与高级案件会循序渐进地引入 JOIN、分组、筛选和子查询。",
     "faqInterviewQ": "这对面试有帮助吗？",
@@ -135,6 +135,7 @@
   },
   "solution": {
     "caseSolved": "案件已侦破！",
+    "caseClosedStamp": "结案",
     "explanation": "解析说明",
     "saveXpNote": "你的经验值已保存在这台设备上。登录后可在多台设备间保留进度。",
     "unlockRemainingCases": "解锁剩余案件",
@@ -146,8 +147,8 @@
     "shareMessage": "把 SQLNoir 分享给另一位侦探，看他能不能也破解它。",
     "shareSqlnoir": "分享 SQLNoir",
     "submitFindings": "提交你的调查结果",
-    "notQuiteRight": "答案不对",
-    "tryAgainMessage": "请再试试其他答案。",
+    "notQuiteRight": "线索断了",
+    "tryAgainMessage": "重新审视证据，循着新的线索再查一次。",
     "tryAgain": "再试一次",
     "submitDescription": "提交你在调查中锁定的嫌疑人，看看是否成功破案。",
     "yourAnswer": "你的答案",
@@ -344,7 +345,8 @@
     "privacy": "隐私政策",
     "terms": "服务条款",
     "contact": "联系我们",
-    "faq": "常见问题"
+    "faq": "常见问题",
+    "purchaseAgreement": "购买即表示您同意我们的<terms>服务条款</terms>和<privacy>隐私政策</privacy>。"
   },
   "cookieConsent": {
     "message": "我们使用 Cookie 进行数据分析，并尊重浏览器的 DNT 设置。",
@@ -361,6 +363,8 @@
     "feature3": "详尽的解题说明",
     "ctaUpgrade": "立即升级",
     "ctaMaybeLater": "再说吧",
+    "redirecting": "正在跳转...",
+    "somethingWentWrong": "出了点问题，请重试。",
     "teamLicense": "需要团队或教育授权？请联系 <a>support@sqlnoir.com</a>"
   },
   "privacy": {

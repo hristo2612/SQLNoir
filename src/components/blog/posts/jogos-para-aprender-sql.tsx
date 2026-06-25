@@ -125,8 +125,9 @@ AND i.alibi IS NOT NULL;`}
             professor corrigir seu trabalho
           </li>
           <li>
-            • <strong>É gratuito:</strong> sem paywall, sem &quot;recursos
-            premium&quot;
+            • <strong>Gratuito para começar:</strong> os dois primeiros casos
+            são grátis, sem cadastro, e uma Licença de Detetive única libera os
+            demais
           </li>
           <li>
             • <strong>Sem instalação:</strong> é só abrir o navegador e começar
@@ -890,7 +891,7 @@ AND population < (
                 SQL Noir
               </td>
               <td className="border border-gray-300 p-3 text-green-600">
-                Gratuito
+                Freemium
               </td>
               <td className="border border-gray-300 p-3">
                 Iniciante a avançado

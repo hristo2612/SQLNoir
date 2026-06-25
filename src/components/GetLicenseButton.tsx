@@ -61,11 +61,11 @@ export function GetLicenseButton({
       disabled={loading}
       className={
         className ||
-        "inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-amber-800 hover:bg-amber-700 text-amber-50 font-detective text-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+        "inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-amber-800 hover:bg-amber-700 text-amber-50 font-detective text-lg leading-none transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
       }
     >
-      <Shield className="w-5 h-5" />
-      {loading ? t('redirecting') : t('getLicense')}
+      <Shield className="w-5 h-5 shrink-0" />
+      <span className="leading-none">{loading ? t('redirecting') : t('getLicense')}</span>
     </button>
   );
 }

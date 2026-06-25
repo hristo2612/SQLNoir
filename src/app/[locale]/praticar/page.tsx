@@ -55,7 +55,7 @@ export default async function PraticarPage() {
     {
       question: "Praticar SQL no SQLNoir é grátis?",
       answer:
-        "Sim. Todos os 6 casos são gratuitos e não exigem cadastro. Você pode praticar SELECT, WHERE e JOIN de graça, direto no navegador.",
+        "Os dois primeiros casos são gratuitos e não exigem cadastro; os demais liberam com uma Licença de Detetive única. Você pode começar a praticar SELECT, WHERE e JOIN de graça, direto no navegador.",
     },
     {
       question: "O que dá para praticar no SQLNoir?",
@@ -209,8 +209,8 @@ export default async function PraticarPage() {
               Você não precisa de PostgreSQL, MySQL nem de nenhum cliente de
               banco de dados instalado. O SQLNoir roda 100% no navegador: abra
               um caso e o editor de SQL já está pronto, com o banco carregado.
-              Todos os casos são gratuitos e não pedem cadastro - dá para
-              praticar SQL online de graça agora mesmo.
+              Os dois primeiros casos são gratuitos e não pedem cadastro - dá
+              para começar a praticar SQL de graça agora mesmo.
             </p>
           </section>
 

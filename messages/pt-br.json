@@ -28,7 +28,7 @@
   },
   "home": {
     "heroTitle": "Aprenda SQL jogando - resolva crimes com suas próprias consultas",
-    "heroSubtitle": "Jogo de SQL detetive 100% em português. 6 casos grátis para resolver. SELECT, JOIN, WHERE - você é o investigador.",
+    "heroSubtitle": "Jogo de SQL detetive 100% em português. Comece de graça e desvende crimes com SELECT, JOIN, WHERE - você é o investigador.",
     "startInvestigation": "Iniciar Investigação",
     "welcomeDetective": "Bem-vindo, Detetive",
     "welcomeMessage": "A cidade está agitada. Novas evidências acabaram de chegar à sua mesa.",
@@ -55,7 +55,7 @@
     "faqAccountQ": "Preciso de uma conta para jogar?",
     "faqAccountA": "Você pode abrir e resolver casos sem criar uma conta. Faça login para rastrear XP, progresso e casos resolvidos entre dispositivos.",
     "faqAccessQ": "Como funciona o acesso?",
-    "faqAccessA": "Todos os casos estão disponíveis desde o início - não há nada a desbloquear. Os níveis de dificuldade (iniciante, intermediário, avançado) são apenas um guia: comece por um caso para iniciantes e avance no seu ritmo. O XP acompanha o seu progresso conforme você resolve casos.",
+    "faqAccessA": "Os casos para iniciantes são gratuitos, sem precisar de conta. Os casos intermediário e avançado são desbloqueados com a Licença de Detetive, uma compra única e vitalícia, não uma assinatura. O XP acompanha o seu progresso conforme você resolve casos.",
     "faqSqlQ": "O que preciso saber de SQL?",
     "faqSqlA": "Iniciantes podem começar com SELECTs simples. Casos intermediários e avançados introduzem joins, agrupamento, filtros e subconsultas conforme você progride.",
     "faqInterviewQ": "Isso ajuda em entrevistas?",
@@ -135,6 +135,7 @@
   },
   "solution": {
     "caseSolved": "Caso Resolvido!",
+    "caseClosedStamp": "Caso Encerrado",
     "explanation": "Explicação",
     "saveXpNote": "Seu XP está salvo neste dispositivo. Entre quando quiser para manter o progresso entre dispositivos.",
     "unlockRemainingCases": "Desbloqueie os casos restantes",
@@ -146,8 +147,8 @@
     "shareMessage": "Compartilhe o SQLNoir com outro detetive e veja se ele também consegue resolver.",
     "shareSqlnoir": "Compartilhar SQLNoir",
     "submitFindings": "Enviar Suas Descobertas",
-    "notQuiteRight": "Não é Bem Isso",
-    "tryAgainMessage": "Tente novamente com uma resposta diferente.",
+    "notQuiteRight": "A Pista Esfriou",
+    "tryAgainMessage": "Reexamine as evidências e siga uma nova pista.",
     "tryAgain": "Tentar Novamente",
     "submitDescription": "Envie o nome do suspeito que você descobriu na investigação para ver se desvendou o caso.",
     "yourAnswer": "Sua Resposta",
@@ -344,7 +345,8 @@
     "privacy": "Política de Privacidade",
     "terms": "Termos de Serviço",
     "contact": "Contato",
-    "faq": "Perguntas Frequentes"
+    "faq": "Perguntas Frequentes",
+    "purchaseAgreement": "Ao comprar, você concorda com nossos <terms>Termos de Serviço</terms> e nossa <privacy>Política de Privacidade</privacy>."
   },
   "cookieConsent": {
     "message": "Usamos cookies para análises. O sinal DNT (Do Not Track) é respeitado.",
@@ -361,6 +363,8 @@
     "feature3": "Explicações detalhadas das soluções",
     "ctaUpgrade": "Fazer Upgrade",
     "ctaMaybeLater": "Talvez depois",
+    "redirecting": "Redirecionando...",
+    "somethingWentWrong": "Algo deu errado. Tente novamente.",
     "teamLicense": "Precisa de uma licença para equipe ou instituição de ensino? Escreva para <a>support@sqlnoir.com</a>"
   },
   "privacy": {

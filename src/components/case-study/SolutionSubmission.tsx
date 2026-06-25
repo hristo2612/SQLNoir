@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Send, CheckCircle, XCircle, Loader2, Shield } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Send, Loader2, Shield, ShieldCheck, Fingerprint } from "lucide-react";
+import confetti from "canvas-confetti";
 import { supabase } from "../../lib/supabase";
 import type { Case } from "../../types";
 import { Paywall } from "../Paywall";
@@ -10,7 +11,6 @@ import { trackCaseCompleted, trackCaseAbandoned } from "../../lib/posthog-events
 import { useTranslations, useLocale } from "next-intl";
 import { isCaseFree } from "../../lib/license";
 import { recordLocalSolve } from "../../lib/local-progress";
-import { getPriceForLocale } from "../../lib/ppp-prices";
 
 interface SolutionSubmissionProps {
   caseData: Case;
@@ -84,15 +84,22 @@ export function SolutionSubmission({
           // The hardened RPC looks up the xp reward server-side and is
           // idempotent (dedup + append handled in SQL), so no client-side
           // completed_cases pre-fetch is needed and no client xp is trusted.
-          const { error: updateError } = await supabase.rpc(
-            "increment_user_xp",
-            {
-              user_id: solvedUser.id,
-              case_id: caseData.id,
-            }
-          );
-
-          if (updateError) throw updateError;
+          //
+          // XP persistence must NOT gate the success render: a correct answer
+          // earns the Case Solved screen + confetti even if the XP write hiccups
+          // (RLS, network, a not-yet-migrated RPC). Log and continue.
+          try {
+            const { error: updateError } = await supabase.rpc(
+              "increment_user_xp",
+              {
+                user_id: solvedUser.id,
+                case_id: caseData.id,
+              }
+            );
+            if (updateError) throw updateError;
+          } catch (xpErr) {
+            console.error("XP persistence failed (non-blocking):", xpErr);
+          }
         } else if (isCaseFree(caseData)) {
           // Anonymous visitor solved a free case - persist locally so it can be
           // migrated onto their account when they sign in.
@@ -171,49 +178,112 @@ export function SolutionSubmission({
   const showSuccess = submitted && isCorrect;
   const showIncorrect = submitted && !isCorrect;
 
+  // When the result renders, bring it to the top of the viewport. On mobile the
+  // submit button sits below the fold, so without this the user lands mid-card
+  // and has to scroll up to see the headline. scroll-mt on the cards clears the
+  // sticky mobile header.
+  const resultRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!submitted) return;
+    const reduce = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    resultRef.current?.scrollIntoView({
+      behavior: reduce ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [submitted, isCorrect]);
+
   const monetizationEnabled =
     process.env.NEXT_PUBLIC_ENABLE_MONETIZATION === "1";
   const showPurchaseCta =
     monetizationEnabled && isCaseFree(caseData) && !hasLicense;
-  const localizedPrice = getPriceForLocale(locale).display;
+
+  // Fire a themed, on-brand confetti burst when the case is cracked.
+  // Imperative (never in the React tree) and reduced-motion-safe.
+  useEffect(() => {
+    if (!showSuccess) return;
+    if (typeof window === "undefined") return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+    const colors = ["#b45309", "#78350f", "#fcd34d", "#fef3c7", "#1c1917"];
+    // Two angled bursts from the lower corners...
+    confetti({
+      particleCount: 45,
+      angle: 60,
+      spread: 55,
+      startVelocity: 45,
+      origin: { x: 0, y: 0.9 },
+      colors,
+    });
+    confetti({
+      particleCount: 45,
+      angle: 120,
+      spread: 55,
+      startVelocity: 45,
+      origin: { x: 1, y: 0.9 },
+      colors,
+    });
+    // ...then a short center pop a beat later.
+    const popTimer = window.setTimeout(() => {
+      confetti({
+        particleCount: 30,
+        spread: 70,
+        startVelocity: 35,
+        origin: { x: 0.5, y: 0.55 },
+        colors,
+      });
+    }, 180);
+
+    return () => window.clearTimeout(popTimer);
+  }, [showSuccess]);
 
   if (showSuccess) {
     return (
-      <div className="max-w-2xl mx-auto">
-        <section className="overflow-hidden rounded-xl border border-emerald-200 bg-white shadow-sm">
-          <div className="flex items-start gap-3 border-b border-emerald-100 bg-emerald-50 px-5 py-4 sm:px-6">
-            <CheckCircle className="mt-0.5 h-6 w-6 flex-shrink-0 text-emerald-600" />
-            <div className="space-y-1">
-              <h3 className="font-detective text-2xl text-emerald-950">
+      <div ref={resultRef} className="max-w-2xl mx-auto scroll-mt-28">
+        <section className="animate-card-reveal rounded-xl border border-amber-900/15 bg-amber-50 shadow-lg">
+          <div className="space-y-5 p-5 sm:p-7">
+            {/* Single wax-seal badge: the one signature element */}
+            <div className="flex flex-col items-center text-center">
+              <div className="animate-badge-pop flex h-16 w-16 items-center justify-center rounded-full bg-amber-800 shadow-md ring-4 ring-amber-200">
+                <ShieldCheck
+                  className="h-8 w-8 text-amber-50"
+                  strokeWidth={1.75}
+                />
+              </div>
+              <p className="mt-3 font-detective text-[11px] uppercase tracking-[0.3em] text-amber-700">
+                {t('solution.caseClosedStamp')}
+              </p>
+              <h3 className="text-balance font-detective text-2xl leading-tight text-amber-900 sm:text-3xl">
                 {t('solution.caseSolved')}
               </h3>
-              <p className="text-sm leading-6 text-emerald-900">
+              <p className="mt-2 max-w-md text-pretty text-sm leading-6 text-amber-800/90">
                 {solutionSuccessMessage}
               </p>
+              <span className="mt-3 inline-flex items-center rounded-full bg-amber-100 px-3 py-1 font-detective text-sm font-bold tabular-nums text-amber-900">
+                +{caseData.xpReward} XP
+              </span>
             </div>
-          </div>
 
-          <div className="space-y-5 px-5 py-5 sm:px-6">
-            <div className="space-y-2">
-              <h4 className="font-detective text-lg text-amber-950">
+            {/* Explanation */}
+            <div className="rounded-lg border border-amber-900/10 bg-white/60 p-4">
+              <h4 className="mb-1.5 font-detective text-base text-amber-900">
                 {t('solution.explanation')}
               </h4>
-              <p className="leading-7 text-amber-900">
+              <p className="leading-7 text-amber-800">
                 {solutionExplanation}
               </p>
             </div>
 
+            {/* Reward lands first, then the offer rises in */}
             {showPurchaseCta && (
-              <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:gap-5">
+              <div className="animate-cta-rise rounded-lg border border-amber-300 bg-amber-100/70 p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
                 <div className="space-y-1">
-                  <p className="font-detective text-lg text-amber-950">
+                  <p className="font-detective text-base text-amber-900">
                     {t('solution.fullArchiveTitle')}
                   </p>
-                  <p className="text-sm leading-6 text-amber-800">
-                    {t('solution.fullArchiveDesc')}
-                  </p>
                   {!user && (
-                    <p className="text-xs text-amber-700">
+                    <p className="text-xs leading-5 text-amber-700">
                       {t('solution.saveXpNote')}
                     </p>
                   )}
@@ -221,10 +291,12 @@ export function SolutionSubmission({
                 <button
                   type="button"
                   onClick={() => setIsPaywallOpen(true)}
-                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-800 px-5 py-3 font-detective text-amber-50 shadow-sm transition-colors duration-200 hover:bg-amber-700 sm:mt-0 sm:w-auto"
+                  className="mt-3 inline-flex w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-amber-800 px-5 py-3 font-detective leading-none text-amber-50 shadow-sm transition-[background-color,transform] duration-200 hover:bg-amber-700 active:scale-[0.96] sm:mt-0 sm:w-auto"
                 >
-                  <Shield className="h-4 w-4" />
-                  <span>{t('solution.unlockAllCasesCta')} - {localizedPrice}</span>
+                  <Shield className="h-4 w-4 shrink-0" />
+                  <span className="leading-none">
+                    {t('solution.unlockAllCasesCta')}
+                  </span>
                 </button>
               </div>
             )}
@@ -240,89 +312,91 @@ export function SolutionSubmission({
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="bg-amber-50 p-4 sm:p-6 rounded-xl border border-amber-900/10 space-y-4">
-        <h3 className="font-detective text-2xl text-amber-900">
-          {t('solution.submitFindings')}
-        </h3>
-        {showIncorrect ? (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-5 space-y-3">
-            <div className="flex items-start gap-3">
-              <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
-              <div>
-                <h4 className="font-detective text-xl text-red-800">
-                  {t('solution.notQuiteRight')}
-                </h4>
-                <p className="text-red-700 mt-1">
-                  {t('solution.tryAgainMessage')}
-                </p>
+    <div ref={resultRef} className="max-w-2xl mx-auto scroll-mt-28">
+      <section className="rounded-xl border border-amber-900/15 bg-amber-50 shadow-lg">
+        <div className="space-y-5 p-5 sm:p-7">
+          <h3 className="font-detective text-2xl leading-tight text-amber-900 sm:text-3xl">
+            {t('solution.submitFindings')}
+          </h3>
+          {showIncorrect ? (
+            <div className="animate-shake rounded-lg border border-amber-900/15 bg-amber-100/60 p-4 sm:p-5 space-y-3">
+              <div className="flex items-start gap-3">
+                <Fingerprint className="w-6 h-6 text-amber-800 flex-shrink-0" />
+                <div>
+                  <h4 className="font-detective text-xl text-amber-900">
+                    {t('solution.notQuiteRight')}
+                  </h4>
+                  <p className="text-amber-800 mt-1">
+                    {t('solution.tryAgainMessage')}
+                  </p>
+                </div>
               </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setSubmitted(false)}
-              className="text-red-700 hover:text-red-800 font-detective"
-            >
-              {t('solution.tryAgain')}
-            </button>
-          </div>
-        ) : (
-          <p className="text-amber-700">
-            {t('solution.submitDescription')}
-          </p>
-        )}
-
-        {!showIncorrect && (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block font-detective text-amber-800 mb-2">
-                {t('solution.yourAnswer')}
-              </label>
-              <input
-                type="text"
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-                className="w-full bg-white border border-amber-300 rounded-lg p-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
-                placeholder={t('solution.enterAnswer')}
-                disabled={isLoading}
-              />
-              <p className="mt-2 text-sm text-amber-700">
-                {t('solution.answerHint')}
-              </p>
-            </div>
-
-            {error && (
-              <div className="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded">
-                {error}
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row sm:justify-end">
               <button
-                type="submit"
-                disabled={isLoading}
-                className={`
-                  bg-amber-700 hover:bg-amber-600 text-amber-100 px-6 py-2 rounded-lg
-                  flex items-center font-detective transition-colors
-                  ${isLoading ? "opacity-75 cursor-not-allowed" : ""}
-                `}
+                type="button"
+                onClick={() => setSubmitted(false)}
+                className="font-detective text-amber-800 underline-offset-2 hover:text-amber-900 hover:underline"
               >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    {t('solution.submitting')}
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4 mr-2" />
-                    {t('solution.submitSolution')}
-                  </>
-                )}
+                {t('solution.tryAgain')}
               </button>
             </div>
-          </form>
-        )}
-      </div>
+          ) : (
+            <p className="text-amber-800 leading-6">
+              {t('solution.submitDescription')}
+            </p>
+          )}
+
+          {!showIncorrect && (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <label className="block font-detective text-amber-800">
+                  {t('solution.yourAnswer')}
+                </label>
+                <input
+                  type="text"
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                  className="w-full bg-white border border-amber-300 rounded-lg p-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                  placeholder={t('solution.enterAnswer')}
+                  disabled={isLoading}
+                />
+                <p className="text-sm text-amber-700">
+                  {t('solution.answerHint')}
+                </p>
+              </div>
+
+              {error && (
+                <div className="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded">
+                  {error}
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row sm:justify-end">
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className={`
+                    bg-amber-700 hover:bg-amber-600 text-amber-100 px-6 py-2 rounded-lg
+                    flex items-center justify-center font-detective transition-colors
+                    ${isLoading ? "opacity-75 cursor-not-allowed" : ""}
+                  `}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      {t('solution.submitting')}
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      {t('solution.submitSolution')}
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

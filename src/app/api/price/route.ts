@@ -3,13 +3,15 @@ import { getPriceTier, getPriceForLocale } from "@/lib/ppp-prices";
 
 export async function GET(req: NextRequest) {
   const country =
-    req.nextUrl.searchParams.get("country") ||
     req.headers.get("x-vercel-ip-country") ||
+    req.nextUrl.searchParams.get("country") ||
     "US";
 
   const locale = req.nextUrl.searchParams.get("locale") || "en";
 
-  const localized = getPriceForLocale(locale, country);
+  const localized = getPriceForLocale(locale, country, {
+    localizeByCountry: true,
+  });
   const { tier } = getPriceTier(country);
 
   return NextResponse.json({

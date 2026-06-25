@@ -331,9 +331,9 @@ export default async function SqlParaIniciantesPage() {
             </p>
             <p className="text-amber-800 leading-relaxed">
               A dificuldade vai do iniciante ao avançado, então dá para
-              começar do absoluto zero. Tudo roda no navegador, todos os
-              casos são gratuitos e não exigem cadastro. É a forma mais
-              divertida de aprender SQL na prática.
+              começar do absoluto zero. Tudo roda no navegador, e os dois
+              primeiros casos são gratuitos e não exigem cadastro. É a forma
+              mais divertida de aprender SQL na prática.
             </p>
           </section>
 

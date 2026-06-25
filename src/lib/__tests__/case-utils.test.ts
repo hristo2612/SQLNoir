@@ -3,8 +3,8 @@ import {
   getCaseSlug,
   findCaseBySlug,
   getAllCases,
-  getLocalizedCase,
 } from "../case-utils";
+import { getLocalizedCase } from "../case-localization";
 import type { Case } from "@/types";
 
 // Create a mock case with Portuguese title to simulate localized case data

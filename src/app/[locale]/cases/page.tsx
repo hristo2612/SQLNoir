@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { CasesExplorer } from "@/components/CasesExplorer";
 import { Navbar } from "@/components/Navbar";
-import { getAllCases, getCaseSlug, getAllLocalizedCases } from "@/lib/case-utils";
+import { getAllCases, getCaseSlug } from "@/lib/case-utils";
+import { getAllLocalizedCases } from "@/lib/case-localization";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { getTranslations, getLocale } from "next-intl/server";
 import { localeAlternates, localePrefix, siteUrl } from "@/lib/seo";

@@ -54,35 +54,63 @@ export default function CheckoutSuccessPage() {
   }, [user]);
 
   const claimLicense = useCallback(async () => {
-    if (!stripeSessionId) {
-      setClaimError(tCheckout("activationMissingSession"));
-      return;
-    }
     setClaiming(true);
     setClaimError(null);
-    try {
-      const res = await fetch("/api/claim-license", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stripeSessionId }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setClaimed(true);
-        return;
-      }
-      if (data.error === "No pending license found for this purchase") {
+
+    // Stripe redirects here immediately, often BEFORE the async webhook has
+    // granted the license (signed-in path) or written the pending row
+    // (anonymous path). So poll for up to ~14s instead of failing on the first
+    // miss; only show an error once the window is exhausted.
+    const MAX_ATTEMPTS = 7;
+    const DELAY_MS = 2000;
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        // 1. Session-id claim (anonymous purchase). Succeeds once the webhook
+        //    has written the pending_licenses row for this checkout.
+        if (stripeSessionId) {
+          const res = await fetch("/api/claim-license", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ stripeSessionId }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            setClaimed(true);
+            setClaiming(false);
+            return;
+          }
+          // Email mismatch is terminal: retrying never helps, so stop and tell
+          // the buyer to sign in with the email they paid with.
+          if (res.status === 403) {
+            setClaimError(data.error || tCheckout("activationFailed"));
+            setClaiming(false);
+            return;
+          }
+          // 404 (pending row not written yet) falls through to the grant check
+          // and another attempt.
+        }
+
+        // 2. Direct grant check (signed-in purchase: the webhook sets
+        //    has_license itself, no pending row; also catches an email-mode
+        //    auto-claim that already ran on sign-in).
         if (await confirmActiveLicense()) {
           setClaimed(true);
+          setClaiming(false);
           return;
         }
+      } catch {
+        // Transient network/DB hiccup: just retry.
       }
-      setClaimError(data.error || tCheckout("activationFailed"));
-    } catch {
-      setClaimError(tCheckout("activationFailed"));
-    } finally {
-      setClaiming(false);
+
+      if (attempt < MAX_ATTEMPTS) await sleep(DELAY_MS);
     }
+
+    // Webhook is taking unusually long. Offer a manual retry (the button reruns
+    // this same loop) rather than leaving the buyer stuck.
+    setClaimError(tCheckout("activationFailed"));
+    setClaiming(false);
   }, [confirmActiveLicense, stripeSessionId, tCheckout]);
 
   useEffect(() => {

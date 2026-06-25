@@ -42,6 +42,112 @@
   }
 }
 
+/* ----------------------------------------------------------------------- */
+/* Case Cracked celebration animations                                      */
+/* ----------------------------------------------------------------------- */
+
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes stamp-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-18deg) scale(1.5);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-8deg) scale(1);
+  }
+}
+
+@keyframes badge-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cta-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(7px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+@layer utilities {
+  .animate-card-reveal {
+    animation: card-reveal 250ms ease-out both;
+  }
+
+  .animate-stamp-in {
+    animation: stamp-in 450ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+  }
+
+  .animate-badge-pop {
+    animation: badge-pop 420ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both;
+  }
+
+  /* Staggered so the reward lands first, then the offer rises in. */
+  .animate-cta-rise {
+    animation: cta-rise 360ms ease-out 700ms both;
+  }
+
+  .animate-shake {
+    animation: shake 300ms ease-in-out both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-card-reveal,
+  .animate-stamp-in,
+  .animate-badge-pop,
+  .animate-cta-rise,
+  .animate-shake {
+    animation: none !important;
+  }
+}
+
 /* SQL Editor Syntax Highlighting */
 .sql-keyword {
   color: #fcd34d; /* amber-300 */

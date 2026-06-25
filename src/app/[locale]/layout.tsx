@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react";
 import { CookieConsent } from "@/components/CookieConsent";
 import { PostHogProvider } from "@/components/PostHogProvider";
+import { LicenseSync } from "@/components/LicenseSync";
 import { routing } from "@/i18n/routing";
 
 const notoSansSC = Noto_Sans_SC({
@@ -196,11 +197,12 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={locale === "zh-CN" ? "font-cjk" : ""}>
+      <body className={`antialiased ${locale === "zh-CN" ? "font-cjk" : ""}`}>
         <PostHogProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             {children}
             <CookieConsent />
+            <LicenseSync />
           </NextIntlClientProvider>
         </PostHogProvider>
         <Analytics />

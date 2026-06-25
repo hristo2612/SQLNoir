@@ -55,7 +55,7 @@
     "faqAccountQ": "Do I need an account to play?",
     "faqAccountA": "You can open and solve cases without creating an account. Sign in to track XP, progress, and solved cases across devices.",
     "faqAccessQ": "How does access work?",
-    "faqAccessA": "All cases are open from the start - there's nothing to unlock. The difficulty levels (beginner, intermediate, advanced) are just a guide: start with a beginner case and progress at your own pace. XP tracks your progress as you solve cases.",
+    "faqAccessA": "The beginner cases are free to play, no account needed. The intermediate and advanced cases unlock with a one-time Detective License, a single lifetime purchase rather than a subscription. XP tracks your progress as you solve cases.",
     "faqSqlQ": "What SQL do I need to know?",
     "faqSqlA": "Beginners can start with simple SELECTs. Intermediate and advanced cases introduce joins, grouping, filters, and subqueries as you progress.",
     "faqInterviewQ": "Will this help with interviews?",
@@ -135,6 +135,7 @@
   },
   "solution": {
     "caseSolved": "Case Solved!",
+    "caseClosedStamp": "Case Closed",
     "explanation": "Explanation",
     "saveXpNote": "Your XP is saved on this device. Sign in anytime to keep it across devices.",
     "unlockRemainingCases": "Unlock the remaining cases",
@@ -146,8 +147,8 @@
     "shareMessage": "Share SQLNoir with another detective and see if they can solve it too.",
     "shareSqlnoir": "Share SQLNoir",
     "submitFindings": "Submit Your Findings",
-    "notQuiteRight": "Not Quite Right",
-    "tryAgainMessage": "Try again with a different answer.",
+    "notQuiteRight": "The Trail's Gone Cold",
+    "tryAgainMessage": "Re-examine the evidence and follow a fresh lead.",
     "tryAgain": "Try Again",
     "submitDescription": "Submit the suspect you discovered through your investigation to see if you cracked the case.",
     "yourAnswer": "Your Answer",
@@ -344,7 +345,8 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "contact": "Contact",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "purchaseAgreement": "By purchasing, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
   },
   "cookieConsent": {
     "message": "We use cookies for analytics. DNT is respected.",
@@ -361,6 +363,8 @@
     "feature3": "Detailed solution explanations",
     "ctaUpgrade": "Upgrade Now",
     "ctaMaybeLater": "Maybe later",
+    "redirecting": "Redirecting...",
+    "somethingWentWrong": "Something went wrong. Please try again.",
     "teamLicense": "Need a team or education license? Email <a>support@sqlnoir.com</a>"
   },
   "privacy": {

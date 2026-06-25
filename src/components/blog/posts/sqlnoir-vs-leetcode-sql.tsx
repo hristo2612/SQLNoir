@@ -102,15 +102,15 @@ export default function SqlnoirVsLeetcodeSqlContent() {
       <p className="text-gray-700 leading-relaxed mb-6">
         SQLNoir 是一款用 SQL 破案的网页游戏。你扮演侦探，面对一个真实结构的犯罪数据库：
         嫌疑人、证物、证词、现场记录。通过写 SQL 查询逐步排查线索，最终锁定真凶。
-        目前共有 6 个侦探案件，全部免费，浏览器内置 SQL 编辑器，
-        打开即玩、无需注册。
+        目前共有 6 个侦探案件，前两个免费，其余需一次性「侦探执照」解锁。
+        浏览器内置 SQL 编辑器，打开即玩、无需注册。
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
         <strong>它擅长的：</strong>有剧情、有目标，每写对一条查询都在推进案情，
         正反馈强、容易坚持；难度循序渐进，从简单的 <code>SELECT</code> 起步，逐步
         引入 <code>JOIN</code>、聚合和子查询；数据库结构真实，不是「员工/订单」那种
-        玩具表；即时判定对错，不用等人批改；全部案件免费，无需注册即可上手（登录后才会保存 XP 和进度，注册是可选的）。
+        玩具表；即时判定对错，不用等人批改；前两个案件免费、无需注册即可上手，其余案件需一次性付费解锁（登录后才会保存 XP 和进度，注册是可选的）。
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
@@ -163,7 +163,7 @@ export default function SqlnoirVsLeetcodeSqlContent() {
           ],
           [
             "上手成本",
-            "全部案件免费，无需注册即玩",
+            "前两个案件免费，无需注册；其余需一次性付费",
             "免费题有限，完整题库需会员",
           ],
           [
@@ -385,7 +385,7 @@ WHERE s.疤痕类型 = '左脸颊'
             SQLNoir 是免费的吗？
           </h3>
           <p className="text-gray-700 leading-relaxed">
-            是的，完全免费。目前共有 6 个侦探案件，全部免费，无需注册即可直接游玩。
+            前两个案件免费、无需注册即可游玩；其余 4 个案件需一次性「侦探执照」（终身有效，非订阅）。
           </p>
         </div>
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { getAllCases, getLocalizedCase } from "@/lib/case-utils";
+import { getAllCases } from "@/lib/case-utils";
+import { getLocalizedCase } from "@/lib/case-localization";
 import { isCaseFree } from "@/lib/license";
 import { rateLimit } from "@/lib/rate-limit";
 

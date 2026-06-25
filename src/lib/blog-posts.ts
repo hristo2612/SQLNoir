@@ -45,7 +45,7 @@ export const blogPostsMeta: BlogPostMeta[] = [
     title:
       "Curso de SQL Grátis em Português - Aprenda Investigando 6 Crimes",
     excerpt:
-      "Curso gratuito de SQL com casos reais de detetive. 6 mistérios para resolver, do básico ao JOIN. Sem cadastro, sem cartão - só você, o SQL e o caso.",
+      "Curso de SQL com casos reais de detetive. Comece de graça e sem cadastro, resolvendo mistérios do básico ao JOIN. Os dois primeiros casos são grátis.",
     date: "2026-05-14",
     readTime: "9 min de leitura",
     author: "Hristo Bogoev",

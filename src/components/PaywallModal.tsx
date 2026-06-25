@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { createPortal } from "react-dom";
 import { X, Lock, Shield, Award, Heart } from "lucide-react";
 import {
@@ -10,7 +11,9 @@ import {
   posthog,
 } from "@/lib/posthog";
 import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { getPriceForLocale } from "@/lib/ppp-prices";
+import { detectCountry } from "@/lib/geo";
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -28,14 +31,28 @@ export function PaywallModal({
   triggerLocation,
 }: PaywallModalProps) {
   const t = useTranslations("license");
+  const tFooter = useTranslations("footer");
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
-  const [price, setPrice] = useState(() => getPriceForLocale(locale).display);
+  // Start null (same on server and client) to avoid a hydration mismatch and to
+  // never paint the US "$14.99" before the localized price. The effect fills it
+  // synchronously from the client-detected country, then refines via /api/price.
+  const [price, setPrice] = useState<string | null>(null);
+  const country = detectCountry();
 
   useEffect(() => {
     if (isOpen) {
       trackPaywallShown(caseId, triggerLocation);
-      fetch(`/api/price?locale=${encodeURIComponent(locale)}`)
+      // Synchronous, no-network: show the country-localized price immediately so
+      // there is no US flash. detectCountry runs in the effect (not the useState
+      // initializer) to keep SSR/CSR initial state identical (null).
+      const c = detectCountry();
+      setPrice(
+        getPriceForLocale(locale, c, { localizeByCountry: true }).display
+      );
+      fetch(
+        `/api/price?locale=${encodeURIComponent(locale)}${country ? `&country=${country}` : ""}`
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.display) setPrice(data.display);
@@ -60,7 +77,7 @@ export function PaywallModal({
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ locale }),
+        body: JSON.stringify({ locale, ...(country ? { country } : {}) }),
       });
       const data = await res.json();
       if (data.url) {
@@ -83,121 +100,125 @@ export function PaywallModal({
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div
-        className="absolute inset-0 bg-zinc-950/65 backdrop-blur-sm"
+        className="absolute inset-0 bg-amber-950/60 backdrop-blur-sm"
         onClick={handleDismiss}
       />
-      <div className="relative w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-2xl">
-        <div className="relative bg-zinc-950 px-6 py-6 text-center">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-xl border border-amber-900/20 bg-amber-50 shadow-2xl">
+        <div className="relative bg-amber-900 px-6 py-6 text-center">
           <button
             onClick={handleDismiss}
-            className="absolute right-4 top-4 rounded-full p-1 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+            aria-label={t('continueWithFree')}
+            className="absolute right-2.5 top-2.5 grid h-10 w-10 place-items-center rounded-full text-amber-200 transition-[color,background-color,transform] hover:bg-amber-50/10 hover:text-amber-50 active:scale-[0.96]"
           >
             <X className="w-5 h-5" />
           </button>
           <div className="mb-4 flex justify-center">
-            <div className="rounded-full border border-emerald-400/30 bg-emerald-400/10 p-3">
-              <Shield className="h-8 w-8 text-emerald-300" />
-            </div>
+            <Image
+              src="/detective-license-badge.png"
+              alt="Detective License badge"
+              width={88}
+              height={88}
+              className="rounded-md drop-shadow-md"
+            />
           </div>
-          <h2 className="mb-2 font-detective text-2xl text-white">
+          <h2 className="mb-2 text-balance font-detective text-2xl text-amber-50">
             {t('upgradeTitle')}
           </h2>
-          <p className="mx-auto max-w-sm text-sm leading-6 text-zinc-300">
+          <p className="mx-auto max-w-sm text-pretty text-sm leading-6 text-amber-100/90">
             {t('upgradeSubtitle')}
           </p>
         </div>
 
         <div className="px-6 py-6">
-          <div className="mb-5 rounded-lg border border-amber-200 bg-amber-50 px-5 py-4 text-center">
-            <div className="inline-flex items-baseline gap-1">
-              <span className="font-detective text-4xl text-amber-950">
+          <div className="mb-5 rounded-lg border border-amber-900/15 bg-amber-100 px-5 py-4 text-center">
+            {price === null ? (
+              <span
+                aria-hidden="true"
+                className="inline-block h-10 w-28 animate-pulse rounded bg-amber-200/60 align-middle"
+              />
+            ) : (
+              <span className="font-detective text-4xl tabular-nums text-amber-950">
                 {price}
               </span>
-            </div>
+            )}
             <p className="mt-1 text-xs font-medium uppercase tracking-wide text-amber-700">
               {t('oneTimePayment')}
             </p>
           </div>
 
           <div className="mb-6 space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5 rounded-lg border border-emerald-200 bg-emerald-50 p-1.5">
-                <Lock className="h-4 w-4 text-emerald-700" />
-              </div>
-              <div>
-                <p className="font-detective text-sm text-zinc-950">
-                  {t('unlockCases')}
-                </p>
-                <p className="mt-0.5 text-xs leading-5 text-zinc-600">
-                  {t('unlockCasesDesc')}
-                </p>
-              </div>
+            <div className="flex items-center gap-3">
+              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-lg border border-amber-900/15 bg-amber-100">
+                <Lock className="h-4 w-4 text-amber-800" />
+              </span>
+              <p className="font-detective text-sm leading-none text-amber-950">
+                {t('unlockCases')}
+              </p>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5 rounded-lg border border-emerald-200 bg-emerald-50 p-1.5">
-                <Award className="h-4 w-4 text-emerald-700" />
-              </div>
-              <div>
-                <p className="font-detective text-sm text-zinc-950">
-                  {t('earnBadges')}
-                </p>
-                <p className="mt-0.5 text-xs leading-5 text-zinc-600">
-                  {t('earnBadgesDesc')}
-                </p>
-              </div>
+            <div className="flex items-center gap-3">
+              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-lg border border-amber-900/15 bg-amber-100">
+                <Award className="h-4 w-4 text-amber-800" />
+              </span>
+              <p className="font-detective text-sm leading-none text-amber-950">
+                {t('earnBadges')}
+              </p>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5 rounded-lg border border-emerald-200 bg-emerald-50 p-1.5">
-                <Heart className="h-4 w-4 text-emerald-700" />
-              </div>
-              <div>
-                <p className="font-detective text-sm text-zinc-950">
-                  {t('supportDev')}
-                </p>
-                <p className="mt-0.5 text-xs leading-5 text-zinc-600">
-                  {t('supportDevDesc')}
-                </p>
-              </div>
+            <div className="flex items-center gap-3">
+              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-lg border border-amber-900/15 bg-amber-100">
+                <Heart className="h-4 w-4 text-amber-800" />
+              </span>
+              <p className="font-detective text-sm leading-none text-amber-950">
+                {t('supportDev')}
+              </p>
             </div>
           </div>
 
           <button
             onClick={handleCtaClick}
             disabled={loading}
-            className={`flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-950 px-6 py-3 font-detective text-lg text-white shadow-lg transition-colors hover:bg-zinc-800
+            className={`flex w-full items-center justify-center gap-2 rounded-lg bg-amber-800 px-6 py-3 font-detective text-lg text-amber-50 shadow-lg transition-[background-color,transform] duration-200 hover:bg-amber-700 active:scale-[0.96]
                      ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
             {loading ? (
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-200 border-t-transparent" />
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-amber-200 border-t-transparent" />
             ) : (
               <>
-                <Shield className="h-5 w-5" />
-                {t('getYourLicense')}
+                {/* Optical nudge: Special Elite (font-detective) glyphs sit low
+                    in their line-box, so the text's visual center is below the
+                    line-box center. The icon is centered on the line-box and
+                    therefore reads HIGH, so nudge it DOWN to match the text. */}
+                <Shield className="h-5 w-5 shrink-0 translate-y-[2.5px]" />
+                <span className="leading-none">{t('getYourLicense')}</span>
               </>
             )}
           </button>
 
-          <button
-            onClick={handleDismiss}
-            className="mt-3 w-full py-2 text-center font-detective text-sm text-zinc-500 transition-colors hover:text-zinc-800"
-          >
-            {t('continueWithFree')}
-          </button>
-
-          <p className="mt-4 text-center text-xs text-zinc-500">
-            {t.rich('teamLicense', {
-              a: (chunks) => (
-                <a
-                  href="mailto:support@sqlnoir.com"
-                  className="underline hover:text-zinc-800"
+          <p className="mt-2 text-center text-xs text-amber-700">
+            {tFooter.rich("purchaseAgreement", {
+              terms: (chunks) => (
+                <Link href="/terms" className="underline hover:text-amber-900">
+                  {chunks}
+                </Link>
+              ),
+              privacy: (chunks) => (
+                <Link
+                  href="/privacy"
+                  className="underline hover:text-amber-900"
                 >
                   {chunks}
-                </a>
+                </Link>
               ),
             })}
           </p>
+
+          <button
+            onClick={handleDismiss}
+            className="mt-3 w-full py-2 text-center font-detective text-sm text-amber-700 transition-colors hover:text-amber-900"
+          >
+            {t('continueWithFree')}
+          </button>
         </div>
       </div>
     </div>,

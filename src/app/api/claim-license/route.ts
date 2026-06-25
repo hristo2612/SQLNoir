@@ -41,14 +41,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { stripeSessionId } = await req.json();
-
-    if (!stripeSessionId) {
-      return NextResponse.json(
-        { error: "Missing stripe session ID" },
-        { status: 400 }
-      );
-    }
+    // stripeSessionId is OPTIONAL. With it, we claim that one purchase (the
+    // checkout-success path). Without it, we claim ANY unclaimed pending license
+    // matching the signed-in user's email - the auto-claim-on-sign-in path that
+    // rescues a purchase whose success tab was closed, or one made before the
+    // buyer had an account.
+    const body = await req
+      .json()
+      .catch(() => ({}) as { stripeSessionId?: string });
+    const stripeSessionId: string | undefined = body?.stripeSessionId;
 
     // User must be signed in to claim
     const supabase = createServerSupabaseClient();
@@ -71,67 +72,151 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Look up the unclaimed pending license by Stripe session ID. The email
-    // match below is what actually authorizes the claim.
-    const { data: pending, error: fetchError } = await supabaseAdmin
+    const claimantEmail = (session.user.email || "").trim().toLowerCase();
+
+    if (stripeSessionId) {
+      // --- Session-ID claim (checkout-success path) ---
+      // Look up the unclaimed pending license by Stripe session ID. The email
+      // match below is what actually authorizes the claim.
+      const { data: pending, error: fetchError } = await supabaseAdmin
+        .from("pending_licenses")
+        .select("*")
+        .eq("stripe_session_id", stripeSessionId)
+        .is("claimed_at", null)
+        .single();
+
+      if (fetchError || !pending) {
+        return NextResponse.json(
+          { error: "No pending license found for this purchase" },
+          { status: 404 }
+        );
+      }
+
+      // SECURITY (claim binding): the session_id is exposed in the checkout
+      // success URL, so matching on it alone lets anyone who obtains a
+      // session_id steal the purchase. Bind the claim to the buyer email
+      // captured at checkout: the signed-in user's email must equal the pending
+      // row's email, case-insensitively. A null/empty pending email never
+      // matches, so an unidentified purchase can't be claimed by anyone.
+      if (!emailsMatch(session.user.email, pending.email)) {
+        return NextResponse.json(
+          {
+            error:
+              "This purchase is registered to a different email. Sign in with the email used at checkout.",
+          },
+          { status: 403 }
+        );
+      }
+
+      // Grant the license. UPSERT (not update) so a missing user_info row can't
+      // silently swallow the grant - see the webhook grant for the full rationale.
+      const { error: updateError } = await supabaseAdmin
+        .from("user_info")
+        .upsert(
+          {
+            id: session.user.id,
+            has_license: true,
+            license_purchased_at: pending.created_at,
+            stripe_customer_id: pending.stripe_customer_id,
+            stripe_session_id: pending.stripe_session_id,
+            // Persist payment_intent so a later refund/dispute can map back to this
+            // buyer. Revocation looks the buyer up by user_info.payment_intent, and
+            // the anonymous-buy-then-claim path is the only place it gets written
+            // for claimed purchases. Without this, a refunded anon-claimed buyer
+            // would keep access.
+            payment_intent: pending.payment_intent,
+          },
+          { onConflict: "id" }
+        );
+
+      if (updateError) {
+        console.error("Failed to grant license:", updateError);
+        return NextResponse.json(
+          { error: "Failed to grant license" },
+          { status: 500 }
+        );
+      }
+
+      // Mark pending license as claimed (only after a successful grant).
+      await supabaseAdmin
+        .from("pending_licenses")
+        .update({
+          claimed_at: new Date().toISOString(),
+          claimed_by: session.user.id,
+        })
+        .eq("id", pending.id);
+
+      return NextResponse.json({ success: true });
+    }
+
+    // --- Email-mode claim (auto-claim on sign-in) ---
+    // No session id: grant if any unclaimed pending license matches the signed-in
+    // user's email. Idempotent: no match -> no-op; already licensed -> harmless
+    // re-grant. The email is the authorization (same binding as above), so this
+    // is safe to call on every sign-in.
+    if (!claimantEmail) {
+      return NextResponse.json({ success: true, claimed: 0 });
+    }
+
+    const { data: pendings, error: pendingsError } = await supabaseAdmin
       .from("pending_licenses")
       .select("*")
-      .eq("stripe_session_id", stripeSessionId)
       .is("claimed_at", null)
-      .single();
+      .eq("email", claimantEmail)
+      // Newest first so `pendings[0]` (whose payment_intent we persist to
+      // user_info) is deterministically the most recent purchase.
+      .order("created_at", { ascending: false });
 
-    if (fetchError || !pending) {
+    if (pendingsError) {
+      console.error("Failed to read pending licenses:", pendingsError);
       return NextResponse.json(
-        { error: "No pending license found for this purchase" },
-        { status: 404 }
+        { error: "Failed to claim license" },
+        { status: 500 }
       );
     }
 
-    // SECURITY (claim binding): the session_id is exposed in the checkout
-    // success URL, so matching on it alone lets anyone who obtains a session_id
-    // steal the purchase. Bind the claim to the buyer email captured at
-    // checkout: the signed-in user's email must equal the pending row's email,
-    // case-insensitively. A null/empty pending email never matches, so an
-    // unidentified purchase can't be claimed by anyone.
-    if (!emailsMatch(session.user.email, pending.email)) {
-      return NextResponse.json(
-        {
-          error:
-            "This purchase is registered to a different email. Sign in with the email used at checkout.",
-        },
-        { status: 403 }
-      );
+    if (!pendings || pendings.length === 0) {
+      return NextResponse.json({ success: true, claimed: 0 });
     }
 
-    // Grant the license
-    const { error: updateError } = await supabaseAdmin
+    const newest = pendings[0];
+    const { error: grantError } = await supabaseAdmin
       .from("user_info")
-      .update({
-        has_license: true,
-        license_purchased_at: pending.created_at,
-        stripe_customer_id: pending.stripe_customer_id,
-        stripe_session_id: pending.stripe_session_id,
-      })
-      .eq("id", session.user.id);
+      .upsert(
+        {
+          id: session.user.id,
+          has_license: true,
+          license_purchased_at: newest.created_at,
+          stripe_customer_id: newest.stripe_customer_id,
+          stripe_session_id: newest.stripe_session_id,
+          // See session-id branch: persist payment_intent so refund revocation can
+          // find this buyer by user_info.payment_intent.
+          payment_intent: newest.payment_intent,
+        },
+        { onConflict: "id" }
+      );
 
-    if (updateError) {
-      console.error("Failed to grant license:", updateError);
+    if (grantError) {
+      console.error("Failed to grant license (email mode):", grantError);
       return NextResponse.json(
         { error: "Failed to grant license" },
         { status: 500 }
       );
     }
 
-    // Mark pending license as claimed
+    // Mark every matched pending row claimed (only after a successful grant).
     await supabaseAdmin
       .from("pending_licenses")
       .update({
         claimed_at: new Date().toISOString(),
         claimed_by: session.user.id,
       })
-      .eq("id", pending.id);
+      .in(
+        "id",
+        pendings.map((p) => p.id)
+      );
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, claimed: pendings.length });
   } catch (error: any) {
     console.error("Claim license error:", error);
     return NextResponse.json(

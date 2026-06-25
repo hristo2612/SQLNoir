@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
-import {
-  getPriceTier,
-  getCurrencyForLocale,
-  getPriceForLocale,
-} from "@/lib/ppp-prices";
+import { getPriceTier, getPriceForLocale } from "@/lib/ppp-prices";
 
 const PRODUCT_NAME = "Detective License";
 const DEFAULT_PUBLIC_SITE_URL = "https://www.sqlnoir.com";
@@ -27,7 +23,7 @@ function getBadgeImageUrl(origin: string): string {
       ? origin
       : DEFAULT_PUBLIC_SITE_URL;
 
-  return `${stripTrailingSlash(publicBase)}/detective-license-badge.jpg`;
+  return `${stripTrailingSlash(publicBase)}/detective-license-badge.png`;
 }
 
 export async function POST(req: NextRequest) {
@@ -40,9 +36,9 @@ export async function POST(req: NextRequest) {
 
   try {
     // Parse body (locale is optional - defaults to "en" for backwards compat).
-    let body: { locale?: string } = {};
+    let body: { locale?: string; country?: string } = {};
     try {
-      body = (await req.json()) as { locale?: string };
+      body = (await req.json()) as { locale?: string; country?: string };
     } catch {
       // No body or invalid JSON - fine, locale defaults to "en".
     }
@@ -56,11 +52,19 @@ export async function POST(req: NextRequest) {
 
     const origin = req.headers.get("origin") || "https://www.sqlnoir.com";
 
-    // Detect country for PPP pricing
-    const country = req.headers.get("x-vercel-ip-country") || "US";
+    // Detect country for PPP pricing. Header is authoritative (prod IP wins so
+    // users can't spoof a cheaper country); body.country is only the dev
+    // fallback when the Vercel header is absent.
+    const country =
+      req.headers.get("x-vercel-ip-country") || body.country || "US";
     const priceTier = getPriceTier(country);
-    const currency = getCurrencyForLocale(locale);
-    const localizedPrice = getPriceForLocale(locale, country);
+    const localizedPrice = getPriceForLocale(locale, country, {
+      localizeByCountry: true,
+    });
+    // The currency actually charged is the resolved presentment currency, so
+    // metadata reflects that (not just the locale-derived guess) to keep the
+    // recorded currency identical to what Stripe billed.
+    const currency = localizedPrice.currency;
 
     // Dynamic pricing via Stripe `price_data` - no pre-created Price objects.
     // The PPP amount (in cents) and currency come straight from the resolved

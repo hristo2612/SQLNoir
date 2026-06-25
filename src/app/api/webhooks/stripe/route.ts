@@ -116,17 +116,25 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ received: true });
       }
 
-      // Signed-in purchase: grant license immediately
+      // Signed-in purchase: grant license immediately. UPSERT (not update) so a
+      // missing user_info row can never silently swallow the grant: a plain
+      // update().eq("id") affects 0 rows without erroring if the row is absent
+      // (e.g. the handle_new_user trigger failed), leaving a paying buyer
+      // charged but ungranted while the webhook still returns 200. onConflict:id
+      // means create-or-update; the row's other columns keep their defaults.
       const { error } = await supabaseAdmin
         .from("user_info")
-        .update({
-          has_license: true,
-          license_purchased_at: new Date().toISOString(),
-          stripe_customer_id: typeof session.customer === "string" ? session.customer : null,
-          stripe_session_id: session.id,
-          payment_intent: paymentIntent,
-        })
-        .eq("id", userId);
+        .upsert(
+          {
+            id: userId,
+            has_license: true,
+            license_purchased_at: new Date().toISOString(),
+            stripe_customer_id: typeof session.customer === "string" ? session.customer : null,
+            stripe_session_id: session.id,
+            payment_intent: paymentIntent,
+          },
+          { onConflict: "id" }
+        );
 
       if (error) {
         console.error("Failed to update license:", error);
