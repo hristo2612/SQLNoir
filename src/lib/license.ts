@@ -1,5 +1,11 @@
 import type { Case } from "@/types";
 
+// localStorage key holding the Stripe Checkout session_id of a just-completed
+// anonymous purchase. Persisted on the success page so the claim survives the
+// Google OAuth redirect (which lands on "/", not back on the success page) and
+// can be claimed on sign-in regardless of which page we return to.
+export const PENDING_CLAIM_SESSION_KEY = "sqlnoir_pending_claim_session";
+
 // When NEXT_PUBLIC_ENABLE_MONETIZATION is not set or "0", the entire app is free.
 const monetizationEnabled =
   process.env.NEXT_PUBLIC_ENABLE_MONETIZATION === "1";

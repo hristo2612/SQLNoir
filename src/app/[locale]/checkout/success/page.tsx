@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { Navbar } from "@/components/Navbar";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { supabase } from "@/lib/supabase";
+import { PENDING_CLAIM_SESSION_KEY } from "@/lib/license";
 import { CheckCircle, LogIn } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -29,10 +30,19 @@ export default function CheckoutSuccessPage() {
   const [claimError, setClaimError] = useState<string | null>(null);
   const [showAuth, setShowAuth] = useState(false);
 
-  // Scrub session_id from the address bar on mount (defense in depth for the
-  // claim token; we already captured it into state above).
+  // Persist the session_id so an anonymous buyer who signs in with Google (which
+  // redirects to "/", not back here) still gets claimed by LicenseSync, even when
+  // their checkout email differs from their login. Then scrub it from the address
+  // bar (defense in depth for the claim token; it's already in state + storage).
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (stripeSessionId) {
+      try {
+        localStorage.setItem(PENDING_CLAIM_SESSION_KEY, stripeSessionId);
+      } catch {
+        // localStorage unavailable (private mode): the on-page claim still works.
+      }
+    }
     if (!window.location.search.includes("session_id")) return;
     const url = new URL(window.location.href);
     url.searchParams.delete("session_id");
@@ -41,7 +51,7 @@ export default function CheckoutSuccessPage() {
       "",
       url.pathname + (url.search ? url.search : "") + url.hash
     );
-  }, []);
+  }, [stripeSessionId]);
 
   useEffect(() => {
     if (!supabase) {
@@ -105,6 +115,9 @@ export default function CheckoutSuccessPage() {
           });
           const data = await res.json();
           if (data.success) {
+            try {
+              localStorage.removeItem(PENDING_CLAIM_SESSION_KEY);
+            } catch {}
             setClaimed(true);
             setClaiming(false);
             return;
@@ -124,6 +137,9 @@ export default function CheckoutSuccessPage() {
         //    has_license itself, no pending row; also catches an email-mode
         //    auto-claim that already ran on sign-in).
         if (await confirmActiveLicense()) {
+          try {
+            localStorage.removeItem(PENDING_CLAIM_SESSION_KEY);
+          } catch {}
           setClaimed(true);
           setClaiming(false);
           return;
