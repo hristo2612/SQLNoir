@@ -95,7 +95,7 @@ export function HelpPageClient() {
               </Link>
             </div>
 
-            <div className="bg-white border border-amber-100 rounded-2xl shadow-sm p-6 space-y-3">
+            <div className="bg-white border border-amber-100 rounded-2xl shadow-sm p-6 space-y-3 md:col-span-2">
               <div className="flex items-center gap-3">
                 <Mail className="w-6 h-6 text-amber-800" />
                 <h2 className="font-detective text-2xl text-amber-900">

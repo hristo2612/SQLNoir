@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
-import { X, Lock, Shield, Award, Heart } from "lucide-react";
+import { X, Lock, Award, Heart } from "lucide-react";
 import {
   trackPaywallShown,
   trackPaywallCtaClicked,
@@ -185,14 +185,7 @@ export function PaywallModal({
             {loading ? (
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-amber-200 border-t-transparent" />
             ) : (
-              <>
-                {/* Optical nudge: Special Elite (font-detective) glyphs sit low
-                    in their line-box, so the text's visual center is below the
-                    line-box center. The icon is centered on the line-box and
-                    therefore reads HIGH, so nudge it DOWN to match the text. */}
-                <Shield className="h-5 w-5 shrink-0 translate-y-[2.5px]" />
-                <span className="leading-none">{t('getYourLicense')}</span>
-              </>
+              <span className="leading-none">{t('getYourLicense')}</span>
             )}
           </button>
 
