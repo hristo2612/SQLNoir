@@ -125,7 +125,7 @@ export function PaywallModal({
                 />
               )}
               <Image
-                src="/detective-license-badge.png"
+                src="/detective-license-badge.webp"
                 alt="Detective License badge"
                 width={88}
                 height={88}
