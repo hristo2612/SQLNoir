@@ -189,16 +189,21 @@ export default function CheckoutSuccessPage() {
 
           <div className="space-y-2">
             <h1 className="font-detective text-3xl text-amber-900">
-              {showSignInPrompt ? tCheckout("paymentReceived") : tCheckout("welcomeDetective")}
+              {/* "Welcome, Detective" only once the license is ACTUALLY claimed.
+                  Every other state (loading, not-signed-in, claiming, error) is
+                  still just "Payment Received" - the license is not active yet. */}
+              {showSuccess
+                ? tCheckout("welcomeDetective")
+                : tCheckout("paymentReceived")}
             </h1>
             <p className="text-amber-800 text-lg">
-              {showSignInPrompt
+              {showSuccess
+                ? tCheckout("licenseActive")
+                : showSignInPrompt
                 ? tCheckout("signInToActivate")
-                : showClaimingState
-                ? tCheckout("activatingLicense")
                 : showClaimError
                 ? claimError
-                : tCheckout("licenseActive")}
+                : tCheckout("activatingLicense")}
             </p>
           </div>
 
