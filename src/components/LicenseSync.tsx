@@ -56,7 +56,10 @@ export function LicenseSync() {
             ) {
               const seg = window.location.pathname.split("/")[1];
               const prefix = seg === "pt-br" || seg === "zh-CN" ? `/${seg}` : "";
-              window.location.assign(`${prefix}/checkout/success`);
+              // claimed=1 tells the success page the license is already granted,
+              // so it renders the success state immediately instead of re-querying
+              // (that re-query could race/hang on the fresh page load).
+              window.location.assign(`${prefix}/checkout/success?claimed=1`);
             }
             return true;
           }

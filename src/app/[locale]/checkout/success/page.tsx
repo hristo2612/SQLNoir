@@ -25,7 +25,12 @@ export default function CheckoutSuccessPage() {
 
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [claimed, setClaimed] = useState(false);
+  // claimed=1 is set by LicenseSync after it has already granted the license
+  // (anonymous purchase -> Google OAuth). Trust it and render success without a
+  // re-query, which previously could race/hang the "Activating..." spinner.
+  const [claimed, setClaimed] = useState<boolean>(
+    () => searchParams.get("claimed") === "1"
+  );
   const [claiming, setClaiming] = useState(false);
   const [claimError, setClaimError] = useState<string | null>(null);
   const [showAuth, setShowAuth] = useState(false);
@@ -43,9 +48,11 @@ export default function CheckoutSuccessPage() {
         // localStorage unavailable (private mode): the on-page claim still works.
       }
     }
-    if (!window.location.search.includes("session_id")) return;
+    const search = window.location.search;
+    if (!search.includes("session_id") && !search.includes("claimed")) return;
     const url = new URL(window.location.href);
     url.searchParams.delete("session_id");
+    url.searchParams.delete("claimed");
     window.history.replaceState(
       {},
       "",
@@ -75,12 +82,24 @@ export default function CheckoutSuccessPage() {
 
   const confirmActiveLicense = useCallback(async () => {
     if (!supabase || !user) return false;
-    const { data } = await supabase
-      .from("user_info")
-      .select("has_license")
-      .eq("id", user.id)
-      .single();
-    return Boolean(data?.has_license);
+    try {
+      // Cap the query so a stalled request can't freeze the "Activating..."
+      // spinner forever; on timeout we return false and the caller retries.
+      const query = supabase
+        .from("user_info")
+        .select("has_license")
+        .eq("id", user.id)
+        .single();
+      const timeout = new Promise<{ data: null }>((resolve) =>
+        setTimeout(() => resolve({ data: null }), 4000)
+      );
+      const { data } = (await Promise.race([query, timeout])) as {
+        data: { has_license?: boolean } | null;
+      };
+      return Boolean(data?.has_license);
+    } catch {
+      return false;
+    }
   }, [user]);
 
   const claimLicense = useCallback(async () => {
