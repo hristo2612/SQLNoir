@@ -97,7 +97,13 @@ export function ProfileMenu({
               alt={t('auth.licensedDetective')}
               width={44}
               height={44}
+              // A cached image can finish loading before onLoad is attached;
+              // reveal it via .complete on mount so it can't strand at opacity-0.
+              ref={(node) => {
+                if (node?.complete) setBadgeLoaded(true);
+              }}
               onLoad={() => setBadgeLoaded(true)}
+              onError={() => setBadgeLoaded(true)}
               className={`rounded-md drop-shadow-sm transition-opacity duration-300 ${
                 badgeLoaded ? "opacity-100" : "opacity-0"
               }`}

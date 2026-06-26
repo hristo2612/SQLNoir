@@ -130,7 +130,14 @@ export function PaywallModal({
                 width={88}
                 height={88}
                 priority
+                // A cached/priority image can finish loading before onLoad is
+                // attached; reveal it via .complete on mount so it can't strand
+                // at opacity-0. onError reveals it too rather than pulse forever.
+                ref={(node) => {
+                  if (node?.complete) setBadgeLoaded(true);
+                }}
                 onLoad={() => setBadgeLoaded(true)}
+                onError={() => setBadgeLoaded(true)}
                 className={`rounded-md drop-shadow-md transition-opacity duration-300 ${
                   badgeLoaded ? "opacity-100" : "opacity-0"
                 }`}

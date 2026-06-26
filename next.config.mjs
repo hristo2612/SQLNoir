@@ -32,14 +32,15 @@ const nextConfig = {
     ],
   },
   async headers() {
+    // The checkout-success URL carries the single-use session_id claim token.
+    // Send no referrer from this route so the id can't ride along to any third
+    // party in the Referer header. Two patterns because localePrefix is
+    // "as-needed": the default locale (en) lives at the un-prefixed
+    // /checkout/success, pt-br/zh-CN at /:locale/checkout/success.
+    const noReferrer = [{ key: "Referrer-Policy", value: "no-referrer" }];
     return [
-      {
-        // The checkout-success URL carries the single-use session_id claim token.
-        // Send no referrer from this route so the id can't ride along to any
-        // third party in the Referer header.
-        source: "/:locale/checkout/success",
-        headers: [{ key: "Referrer-Policy", value: "no-referrer" }],
-      },
+      { source: "/checkout/success", headers: noReferrer },
+      { source: "/:locale/checkout/success", headers: noReferrer },
     ];
   },
 };

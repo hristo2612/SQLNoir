@@ -6,19 +6,34 @@ import { Link } from "@/i18n/navigation";
 import { Navbar } from "@/components/Navbar";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { supabase } from "@/lib/supabase";
-import { PENDING_CLAIM_SESSION_KEY } from "@/lib/license";
+import {
+  PENDING_CLAIM_SESSION_KEY,
+  PENDING_CLAIM_LOCALE_KEY,
+} from "@/lib/license";
 import { CheckCircle, LogIn } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
+  const locale = useLocale();
   // Capture session_id ONCE, then scrub it from the URL (below) so analytics,
   // browser history, and outbound referrers never persist this claim token.
   // Reading from state instead of the live URL keeps the claim working after the
   // scrub. The id is single-use anyway, so a post-claim leak is worthless.
-  const [stripeSessionId] = useState<string | null>(() =>
-    searchParams.get("session_id")
-  );
+  // Fall back to the persisted id so LicenseSync can route a slow-webhook buyer
+  // here (no token in the URL) and the page can still finish the claim.
+  const [stripeSessionId] = useState<string | null>(() => {
+    const fromUrl = searchParams.get("session_id");
+    if (fromUrl) return fromUrl;
+    if (typeof window !== "undefined") {
+      try {
+        return localStorage.getItem(PENDING_CLAIM_SESSION_KEY);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
   const t = useTranslations();
   const tCheckout = useTranslations("checkout");
   const tNav = useTranslations("nav");
@@ -44,6 +59,9 @@ export default function CheckoutSuccessPage() {
     if (stripeSessionId) {
       try {
         localStorage.setItem(PENDING_CLAIM_SESSION_KEY, stripeSessionId);
+        // Remember the purchase locale so the post-OAuth redirect (which lands on
+        // "/") can send the buyer back here in their own language.
+        localStorage.setItem(PENDING_CLAIM_LOCALE_KEY, locale);
       } catch {
         // localStorage unavailable (private mode): the on-page claim still works.
       }

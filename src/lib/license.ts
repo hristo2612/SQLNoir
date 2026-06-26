@@ -6,6 +6,16 @@ import type { Case } from "@/types";
 // can be claimed on sign-in regardless of which page we return to.
 export const PENDING_CLAIM_SESSION_KEY = "sqlnoir_pending_claim_session";
 
+// Locale the purchase was made in, persisted alongside the pending claim so the
+// post-OAuth redirect can return the buyer to the success page in their own
+// language (Google OAuth lands on "/", losing the locale otherwise).
+export const PENDING_CLAIM_LOCALE_KEY = "sqlnoir_pending_claim_locale";
+
+// next-intl localePrefix "as-needed": default (en) has no prefix; pt-br/zh-CN do.
+export function localePrefix(locale: string | null | undefined): string {
+  return locale === "pt-br" || locale === "zh-CN" ? `/${locale}` : "";
+}
+
 // Last-known license state, cached client-side. Auth is cookie-less (implicit
 // OAuth → session in localStorage), so the server can't know the license and a
 // licensed user briefly sees locked cases on navigation. We seed the unlocked

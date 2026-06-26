@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
-import { PENDING_CLAIM_SESSION_KEY } from "@/lib/license";
+import {
+  PENDING_CLAIM_SESSION_KEY,
+  PENDING_CLAIM_LOCALE_KEY,
+  localePrefix,
+} from "@/lib/license";
 
 /**
  * On every genuine sign-in, claim any purchase belonging to the user. Two paths:
@@ -27,6 +31,23 @@ export function LicenseSync() {
   useEffect(() => {
     if (!supabase) return;
 
+    // Send the buyer to the success page (their purchase locale, falling back to
+    // the current path's prefix). No-op if already there, so it can't loop.
+    const goToSuccess = (query: string) => {
+      if (typeof window === "undefined") return;
+      if (window.location.pathname.includes("/checkout/success")) return;
+      let storedLocale: string | null = null;
+      try {
+        storedLocale = localStorage.getItem(PENDING_CLAIM_LOCALE_KEY);
+      } catch {
+        // ignore
+      }
+      const seg = window.location.pathname.split("/")[1];
+      const fallback = seg === "pt-br" || seg === "zh-CN" ? `/${seg}` : "";
+      const prefix = storedLocale ? localePrefix(storedLocale) : fallback;
+      window.location.assign(`${prefix}/checkout/success${query}`);
+    };
+
     const claimSessionId = async (token: string, stripeSessionId: string) => {
       // Poll ~14s: the webhook that writes the pending row can lag the redirect.
       const MAX_ATTEMPTS = 7;
@@ -46,21 +67,11 @@ export function LicenseSync() {
             localStorage.removeItem(PENDING_CLAIM_SESSION_KEY);
             // Send the buyer to the celebratory success page (not silently into
             // "/" or /cases) so an anonymous-purchase -> Google-OAuth flow ends on
-            // the "Welcome, Detective / license active" confirmation. The success
-            // page sees the now-granted license and shows the claimed state.
-            // Preserve the locale prefix (next-intl "as-needed": en has none,
-            // pt-br/zh-CN do).
-            if (
-              typeof window !== "undefined" &&
-              !window.location.pathname.includes("/checkout/success")
-            ) {
-              const seg = window.location.pathname.split("/")[1];
-              const prefix = seg === "pt-br" || seg === "zh-CN" ? `/${seg}` : "";
-              // claimed=1 tells the success page the license is already granted,
-              // so it renders the success state immediately instead of re-querying
-              // (that re-query could race/hang on the fresh page load).
-              window.location.assign(`${prefix}/checkout/success?claimed=1`);
-            }
+            // the "Welcome, Detective / license active" confirmation. claimed=1
+            // tells the success page the license is already granted, so it renders
+            // the success state immediately instead of re-querying (that re-query
+            // could race/hang on the fresh page load).
+            goToSuccess("?claimed=1");
             return true;
           }
           // 403 shouldn't happen on the session_id path (no email gate), but if
@@ -108,6 +119,11 @@ export function LicenseSync() {
         if (pendingSessionId) {
           const claimed = await claimSessionId(token, pendingSessionId);
           if (claimed) return; // already granted + redirected
+          // Webhook hasn't produced a claimable row within the poll window. Don't
+          // strand the buyer on "/": hand off to the success page, which owns the
+          // polling + retry UI and reads the pending id from localStorage.
+          goToSuccess("");
+          return;
         }
 
         // 2. Email-mode backstop (same-email closed tab). Best-effort.

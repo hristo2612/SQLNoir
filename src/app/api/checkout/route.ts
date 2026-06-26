@@ -99,7 +99,11 @@ export async function POST(req: NextRequest) {
     const checkoutParams: any = {
       mode: "payment" as const,
       line_items: lineItems,
-      success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      // localePrefix "as-needed": en has no prefix, pt-br/zh-CN do. Keep the
+      // buyer in their language through the success page.
+      success_url: `${origin}${
+        locale === "pt-br" || locale === "zh-CN" ? `/${locale}` : ""
+      }/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cases`,
       metadata: {
         country,
