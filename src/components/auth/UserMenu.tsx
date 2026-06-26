@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { User } from "lucide-react";
 import { supabase } from "../../lib/supabase";
+import { clearLicenseCache } from "../../lib/license";
 import { AuthModal } from "./AuthModal";
 import { ProfileMenu } from "./ProfileMenu";
 
@@ -15,11 +16,23 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
 
   const handleSignOut = async () => {
     if (!supabase) return;
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      onSignOut();
-    }
     setShowProfileMenu(false);
+    // scope: "local" clears the stored session instantly with no network
+    // round-trip, so sign-out never hangs on a slow or already-revoked token
+    // (the old default-scope call could silently no-op → "nothing happens").
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+    } catch {
+      // Even if Supabase throws, we still tear down local state below.
+    }
+    clearLicenseCache();
+    onSignOut();
+    // Hard-navigate home so no component keeps stale profile/license state.
+    if (typeof window !== "undefined") {
+      const seg = window.location.pathname.split("/")[1];
+      const prefix = seg === "pt-br" || seg === "zh-CN" ? `/${seg}` : "";
+      window.location.assign(`${prefix}/`);
+    }
   };
 
   if (!user) {

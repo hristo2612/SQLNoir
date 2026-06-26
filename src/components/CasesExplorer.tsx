@@ -1,15 +1,31 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "@/i18n/navigation";
 import type { Session } from "@supabase/supabase-js";
 import { Dashboard } from "./Dashboard";
 import { PaywallModal } from "./PaywallModal";
 import { supabase } from "@/lib/supabase";
 import { getCaseSlug } from "@/lib/case-utils";
-import { getUserHasLicense } from "@/lib/license";
+import {
+  getUserHasLicense,
+  readLicenseCache,
+  writeLicenseCache,
+  clearLicenseCache,
+} from "@/lib/license";
 import { getLocalProgress, clearLocalProgress } from "@/lib/local-progress";
 import type { Case } from "@/types";
+
+// useLayoutEffect runs before the browser paints (kills the lock flash on
+// client-side nav) but warns when run on the server; fall back to useEffect there.
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 interface CasesExplorerProps {
   initialSession?: Session | null;
@@ -32,6 +48,18 @@ export function CasesExplorer({
   // onAuthStateChange can both report the same user).
   const migrationDoneRef = useRef(false);
 
+  // Before paint, optimistically unlock from the client cache so a licensed
+  // user never sees paid cases flash as locked on client-side navigation (the
+  // server can't see the implicit-OAuth session, so its render is always
+  // locked). The async session/fetch below confirms or corrects this.
+  useIsomorphicLayoutEffect(() => {
+    if (!initialUserInfo && userInfo === null && readLicenseCache()) {
+      setUserInfo({ has_license: true });
+    }
+    // Seed once on mount only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const fetchUserInfo = useCallback(async (userId: string) => {
     if (!supabase) return;
     try {
@@ -43,6 +71,7 @@ export function CasesExplorer({
 
       if (error) throw error;
       setUserInfo(data);
+      writeLicenseCache(Boolean(data?.has_license));
     } catch (error) {
       console.error("Error fetching user info:", error);
     }
@@ -98,6 +127,7 @@ export function CasesExplorer({
         } else {
           setUser(null);
           setUserInfo(null);
+          clearLicenseCache();
         }
       })
       .catch((error) => {
@@ -115,6 +145,7 @@ export function CasesExplorer({
         migrateLocalProgress(currentUser.id);
       } else {
         setUserInfo(null);
+        clearLicenseCache();
       }
     });
 

@@ -44,16 +44,19 @@ export function LicenseSync() {
           const data = await res.json().catch(() => ({}));
           if (res.ok && data.success) {
             localStorage.removeItem(PENDING_CLAIM_SESSION_KEY);
-            // Seamless: drop them straight into the cases now the license is live.
+            // Send the buyer to the celebratory success page (not silently into
+            // "/" or /cases) so an anonymous-purchase -> Google-OAuth flow ends on
+            // the "Welcome, Detective / license active" confirmation. The success
+            // page sees the now-granted license and shows the claimed state.
             // Preserve the locale prefix (next-intl "as-needed": en has none,
             // pt-br/zh-CN do).
             if (
               typeof window !== "undefined" &&
-              !window.location.pathname.includes("/cases")
+              !window.location.pathname.includes("/checkout/success")
             ) {
               const seg = window.location.pathname.split("/")[1];
               const prefix = seg === "pt-br" || seg === "zh-CN" ? `/${seg}` : "";
-              window.location.assign(`${prefix}/cases`);
+              window.location.assign(`${prefix}/checkout/success`);
             }
             return true;
           }

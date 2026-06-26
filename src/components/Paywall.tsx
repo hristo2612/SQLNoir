@@ -30,6 +30,7 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
   // synchronously from the client-detected country, then refines via /api/price.
   const [price, setPrice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [badgeLoaded, setBadgeLoaded] = useState(false);
   const country = detectCountry();
 
   useEffect(() => {
@@ -116,13 +117,27 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
 
         <div className="bg-amber-900 px-6 py-6 text-center">
           <div className="mb-4 flex justify-center">
-            <Image
-              src="/detective-license-badge.png"
-              alt="Detective License badge"
-              width={88}
-              height={88}
-              className="rounded-md drop-shadow-md"
-            />
+            <div className="relative h-[88px] w-[88px]">
+              {/* Reserve the box and hold a faint placeholder so the badge
+                  fades in on decode instead of popping in abruptly. */}
+              {!badgeLoaded && (
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 animate-pulse rounded-md bg-amber-50/10"
+                />
+              )}
+              <Image
+                src="/detective-license-badge.png"
+                alt="Detective License badge"
+                width={88}
+                height={88}
+                priority
+                onLoad={() => setBadgeLoaded(true)}
+                className={`rounded-md drop-shadow-md transition-opacity duration-300 ${
+                  badgeLoaded ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            </div>
           </div>
           <h2 className="text-balance font-detective text-2xl text-amber-50">
             {t("title")}

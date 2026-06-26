@@ -35,6 +35,7 @@ export function PaywallModal({
   const tRestore = useTranslations("restore");
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
+  const [badgeLoaded, setBadgeLoaded] = useState(false);
   // Start null (same on server and client) to avoid a hydration mismatch and to
   // never paint the US "$14.99" before the localized price. The effect fills it
   // synchronously from the client-detected country, then refines via /api/price.
@@ -114,13 +115,27 @@ export function PaywallModal({
             <X className="w-5 h-5" />
           </button>
           <div className="mb-4 flex justify-center">
-            <Image
-              src="/detective-license-badge.png"
-              alt="Detective License badge"
-              width={88}
-              height={88}
-              className="rounded-md drop-shadow-md"
-            />
+            <div className="relative h-[88px] w-[88px]">
+              {/* Reserve the box and hold a faint placeholder so the badge
+                  fades in on decode instead of popping in abruptly. */}
+              {!badgeLoaded && (
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 animate-pulse rounded-md bg-amber-50/10"
+                />
+              )}
+              <Image
+                src="/detective-license-badge.png"
+                alt="Detective License badge"
+                width={88}
+                height={88}
+                priority
+                onLoad={() => setBadgeLoaded(true)}
+                className={`rounded-md drop-shadow-md transition-opacity duration-300 ${
+                  badgeLoaded ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            </div>
           </div>
           <h2 className="mb-2 text-balance font-detective text-2xl text-amber-50">
             {t('upgradeTitle')}

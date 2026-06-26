@@ -6,6 +6,40 @@ import type { Case } from "@/types";
 // can be claimed on sign-in regardless of which page we return to.
 export const PENDING_CLAIM_SESSION_KEY = "sqlnoir_pending_claim_session";
 
+// Last-known license state, cached client-side. Auth is cookie-less (implicit
+// OAuth → session in localStorage), so the server can't know the license and a
+// licensed user briefly sees locked cases on navigation. We seed the unlocked
+// state from this cache before paint to kill that flash, then confirm via fetch.
+export const LICENSE_CACHE_KEY = "sqlnoir_has_license";
+
+export function readLicenseCache(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return localStorage.getItem(LICENSE_CACHE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function writeLicenseCache(hasLicense: boolean): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (hasLicense) localStorage.setItem(LICENSE_CACHE_KEY, "1");
+    else localStorage.removeItem(LICENSE_CACHE_KEY);
+  } catch {
+    // localStorage unavailable (private mode): cache is best-effort.
+  }
+}
+
+export function clearLicenseCache(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(LICENSE_CACHE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
 // When NEXT_PUBLIC_ENABLE_MONETIZATION is not set or "0", the entire app is free.
 const monetizationEnabled =
   process.env.NEXT_PUBLIC_ENABLE_MONETIZATION === "1";
