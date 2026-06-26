@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
-import { emailsMatch } from "@/lib/email-match";
 import { rateLimit } from "@/lib/rate-limit";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -95,8 +94,7 @@ export async function POST(req: NextRequest) {
 
     if (stripeSessionId) {
       // --- Session-ID claim (checkout-success path) ---
-      // Look up the unclaimed pending license by Stripe session ID. The email
-      // match below is what actually authorizes the claim.
+      // Look up the unclaimed pending license by Stripe session ID.
       const { data: pending, error: fetchError } = await supabaseAdmin
         .from("pending_licenses")
         .select("*")
@@ -111,21 +109,16 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      // SECURITY (claim binding): the session_id is exposed in the checkout
-      // success URL, so matching on it alone lets anyone who obtains a
-      // session_id steal the purchase. Bind the claim to the buyer email
-      // captured at checkout: the signed-in user's email must equal the pending
-      // row's email, case-insensitively. A null/empty pending email never
-      // matches, so an unidentified purchase can't be claimed by anyone.
-      if (!emailsMatch(authedUser.email, pending.email)) {
-        return NextResponse.json(
-          {
-            error:
-              "This purchase is registered to a different email. Sign in with the email used at checkout.",
-          },
-          { status: 403 }
-        );
-      }
+      // NO email match here (deliberate, UX over a low-value edge case): the
+      // pending row only exists because Stripe confirmed a real PAID session, the
+      // claim is single-use (claimed_at), and the buyer is holding a fresh
+      // session_id Stripe just redirected them with. Requiring the account email
+      // to equal the checkout email stranded every wallet buyer whose Stripe email
+      // differs from their login (Apple Pay "Hide My Email" relay, Link, etc.). So
+      // possession of the session_id is the proof; we grant to the signed-in user.
+      // The success page strips the id from the URL after claim + sends no referrer
+      // to shrink the only leak vector. The email-MODE branch below still binds on
+      // email, because there it is the only signal.
 
       // Grant the license. UPSERT (not update) so a missing user_info row can't
       // silently swallow the grant - see the webhook grant for the full rationale.

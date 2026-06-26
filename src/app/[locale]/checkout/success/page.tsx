@@ -11,7 +11,13 @@ import { useTranslations } from "next-intl";
 
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
-  const stripeSessionId = searchParams.get("session_id");
+  // Capture session_id ONCE, then scrub it from the URL (below) so analytics,
+  // browser history, and outbound referrers never persist this claim token.
+  // Reading from state instead of the live URL keeps the claim working after the
+  // scrub. The id is single-use anyway, so a post-claim leak is worthless.
+  const [stripeSessionId] = useState<string | null>(() =>
+    searchParams.get("session_id")
+  );
   const t = useTranslations();
   const tCheckout = useTranslations("checkout");
   const tNav = useTranslations("nav");
@@ -22,6 +28,20 @@ export default function CheckoutSuccessPage() {
   const [claiming, setClaiming] = useState(false);
   const [claimError, setClaimError] = useState<string | null>(null);
   const [showAuth, setShowAuth] = useState(false);
+
+  // Scrub session_id from the address bar on mount (defense in depth for the
+  // claim token; we already captured it into state above).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!window.location.search.includes("session_id")) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("session_id");
+    window.history.replaceState(
+      {},
+      "",
+      url.pathname + (url.search ? url.search : "") + url.hash
+    );
+  }, []);
 
   useEffect(() => {
     if (!supabase) {
