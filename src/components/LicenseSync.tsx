@@ -33,11 +33,19 @@ export function LicenseSync() {
       if (lastUserRef.current === userId) return;
       lastUserRef.current = userId;
 
-      // Email-mode claim (no body). The cookie session authenticates it
-      // server-side; the email is the authorization.
+      // Email-mode claim (no body). The app uses Supabase's implicit OAuth flow,
+      // so the session lives in localStorage, NOT cookies - the server can't read
+      // it from cookies on a Google sign-in. Pass the access token as a Bearer
+      // header (same as check-solution) so the claim route can authenticate the
+      // user; the email is the authorization.
+      const token = session?.access_token;
+      if (!token) return;
       fetch("/api/claim-license", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({}),
       }).catch(() => {
         // Best-effort: the success page and the next sign-in are both backstops.

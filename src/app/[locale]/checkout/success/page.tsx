@@ -68,11 +68,19 @@ export default function CheckoutSuccessPage() {
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
       try {
         // 1. Session-id claim (anonymous purchase). Succeeds once the webhook
-        //    has written the pending_licenses row for this checkout.
+        //    has written the pending_licenses row for this checkout. The session
+        //    lives in localStorage (implicit OAuth flow), so pass the access
+        //    token as a Bearer header - the claim route can't read it from cookies.
         if (stripeSessionId) {
+          const token = supabase
+            ? (await supabase.auth.getSession()).data.session?.access_token
+            : undefined;
           const res = await fetch("/api/claim-license", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
             body: JSON.stringify({ stripeSessionId }),
           });
           const data = await res.json();

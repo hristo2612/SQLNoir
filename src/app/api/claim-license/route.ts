@@ -51,19 +51,6 @@ export async function POST(req: NextRequest) {
       .catch(() => ({}) as { stripeSessionId?: string });
     const stripeSessionId: string | undefined = body?.stripeSessionId;
 
-    // User must be signed in to claim
-    const supabase = createServerSupabaseClient();
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: "You must be signed in to claim your license" },
-        { status: 401 }
-      );
-    }
-
     const supabaseAdmin = getSupabaseAdmin();
     if (!supabaseAdmin) {
       return NextResponse.json(
@@ -72,7 +59,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const claimantEmail = (session.user.email || "").trim().toLowerCase();
+    // Resolve the signed-in user. The app uses Supabase's implicit OAuth flow, so
+    // a Google sign-in stores the session in the BROWSER (localStorage), not in
+    // cookies - the cookie-based server client only sees it for some flows. So
+    // prefer the Bearer access token the client sends (same pattern as
+    // check-solution), and fall back to the cookie session when there's no header.
+    let authedUser: { id: string; email: string | null } | null = null;
+
+    const authHeader = req.headers.get("authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      const token = authHeader.replace("Bearer ", "");
+      const {
+        data: { user },
+      } = await supabaseAdmin.auth.getUser(token);
+      if (user) authedUser = { id: user.id, email: user.email ?? null };
+    }
+
+    if (!authedUser) {
+      const {
+        data: { session },
+      } = await createServerSupabaseClient().auth.getSession();
+      if (session?.user) {
+        authedUser = { id: session.user.id, email: session.user.email ?? null };
+      }
+    }
+
+    if (!authedUser) {
+      return NextResponse.json(
+        { error: "You must be signed in to claim your license" },
+        { status: 401 }
+      );
+    }
+
+    const claimantEmail = (authedUser.email || "").trim().toLowerCase();
 
     if (stripeSessionId) {
       // --- Session-ID claim (checkout-success path) ---
@@ -98,7 +117,7 @@ export async function POST(req: NextRequest) {
       // captured at checkout: the signed-in user's email must equal the pending
       // row's email, case-insensitively. A null/empty pending email never
       // matches, so an unidentified purchase can't be claimed by anyone.
-      if (!emailsMatch(session.user.email, pending.email)) {
+      if (!emailsMatch(authedUser.email, pending.email)) {
         return NextResponse.json(
           {
             error:
@@ -114,7 +133,7 @@ export async function POST(req: NextRequest) {
         .from("user_info")
         .upsert(
           {
-            id: session.user.id,
+            id: authedUser.id,
             has_license: true,
             license_purchased_at: pending.created_at,
             stripe_customer_id: pending.stripe_customer_id,
@@ -142,7 +161,7 @@ export async function POST(req: NextRequest) {
         .from("pending_licenses")
         .update({
           claimed_at: new Date().toISOString(),
-          claimed_by: session.user.id,
+          claimed_by: authedUser.id,
         })
         .eq("id", pending.id);
 
@@ -168,7 +187,7 @@ export async function POST(req: NextRequest) {
     const { data: current } = await supabaseAdmin
       .from("user_info")
       .select("has_license")
-      .eq("id", session.user.id)
+      .eq("id", authedUser.id)
       .maybeSingle();
     if (current?.has_license) {
       return NextResponse.json({
@@ -208,7 +227,7 @@ export async function POST(req: NextRequest) {
       .from("user_info")
       .upsert(
         {
-          id: session.user.id,
+          id: authedUser.id,
           has_license: true,
           license_purchased_at: newest.created_at,
           stripe_customer_id: newest.stripe_customer_id,
@@ -233,7 +252,7 @@ export async function POST(req: NextRequest) {
       .from("pending_licenses")
       .update({
         claimed_at: new Date().toISOString(),
-        claimed_by: session.user.id,
+        claimed_by: authedUser.id,
       })
       .eq("id", newest.id);
 
