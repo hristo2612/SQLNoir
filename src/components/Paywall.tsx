@@ -23,6 +23,7 @@ interface PaywallProps {
 export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
   const t = useTranslations("paywall");
   const tFooter = useTranslations("footer");
+  const tRestore = useTranslations("restore");
   const locale = useLocale();
   // Start null (same on server and client) to avoid a hydration mismatch and to
   // never paint the US "$14.99" before the localized price. The effect fills it
@@ -208,6 +209,12 @@ export function Paywall({ isOpen, onClose, caseSlug }: PaywallProps) {
           >
             {t("ctaMaybeLater")}
           </button>
+
+          <p className="text-center text-xs text-amber-600">
+            <Link href="/restore" className="underline hover:text-amber-900">
+              {tRestore("alreadyPurchased")}
+            </Link>
+          </p>
 
           <p className="text-center text-xs text-amber-600">
             {t.rich("teamLicense", {

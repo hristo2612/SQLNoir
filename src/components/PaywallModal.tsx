@@ -32,6 +32,7 @@ export function PaywallModal({
 }: PaywallModalProps) {
   const t = useTranslations("license");
   const tFooter = useTranslations("footer");
+  const tRestore = useTranslations("restore");
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
   // Start null (same on server and client) to avoid a hydration mismatch and to
@@ -219,6 +220,12 @@ export function PaywallModal({
           >
             {t('continueWithFree')}
           </button>
+
+          <p className="mt-1 text-center text-xs text-amber-600">
+            <Link href="/restore" className="underline hover:text-amber-900">
+              {tRestore('alreadyPurchased')}
+            </Link>
+          </p>
         </div>
       </div>
     </div>,

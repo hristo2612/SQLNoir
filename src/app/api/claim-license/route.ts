@@ -42,13 +42,14 @@ export async function POST(req: NextRequest) {
 
     // stripeSessionId is OPTIONAL. With it, we claim that one purchase (the
     // checkout-success path). Without it, we claim ANY unclaimed pending license
-    // matching the signed-in user's email - the auto-claim-on-sign-in path that
-    // rescues a purchase whose success tab was closed, or one made before the
-    // buyer had an account.
+    // matching an email - either the signed-in user's (auto-claim-on-sign-in) or
+    // an explicit `email` from the self-serve "Restore purchase" page, for buyers
+    // whose checkout email differs from their login (e.g. an Apple Pay relay).
     const body = await req
       .json()
-      .catch(() => ({}) as { stripeSessionId?: string });
+      .catch(() => ({}) as { stripeSessionId?: string; email?: string });
     const stripeSessionId: string | undefined = body?.stripeSessionId;
+    const providedEmail: string | undefined = body?.email;
 
     const supabaseAdmin = getSupabaseAdmin();
     if (!supabaseAdmin) {
@@ -90,7 +91,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const claimantEmail = (authedUser.email || "").trim().toLowerCase();
+    // Prefer an explicit email (Restore purchase); otherwise use the signed-in
+    // account email (auto-claim). Either way the license is granted to the
+    // signed-in user. Binding on a typed email is a small, accepted trust gap for
+    // a low-value one-time license - it spares wallet-relay buyers a support round.
+    const claimantEmail = (providedEmail || authedUser.email || "")
+      .trim()
+      .toLowerCase();
 
     if (stripeSessionId) {
       // --- Session-ID claim (checkout-success path) ---

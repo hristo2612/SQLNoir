@@ -1,4 +1,19 @@
 {
+  "restore": {
+    "title": "恢复你的购买",
+    "intro": "已购买侦探许可证但还没有访问权限？输入你结账时使用的邮箱，我们会把许可证恢复到你的账户。",
+    "signInPrompt": "请先登录，然后恢复你的购买。",
+    "signInButton": "登录",
+    "emailLabel": "结账邮箱",
+    "emailPlaceholder": "you@example.com",
+    "button": "恢复访问",
+    "busy": "正在恢复...",
+    "success": "完成。你的侦探许可证已恢复。前往案件开始破案吧。",
+    "notFound": "未找到该邮箱的未认领购买。请核对你 Stripe 收据上的邮箱，或联系 support@sqlnoir.com。",
+    "error": "出错了。请重试，或联系 support@sqlnoir.com。",
+    "goToCases": "前往案件",
+    "alreadyPurchased": "已经购买了？恢复访问"
+  },
   "common": {
     "appName": "SQLNoir",
     "xp": "XP",

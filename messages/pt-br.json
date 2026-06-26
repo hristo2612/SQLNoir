@@ -1,4 +1,19 @@
 {
+  "restore": {
+    "title": "Restaure sua compra",
+    "intro": "Comprou uma Licença de Detetive mas ainda não tem acesso? Informe o e-mail usado no checkout e nós a restauramos na sua conta.",
+    "signInPrompt": "Entre na sua conta primeiro e depois restaure a compra.",
+    "signInButton": "Entrar",
+    "emailLabel": "E-mail do checkout",
+    "emailPlaceholder": "voce@exemplo.com",
+    "button": "Restaurar acesso",
+    "busy": "Restaurando...",
+    "success": "Pronto. Sua Licença de Detetive foi restaurada. Vá para os casos e comece a investigar.",
+    "notFound": "Nenhuma compra não reivindicada foi encontrada para esse e-mail. Confira o e-mail no seu recibo da Stripe ou contate support@sqlnoir.com.",
+    "error": "Algo deu errado. Tente novamente ou contate support@sqlnoir.com.",
+    "goToCases": "Ir para os casos",
+    "alreadyPurchased": "Já comprou? Restaure o acesso"
+  },
   "common": {
     "appName": "SQLNoir",
     "xp": "XP",

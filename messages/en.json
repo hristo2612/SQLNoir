@@ -1,4 +1,19 @@
 {
+  "restore": {
+    "title": "Restore your purchase",
+    "intro": "Bought a Detective License but don't have access yet? Enter the email you used at checkout and we'll restore it to your account.",
+    "signInPrompt": "Sign in first, then restore your purchase.",
+    "signInButton": "Sign in",
+    "emailLabel": "Checkout email",
+    "emailPlaceholder": "you@example.com",
+    "button": "Restore access",
+    "busy": "Restoring...",
+    "success": "Done. Your Detective License is restored. Head to the cases to start solving.",
+    "notFound": "No unclaimed purchase found for that email. Check the email on your Stripe receipt, or contact support@sqlnoir.com.",
+    "error": "Something went wrong. Please try again, or contact support@sqlnoir.com.",
+    "goToCases": "Go to cases",
+    "alreadyPurchased": "Already purchased? Restore access"
+  },
   "common": {
     "appName": "SQLNoir",
     "xp": "XP",
