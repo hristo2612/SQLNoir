@@ -212,6 +212,8 @@
     "detectiveProfile": "侦探档案",
     "experiencePoints": "经验值",
     "casesSolved": "已侦破案件：{count}",
+    "licensedDetective": "持照侦探",
+    "licenseActiveSubtitle": "所有案件已解锁",
     "signOut": "退出登录"
   },
   "help": {

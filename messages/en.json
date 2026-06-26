@@ -212,6 +212,8 @@
     "detectiveProfile": "Detective Profile",
     "experiencePoints": "Experience Points",
     "casesSolved": "Cases Solved: {count}",
+    "licensedDetective": "Licensed Detective",
+    "licenseActiveSubtitle": "All cases unlocked",
     "signOut": "Sign Out"
   },
   "help": {
