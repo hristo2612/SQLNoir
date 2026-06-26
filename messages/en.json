@@ -226,6 +226,8 @@
     "githubTitle": "GitHub Issues",
     "githubDesc": "Found a bug or want to propose a feature? Open an issue and we'll investigate.",
     "reportOnGithub": "Report on GitHub",
+    "emailTitle": "Email us",
+    "emailDesc": "Questions about your Detective License, a purchase, or a refund? Email us and we'll help.",
     "quickAnswers": "Quick answers",
     "faqClueQ": "Need a clue?",
     "faqClueA": "Check the Schema tab first, then drop by Discord for a nudge.",

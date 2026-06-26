@@ -102,6 +102,12 @@ export default async function HelpPage() {
             url: "https://github.com/hristo2612/SQLNoir/issues",
             name: t("githubTitle"),
           },
+          {
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            email: "support@sqlnoir.com",
+            name: t("emailTitle"),
+          },
         ],
       },
     ],

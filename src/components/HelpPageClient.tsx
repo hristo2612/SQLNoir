@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
-import { MessageCircle, Bug } from "lucide-react";
+import { MessageCircle, Bug, Mail } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { track } from "@vercel/analytics/react";
 import { useTranslations } from "next-intl";
@@ -93,6 +93,25 @@ export function HelpPageClient() {
               >
                 {t('help.reportOnGithub')}
               </Link>
+            </div>
+
+            <div className="bg-white border border-amber-100 rounded-2xl shadow-sm p-6 space-y-3">
+              <div className="flex items-center gap-3">
+                <Mail className="w-6 h-6 text-amber-800" />
+                <h2 className="font-detective text-2xl text-amber-900">
+                  {t('help.emailTitle')}
+                </h2>
+              </div>
+              <p className="text-amber-800">
+                {t('help.emailDesc')}
+              </p>
+              <a
+                href="mailto:support@sqlnoir.com"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-800 text-amber-50 font-detective hover:bg-amber-700 transition-colors"
+                onClick={() => track("help_action", { action: "email_support", page: "/help" })}
+              >
+                support@sqlnoir.com
+              </a>
             </div>
           </div>
 
