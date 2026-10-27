@@ -171,7 +171,8 @@
     "answerHint": "Digite o nome específico que você encontrou na sua investigação.",
     "submitting": "Enviando...",
     "submitSolution": "Enviar Solução",
-    "progressError": "Ocorreu um erro ao atualizar o progresso"
+    "progressError": "Ocorreu um erro ao atualizar o progresso",
+    "verificationError": "Não foi possível verificar sua resposta. Tente novamente."
   },
   "notes": {
     "title": "Anotações da Investigação",
@@ -322,6 +323,8 @@
     "redirecting": "Redirecionando...",
     "somethingWentWrong": "Algo deu errado. Tente novamente.",
     "checkingCredentials": "Verificando credenciais...",
+    "credentialError": "Não foi possível verificar sua licença. Tente novamente.",
+    "retryCheck": "Tentar novamente",
     "caseClassified": "Caso Classificado",
     "caseClassifiedDesc": "Esta investigação requer uma Licença de Detetive. Faça o upgrade para acessar todos os casos intermediários e avançados.",
     "backToCaseFiles": "Voltar aos Arquivos de Caso",

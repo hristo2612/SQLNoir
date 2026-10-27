@@ -171,7 +171,8 @@
     "answerHint": "Enter the specific name you found through your investigation.",
     "submitting": "Submitting...",
     "submitSolution": "Submit Solution",
-    "progressError": "An error occurred while updating progress"
+    "progressError": "An error occurred while updating progress",
+    "verificationError": "We could not verify your answer. Please try again."
   },
   "notes": {
     "title": "Investigation Notes",
@@ -322,6 +323,8 @@
     "redirecting": "Redirecting...",
     "somethingWentWrong": "Something went wrong. Please try again.",
     "checkingCredentials": "Checking credentials...",
+    "credentialError": "We could not check your license. Please try again.",
+    "retryCheck": "Retry",
     "caseClassified": "Case Classified",
     "caseClassifiedDesc": "This investigation requires a Detective License. Upgrade to access all intermediate and advanced cases.",
     "backToCaseFiles": "Back to Case Files",

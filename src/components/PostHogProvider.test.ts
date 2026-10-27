@@ -44,7 +44,7 @@ const within = async <T>(operation: PromiseLike<T>): Promise<T> => {
 
 let cleanup: (() => void) | void;
 let profile: () => Promise<Response>;
-let fetchMock: ReturnType<typeof vi.fn>;
+let fetchMock: ReturnType<typeof vi.fn<(input: RequestInfo | URL) => Promise<Response>>>;
 beforeEach(() => {
   state.effects = [];
   vi.clearAllMocks();

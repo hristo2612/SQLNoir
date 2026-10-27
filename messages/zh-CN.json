@@ -171,7 +171,8 @@
     "answerHint": "请输入你通过调查锁定的具体姓名。",
     "submitting": "提交中...",
     "submitSolution": "提交答案",
-    "progressError": "更新进度时出错"
+    "progressError": "更新进度时出错",
+    "verificationError": "无法验证您的答案，请重试。"
   },
   "notes": {
     "title": "调查笔记",
@@ -322,6 +323,8 @@
     "redirecting": "跳转中...",
     "somethingWentWrong": "出了点小问题，请重试。",
     "checkingCredentials": "正在验证凭据...",
+    "credentialError": "无法验证您的许可证，请重试。",
+    "retryCheck": "重试",
     "caseClassified": "案件已加密",
     "caseClassifiedDesc": "这桩调查需要侦探证。升级后即可解锁全部中级与高级案件。",
     "backToCaseFiles": "返回案件档案",

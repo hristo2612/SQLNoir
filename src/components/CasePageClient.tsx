@@ -1,10 +1,9 @@
 "use client";
 
 import { useRouter } from "@/i18n/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CaseSolver } from "./CaseSolver";
 import { PaywallModal } from "./PaywallModal";
-import { AuthModal } from "./auth/AuthModal";
 import { supabase } from "@/lib/supabase";
 import { isCaseFree, getUserHasLicense } from "@/lib/license";
 import { track } from "@vercel/analytics/react";
@@ -19,33 +18,15 @@ interface CasePageClientProps {
 export function CasePageClient({ caseData }: CasePageClientProps) {
   const router = useRouter();
   const t = useTranslations("license");
-  const [user, setUser] = useState<any>(null);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [loading, setLoading] = useState(!isCaseFree(caseData));
   const [showPaywall, setShowPaywall] = useState(false);
-  const [showAuth, setShowAuth] = useState(false);
+  const [credentialError, setCredentialError] = useState(false);
+  const [checkAttempt, setCheckAttempt] = useState(0);
   const [caseStartTime] = useState(() => Date.now());
 
   const hasLicense = getUserHasLicense(userInfo);
   const needsLicense = !isCaseFree(caseData);
-
-  const fetchUserInfo = useCallback(async (userId: string) => {
-    if (!supabase) return;
-    try {
-      const { data, error } = await supabase
-        .from("user_info")
-        .select("*")
-        .eq("id", userId)
-        .single();
-
-      if (error) throw error;
-      setUserInfo(data);
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
     track("case_view", {
@@ -63,45 +44,87 @@ export function CasePageClient({ caseData }: CasePageClientProps) {
   }, [caseData]);
 
   useEffect(() => {
-    if (!needsLicense) {
+    if (!needsLicense || !supabase) {
       setLoading(false);
       return;
     }
-    if (!supabase) {
+    const client = supabase;
+    let generation = 0;
+    let activeUserId: string | null = null;
+    let work: ReturnType<typeof setTimeout> | undefined;
+    let controller: AbortController | undefined;
+    let deadline: ReturnType<typeof setTimeout>;
+    const fail = () => {
+      clearTimeout(deadline);
+      generation++;
+      controller?.abort();
+      setUserInfo(null);
+      setCredentialError(true);
       setLoading(false);
-      return;
-    }
-
-    supabase.auth
-      .getSession()
-      .then(({ data: { session } }) => {
-        if (session?.user) {
-          setUser(session.user);
-          fetchUserInfo(session.user.id);
-        } else {
-          setUser(null);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    };
+    setLoading(true);
+    setCredentialError(false);
+    // Also covers an initial auth event that never arrives.
+    deadline = setTimeout(fail, 10_000);
+    const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
+      const revision = ++generation;
+      clearTimeout(work);
+      clearTimeout(deadline);
+      controller?.abort();
       const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      if (currentUser) {
-        fetchUserInfo(currentUser.id);
-      } else {
-        setUserInfo(null);
+      const sameUser = currentUser?.id === activeUserId;
+      activeUserId = currentUser?.id ?? null;
+      if (!sameUser) setUserInfo(null);
+      setCredentialError(false);
+      if (!currentUser) {
         setLoading(false);
+        return;
       }
+      // Keep an open investigation mounted during same-user tab refocus.
+      if (!sameUser) setLoading(true);
+      controller = new AbortController();
+      const signal = controller.signal;
+      deadline = setTimeout(fail, 10_000);
+      // Auth callbacks must return before a query asks the SDK for a session.
+      work = setTimeout(() => {
+        void (async () => {
+          try {
+            const { data, error } = await client.from("user_info")
+              .select("*").eq("id", currentUser.id).abortSignal(signal).single();
+            if (revision !== generation) return;
+            if (error) throw error;
+            setUserInfo(data);
+            setLoading(false);
+          } catch {
+            if (revision === generation) fail();
+          } finally {
+            if (revision === generation) clearTimeout(deadline);
+          }
+        })();
+      }, 0);
     });
+    return () => {
+      generation++;
+      clearTimeout(work);
+      clearTimeout(deadline);
+      controller?.abort();
+      subscription.unsubscribe();
+    };
+  }, [needsLicense, checkAttempt]);
 
-    return () => subscription.unsubscribe();
-  }, [needsLicense, fetchUserInfo]);
+  if (credentialError) {
+    return (
+      <div className="min-h-screen bg-amber-50/50 flex items-center justify-center px-4">
+        <div role="alert" className="text-center space-y-4 text-amber-900">
+          <p>{t('credentialError')}</p>
+          <button onClick={() => setCheckAttempt(value => value + 1)}
+            className="rounded-lg bg-amber-800 px-6 py-3 text-amber-50 font-detective">
+            {t('retryCheck')}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Show loading while checking license for locked cases
   if (loading) {

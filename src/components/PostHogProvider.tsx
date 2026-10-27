@@ -53,7 +53,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
         signedInUserRef.current = user.id;
         const provider = user.app_metadata?.provider;
         if (isNewSignIn && provider && provider !== "email") {
-          capture("login", { method: "oauth" });
+          try { capture("login", { method: "oauth" }); } catch { /* Best-effort analytics. */ }
         }
 
         // Supabase waits for auth subscribers while holding its session lock.
@@ -70,6 +70,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
               .from("user_info")
               .select("completed_cases")
               .eq("id", user.id)
+              .abortSignal(AbortSignal.timeout(10_000))
               .single();
             if (Array.isArray(data?.completed_cases)) {
               casesCompleted = data.completed_cases.length;
@@ -81,17 +82,17 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
           // An old request must not restore an identity after sign-out, a user
           // switch, another auth notification or unmount.
           if (!active || version !== identityVersion) return;
-          identifyUser(user.id, {
+          try { identifyUser(user.id, {
             email: user.email,
             sign_up_date: user.created_at,
             cases_completed_count: casesCompleted,
-          });
+          }); } catch { /* Analytics must never interrupt gameplay. */ }
         }, 0);
       } else if (event === "SIGNED_OUT") {
         identityVersion += 1;
         clearTimeout(identifyTimer);
         signedInUserRef.current = null;
-        resetUser();
+        try { resetUser(); } catch { /* Best-effort analytics. */ }
       }
     });
 
@@ -99,6 +100,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       active = false;
       clearTimeout(identifyTimer);
       subscription.unsubscribe();
+      signedInUserRef.current = null;
     };
   }, []);
 

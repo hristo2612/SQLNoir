@@ -11,6 +11,7 @@ import { trackCaseCompleted, trackCaseAbandoned } from "../../lib/posthog-events
 import { useTranslations, useLocale } from "next-intl";
 import { isCaseFree } from "../../lib/license";
 import { recordLocalSolve } from "../../lib/local-progress";
+import { withTimeout } from "../../lib/request-timeout";
 
 interface SolutionSubmissionProps {
   caseData: Case;
@@ -52,10 +53,11 @@ export function SolutionSubmission({
 
       if (!isCaseFree(caseData)) {
         // Server-side verification for paid cases
-        const session = supabase ? await supabase.auth.getSession() : null;
+        const session = supabase ? await withTimeout(supabase.auth.getSession()) : null;
         const token = session?.data?.session?.access_token;
 
         const res = await fetch("/api/check-solution", {
+          signal: AbortSignal.timeout(10_000),
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,35 +78,24 @@ export function SolutionSubmission({
       }
 
       if (isAnswerCorrect) {
-        const solvedUser = supabase
-          ? (await supabase.auth.getUser()).data.user
-          : null;
-
-        if (solvedUser && supabase) {
-          // The hardened RPC looks up the xp reward server-side and is
-          // idempotent (dedup + append handled in SQL), so no client-side
-          // completed_cases pre-fetch is needed and no client xp is trusted.
-          //
-          // XP persistence must NOT gate the success render: a correct answer
-          // earns the Case Solved screen + confetti even if the XP write hiccups
-          // (RLS, network, a not-yet-migrated RPC). Log and continue.
-          try {
-            const { error: updateError } = await supabase.rpc(
-              "increment_user_xp",
-              {
-                user_id: solvedUser.id,
-                case_id: caseData.id,
-              }
-            );
-            if (updateError) throw updateError;
-          } catch (xpErr) {
-            console.error("XP persistence failed (non-blocking):", xpErr);
-          }
-        } else if (isCaseFree(caseData)) {
-          // Anonymous visitor solved a free case - persist locally so it can be
-          // migrated onto their account when they sign in.
-          recordLocalSolve(caseData.id);
-        }
+        // Preserve free progress immediately, including while auth is unavailable.
+        // The server migration and XP RPC deduplicate repeated case ids.
+        if (isCaseFree(caseData)) recordLocalSolve(caseData.id);
+        // Never wait for auth or the XP write before showing a correct result.
+        // The async task survives this component unmounting during navigation.
+        void (async () => {
+          if (!supabase) return;
+          const { data: { user: solvedUser }, error } = await supabase.auth.getUser();
+          if (error || !solvedUser) return;
+          const { error: updateError } = await supabase.rpc(
+            "increment_user_xp", { user_id: solvedUser.id, case_id: caseData.id }
+          );
+          if (updateError) throw updateError;
+        })().catch(() => {
+          // Free progress remains available for migration on the next sign-in.
+          // Re-submitting is safe: the server credits each case only once.
+          console.error("Progress could not be saved. Please try again.");
+        });
       }
 
       // Update explanation/successMessage from server response for paid cases
@@ -148,9 +139,7 @@ export function SolutionSubmission({
       }
     } catch (err) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "An error occurred while updating progress"
+        t('solution.verificationError')
       );
       console.error("Error updating solved cases:", err);
     } finally {
@@ -162,17 +151,29 @@ export function SolutionSubmission({
   // This will allow us to show the XP reward message conditionally
   useEffect(() => {
     if (!supabase) return;
-    supabase.auth.getUser().then(async ({ data }) => {
-      setUser(data.user);
-      if (data.user && supabase) {
-        const { data: info } = await supabase
-          .from("user_info")
-          .select("has_license")
-          .eq("id", data.user.id)
-          .single();
-        setHasLicense(Boolean(info?.has_license));
-      }
+    const client = supabase;
+    let generation = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
+      const revision = ++generation;
+      clearTimeout(timer);
+      setUser(session?.user ?? null);
+      setHasLicense(false);
+      if (!session?.user) return;
+      const userId = session.user.id;
+      timer = setTimeout(() => {
+        void (async () => {
+          const { data: info } = await withTimeout(client.from("user_info")
+            .select("has_license").eq("id", userId).single());
+          if (revision === generation) setHasLicense(Boolean(info?.has_license));
+        })().catch(() => {});
+      }, 0);
     });
+    return () => {
+      generation++;
+      clearTimeout(timer);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const showSuccess = submitted && isCorrect;
