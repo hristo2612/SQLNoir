@@ -78,20 +78,24 @@ export function SolutionSubmission({
       }
 
       if (isAnswerCorrect) {
-        // Preserve free progress immediately, including while auth is unavailable.
-        // The server migration and XP RPC deduplicate repeated case ids.
-        if (isCaseFree(caseData)) recordLocalSolve(caseData.id);
+        // Anonymous free progress is retained immediately. Signed-in progress
+        // uses the RPC, so it is not also migrated while that write is in flight.
+        if (!user && isCaseFree(caseData)) recordLocalSolve(caseData.id);
         // Never wait for auth or the XP write before showing a correct result.
         // The async task survives this component unmounting during navigation.
         void (async () => {
           if (!supabase) return;
           const { data: { user: solvedUser }, error } = await supabase.auth.getUser();
-          if (error || !solvedUser) return;
+          if (error || !solvedUser) {
+            if (isCaseFree(caseData)) recordLocalSolve(caseData.id);
+            return;
+          }
           const { error: updateError } = await supabase.rpc(
             "increment_user_xp", { user_id: solvedUser.id, case_id: caseData.id }
           );
           if (updateError) throw updateError;
         })().catch(() => {
+          if (isCaseFree(caseData)) recordLocalSolve(caseData.id);
           // Free progress remains available for migration on the next sign-in.
           // Re-submitting is safe: the server credits each case only once.
           console.error("Progress could not be saved. Please try again.");

@@ -3,9 +3,9 @@ import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { getAllCases } from '@/lib/case-utils';
 
-const backend = vi.hoisted(() => ({ getUser: vi.fn(), getSession: vi.fn(), rpc: vi.fn(), paid: false }));
+const backend = vi.hoisted(() => ({ getUser: vi.fn(), getSession: vi.fn(), rpc: vi.fn(), paid: false, authUser: null as { id: string } | null }));
 vi.mock('@/lib/supabase', () => ({ supabase: { auth: { ...backend,
-  onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }) }, rpc: backend.rpc } }));
+  onAuthStateChange: (callback: (event: string, session: { user: { id: string } } | null) => void) => { callback("INITIAL_SESSION", backend.authUser ? { user: backend.authUser } : null); return { data: { subscription: { unsubscribe() {} } } }; } }, rpc: backend.rpc } }));
 vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key, useLocale: () => 'en' }));
 vi.mock('@vercel/analytics/react', () => ({ track: vi.fn() }));
 vi.mock('@/lib/posthog-events', () => ({ trackCaseCompleted: vi.fn(), trackCaseAbandoned: vi.fn() }));
@@ -20,6 +20,7 @@ const storage = new Map<string, string>();
 beforeEach(() => {
   vi.clearAllMocks();
   backend.paid = false;
+  backend.authUser = null;
   storage.clear();
   vi.stubGlobal('window', { matchMedia: () => ({ matches: true }), localStorage: {
     getItem: (key: string) => storage.get(key) ?? null,
@@ -67,4 +68,20 @@ it('restores the paid submit button after a stalled session request', async () =
   await act(async () => { await vi.advanceTimersByTimeAsync(10_000); await submission; });
   expect(JSON.stringify(renderer.toJSON())).toContain('solution.verificationError');
   expect(renderer.root.findByProps({ type: 'submit' }).props.disabled).toBe(false);
+});
+
+it('keeps a signed-in write out of anonymous migration and retains a failed free solve', async () => {
+  const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
+  try {
+    backend.authUser = { id: 'test-detective' };
+    backend.getUser.mockResolvedValue({ data: { user: backend.authUser } });
+    let finish!: (value: { error: Error }) => void;
+    backend.rpc.mockReturnValue(new Promise(resolve => { finish = resolve; }));
+    act(() => { renderer.unmount(); renderer = create(<SolutionSubmission caseData={caseData} onSolve={vi.fn()} />); });
+    await submit();
+    expect(JSON.stringify(renderer.toJSON())).toContain('solution.caseSolved');
+    expect(storage.get('sqlnoir_local_progress')).toBeUndefined();
+    await act(async () => { finish({ error: new Error('offline') }); });
+    expect(JSON.parse(storage.get('sqlnoir_local_progress')!)).toContain(caseData.id);
+  } finally { errorLog.mockRestore(); }
 });
