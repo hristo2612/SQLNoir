@@ -31,9 +31,13 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!supabase) return;
 
+    let active = true;
+    let identityVersion = 0;
+    let identifyTimer: ReturnType<typeof setTimeout> | undefined;
+
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (!POSTHOG_KEY) return;
       if (event === "SIGNED_IN" && session?.user) {
         const user = session.user;
@@ -52,31 +56,50 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
           capture("login", { method: "oauth" });
         }
 
-        // Fetch completed cases count
-        let casesCompleted = 0;
-        const { data } = await supabase!
-          .from("user_info")
-          .select("completed_cases")
-          .eq("id", user.id)
-          .single();
-        if (data?.completed_cases) {
-          casesCompleted = Array.isArray(data.completed_cases)
-            ? data.completed_cases.length
-            : 0;
-        }
+        // Supabase waits for auth subscribers while holding its session lock.
+        // A query here obtains its token via getSession(), so awaiting it in the
+        // subscriber deadlocks auth, license checks and answer/XP submissions.
+        // Defer analytics until the auth notification has released that lock.
+        const version = ++identityVersion;
+        clearTimeout(identifyTimer);
+        identifyTimer = setTimeout(async () => {
+          if (!active || version !== identityVersion) return;
+          let casesCompleted = 0;
+          try {
+            const { data } = await supabase!
+              .from("user_info")
+              .select("completed_cases")
+              .eq("id", user.id)
+              .single();
+            if (Array.isArray(data?.completed_cases)) {
+              casesCompleted = data.completed_cases.length;
+            }
+          } catch {
+            // Analytics enrichment is best-effort and must not affect gameplay.
+          }
 
-        identifyUser(user.id, {
-          email: user.email,
-          sign_up_date: user.created_at,
-          cases_completed_count: casesCompleted,
-        });
+          // An old request must not restore an identity after sign-out, a user
+          // switch, another auth notification or unmount.
+          if (!active || version !== identityVersion) return;
+          identifyUser(user.id, {
+            email: user.email,
+            sign_up_date: user.created_at,
+            cases_completed_count: casesCompleted,
+          });
+        }, 0);
       } else if (event === "SIGNED_OUT") {
+        identityVersion += 1;
+        clearTimeout(identifyTimer);
         signedInUserRef.current = null;
         resetUser();
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      active = false;
+      clearTimeout(identifyTimer);
+      subscription.unsubscribe();
+    };
   }, []);
 
   if (!POSTHOG_KEY) return <>{children}</>;
