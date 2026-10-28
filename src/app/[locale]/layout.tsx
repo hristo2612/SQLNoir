@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react";
 import { CookieConsent } from "@/components/CookieConsent";
 import { PostHogProvider } from "@/components/PostHogProvider";
+import { ProgressSync } from "@/components/ProgressSync";
 import { LicenseSync } from "@/components/LicenseSync";
 import { routing } from "@/i18n/routing";
 
@@ -203,6 +204,7 @@ export default async function LocaleLayout({
             {children}
             <CookieConsent />
             <LicenseSync />
+            <ProgressSync />
           </NextIntlClientProvider>
         </PostHogProvider>
         <Analytics />

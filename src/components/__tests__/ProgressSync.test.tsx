@@ -1,0 +1,52 @@
+import React from "react";
+import { act, create, type ReactTestRenderer } from "react-test-renderer";
+import { afterEach, expect, it, vi } from "vitest";
+import { PENDING_PROGRESS_EVENT, PROGRESS_SAVED_EVENT } from "@/lib/pending-progress";
+
+const state = vi.hoisted(() => ({ callback: null as null | ((event: string, session: { user: { id: string } } | null) => void), sync: vi.fn(), pending: vi.fn(), unsubscribe: vi.fn() }));
+vi.mock("@/lib/supabase", () => ({ supabase: { auth: { onAuthStateChange: (callback: typeof state.callback) => {
+  state.callback = callback;
+  return { data: { subscription: { unsubscribe: state.unsubscribe } } };
+} } } }));
+vi.mock("@/lib/sync-pending-progress", () => ({ syncPendingProgress: state.sync }));
+vi.mock("@/lib/pending-progress", async original => ({ ...await original<typeof import("@/lib/pending-progress")>(), getPendingSolves: state.pending }));
+import { ProgressSync } from "../ProgressSync";
+let renderer: ReactTestRenderer;
+afterEach(() => { act(() => renderer?.unmount()); vi.useRealTimers(); vi.unstubAllGlobals(); vi.clearAllMocks(); });
+it("defers replay outside the auth callback and retries failed work without resubmission", async () => {
+  vi.useFakeTimers();
+  const windowEvents = new EventTarget();
+  vi.stubGlobal("window", windowEvents);
+  vi.stubGlobal("document", Object.assign(new EventTarget(), { visibilityState: "visible" }));
+  state.pending.mockReturnValue([{ caseId: "case-001" }]);
+  state.sync.mockResolvedValue(false);
+  act(() => { renderer = create(<ProgressSync />); });
+  expect(state.callback!("INITIAL_SESSION", { user: { id: "detective-a" } })).toBeUndefined();
+  expect(state.sync).not.toHaveBeenCalled();
+  await act(async () => { await vi.advanceTimersByTimeAsync(1); });
+  expect(state.sync).toHaveBeenCalledTimes(1);
+  await act(async () => { await vi.advanceTimersByTimeAsync(15_001); });
+  expect(state.sync).toHaveBeenCalledTimes(2);
+  await act(async () => { window.dispatchEvent(new Event("online")); await vi.advanceTimersByTimeAsync(1); });
+  expect(state.sync).toHaveBeenCalledTimes(3);
+  await act(async () => { window.dispatchEvent(new Event(PENDING_PROGRESS_EVENT)); await vi.advanceTimersByTimeAsync(1); });
+  expect(state.sync).toHaveBeenCalledTimes(4);
+});
+it("ignores stale save completion after switching accounts", async () => {
+  vi.useFakeTimers();
+  vi.stubGlobal("window", new EventTarget());
+  vi.stubGlobal("document", new EventTarget());
+  const saved = vi.fn();
+  window.addEventListener(PROGRESS_SAVED_EVENT, saved);
+  state.pending.mockReturnValue([]);
+  let finish!: (saved: boolean) => void;
+  state.sync.mockReturnValue(new Promise(resolve => { finish = resolve; }));
+  act(() => { renderer = create(<ProgressSync />); });
+  state.callback!("SIGNED_IN", { user: { id: "detective-a" } });
+  await act(async () => { await vi.advanceTimersByTimeAsync(1); });
+  const guard = state.sync.mock.calls[0][2];
+  state.callback!("SIGNED_OUT", null);
+  expect(guard()).toBe(false);
+  await act(async () => { finish(true); });
+  expect(saved).not.toHaveBeenCalled();
+});

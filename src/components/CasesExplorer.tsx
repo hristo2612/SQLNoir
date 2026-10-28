@@ -20,6 +20,7 @@ import {
   clearLicenseCache,
 } from "@/lib/license";
 import { getLocalProgress, clearLocalProgress } from "@/lib/local-progress";
+import { PROGRESS_SAVED_EVENT } from "@/lib/pending-progress";
 import type { Case } from "@/types";
 
 // useLayoutEffect runs before the browser paints (kills the lock flash on
@@ -38,7 +39,7 @@ export function CasesExplorer({
   initialUserInfo = null,
   localizedCases,
 }: CasesExplorerProps) {
-  const [, setUser] = useState<any>(initialSession?.user ?? null);
+  const [user, setUser] = useState<any>(initialSession?.user ?? null);
   const [userInfo, setUserInfo] = useState<any>(initialUserInfo);
   const [paywallCase, setPaywallCase] = useState<Case | null>(null);
   const router = useRouter();
@@ -151,6 +152,14 @@ export function CasesExplorer({
 
     return () => subscription.unsubscribe();
   }, [fetchUserInfo, migrateLocalProgress, initialUserInfo]);
+
+  useEffect(() => {
+    const refreshProgress = (event: Event) => {
+      if (user?.id && (event as CustomEvent).detail?.userId === user.id) void fetchUserInfo(user.id);
+    };
+    window.addEventListener(PROGRESS_SAVED_EVENT, refreshProgress);
+    return () => window.removeEventListener(PROGRESS_SAVED_EVENT, refreshProgress);
+  }, [user, fetchUserInfo]);
 
   const handleCaseSelect = (caseData: Case) => {
     router.push(`/cases/${getCaseSlug(caseData)}`);

@@ -12,6 +12,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { isCaseFree } from "../../lib/license";
 import { recordLocalSolve } from "../../lib/local-progress";
 import { withTimeout } from "../../lib/request-timeout";
+import { queuePendingSolve } from "../../lib/pending-progress";
 
 interface SolutionSubmissionProps {
   caseData: Case;
@@ -48,6 +49,7 @@ export function SolutionSubmission({
     try {
       // For non-free cases, verify server-side; for free cases, check locally
       let isAnswerCorrect: boolean;
+      let solvingUserId: string | null = user?.id ?? null;
       let serverExplanation: string | undefined;
       let serverSuccessMessage: string | undefined;
 
@@ -55,6 +57,7 @@ export function SolutionSubmission({
         // Server-side verification for paid cases
         const session = supabase ? await withTimeout(supabase.auth.getSession()) : null;
         const token = session?.data?.session?.access_token;
+        solvingUserId = session?.data?.session?.user.id ?? null;
 
         const res = await fetch("/api/check-solution", {
           signal: AbortSignal.timeout(10_000),
@@ -78,28 +81,16 @@ export function SolutionSubmission({
       }
 
       if (isAnswerCorrect) {
-        // Anonymous free progress is retained immediately. Signed-in progress
-        // uses the RPC, so it is not also migrated while that write is in flight.
-        if (!user && isCaseFree(caseData)) recordLocalSolve(caseData.id);
-        // Never wait for auth or the XP write before showing a correct result.
-        // The async task survives this component unmounting during navigation.
-        void (async () => {
-          if (!supabase) return;
-          const { data: { user: solvedUser }, error } = await supabase.auth.getUser();
-          if (error || !solvedUser) {
-            if (isCaseFree(caseData)) recordLocalSolve(caseData.id);
+        if (solvingUserId) {
+          // A document unload destroys promises. Retain the account-owned solve
+          // before success renders; the global worker replays it after reload.
+          if (!queuePendingSolve(solvingUserId, { caseId: caseData.id, answer: answer.trim(), locale })) {
+            setError(t('solution.progressError'));
             return;
           }
-          const { error: updateError } = await supabase.rpc(
-            "increment_user_xp", { user_id: solvedUser.id, case_id: caseData.id }
-          );
-          if (updateError) throw updateError;
-        })().catch(() => {
-          if (isCaseFree(caseData)) recordLocalSolve(caseData.id);
-          // Free progress remains available for migration on the next sign-in.
-          // Re-submitting is safe: the server credits each case only once.
-          console.error("Progress could not be saved. Please try again.");
-        });
+        } else if (isCaseFree(caseData)) {
+          recordLocalSolve(caseData.id);
+        }
       }
 
       // Update explanation/successMessage from server response for paid cases
