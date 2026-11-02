@@ -47,7 +47,7 @@ export default async function CasesPage() {
   const tNav = await getTranslations("nav");
   const tMeta = await getTranslations("cases.metadata");
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   const {
     data: { session },
   } = await supabase.auth.getSession();
