@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=18.18.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -20,13 +20,13 @@
     "@supabase/supabase-js": "^2.39.7",
     "@vercel/analytics": "^1.5.0",
     "canvas-confetti": "1.9.4",
-    "lucide-react": "^0.344.0",
-    "next": "14.2.35",
+    "lucide-react": "^0.469.0",
+    "next": "15.5.28",
     "next-intl": "^4.8.3",
     "posthog-js": "^1.360.2",
     "posthog-node": "5.38.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-icons": "^5.0.1",
     "reactflow": "^11.11.4",
     "sql.js": "^1.10.2",
@@ -35,16 +35,16 @@
   "devDependencies": {
     "@types/canvas-confetti": "1.9.0",
     "@types/node": "^20.14.10",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
-    "@types/react-test-renderer": "^18.3.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/react-test-renderer": "^19.3.0",
     "@types/sql.js": "^1.4.9",
     "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.4.18",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.5",
+    "eslint-config-next": "^15.5.28",
     "postcss": "^8.4.35",
-    "react-test-renderer": "^18.3.1",
+    "react-test-renderer": "^19.3.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3",
     "vitest": "^4.1.0"

@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const locale = body.locale || "en";
 
     // Check if user is signed in (optional - not required for checkout)
-    const supabase = createServerSupabaseClient();
+    const supabase = await createServerSupabaseClient();
     const {
       data: { session },
     } = await supabase.auth.getSession();

@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
     if (!authedUser) {
       const {
         data: { session },
-      } = await createServerSupabaseClient().auth.getSession();
+      } = await (await createServerSupabaseClient()).auth.getSession();
       if (session?.user) {
         authedUser = { id: session.user.id, email: session.user.email ?? null };
       }

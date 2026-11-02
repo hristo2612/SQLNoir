@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function NotFound() {
   return (
     <html>
@@ -6,9 +8,9 @@ export default function NotFound() {
           <div className="text-center space-y-4">
             <h1 className="font-detective text-4xl text-amber-900">404</h1>
             <p className="text-amber-800">Page not found.</p>
-            <a href="/" className="text-amber-700 underline hover:text-amber-900">
+            <Link href="/" className="text-amber-700 underline hover:text-amber-900">
               Back to home
-            </a>
+            </Link>
           </div>
         </div>
       </body>
