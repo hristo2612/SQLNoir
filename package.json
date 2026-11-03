@@ -22,7 +22,7 @@
     "canvas-confetti": "1.9.4",
     "lucide-react": "^0.469.0",
     "next": "15.5.28",
-    "next-intl": "^4.8.3",
+    "next-intl": "^4.14.9",
     "posthog-js": "^1.360.2",
     "posthog-node": "5.38.2",
     "react": "^19.3.1",
