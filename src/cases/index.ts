@@ -6,10 +6,11 @@ import miamiMarinaMurderCase from "./case-003";
 import midnightMasqueradeMurderCase from "./case-004";
 import artBaselAssassinationCase from "./case-005";
 import vanishingDiamondCase from "./case-006";
+import blueprintCase from "./case-007";
 
 // Export all cases
 export const cases: Record<string, Case[]> = {
-  beginner: [vanishingBriefcaseCase, theStolenSound],
+  beginner: [vanishingBriefcaseCase, theStolenSound, blueprintCase],
   intermediate: [miamiMarinaMurderCase, vanishingDiamondCase],
   advanced: [midnightMasqueradeMurderCase, artBaselAssassinationCase],
 };
@@ -50,4 +51,5 @@ export {
   midnightMasqueradeMurderCase,
   artBaselAssassinationCase,
   vanishingDiamondCase,
+  blueprintCase,
 };
