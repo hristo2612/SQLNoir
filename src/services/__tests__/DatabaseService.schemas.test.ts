@@ -12,15 +12,6 @@ const ALL_CASE_IDS = [
   "case-006",
 ] as const;
 
-// pt-br/case-004 has a separate curly-quote syntax error tracked in GitHub issue #69.
-const PT_BR_CASE_IDS = [
-  "case-001",
-  "case-002",
-  "case-003",
-  "case-005",
-  "case-006",
-] as const;
-
 let SQL: SqlJsStatic;
 
 beforeAll(async () => {
@@ -30,7 +21,7 @@ beforeAll(async () => {
 });
 
 async function loadAndExecSchema(caseId: string, locale: string) {
-  const DatabaseServiceCtor = db.constructor as {
+  const DatabaseServiceCtor = db.constructor as unknown as {
     loadCaseSchema: (id: string, loc?: string) => Promise<string[]>;
   };
   const statements = await DatabaseServiceCtor.loadCaseSchema(caseId, locale);
@@ -45,6 +36,64 @@ async function loadAndExecSchema(caseId: string, locale: string) {
 }
 
 describe("Case SQL schemas", () => {
+  it("initializes pt-br case-004 in sql.js without syntax errors and preserves final interviews", async () => {
+    const ptDb = await loadAndExecSchema("case-004", "pt-br");
+    const enDb = await loadAndExecSchema("case-004", "en");
+
+    try {
+      const tables = [
+        "crime_scene",
+        "person",
+        "witness_statements",
+        "hotel_checkins",
+        "surveillance_records",
+        "phone_records",
+        "final_interviews",
+        "vehicle_registry",
+        "catering_orders",
+      ];
+
+      for (const table of tables) {
+        const ptCount = ptDb.exec(`SELECT COUNT(*) FROM ${table}`)[0].values[0][0];
+        const enCount = enDb.exec(`SELECT COUNT(*) FROM ${table}`)[0].values[0][0];
+        expect(ptCount).toBe(enCount);
+      }
+
+      // Verify previously broken curly-quoted rows in final_interviews (lines 1078-1276)
+      const interviews = ptDb.exec(
+        "SELECT id, person_id, confession FROM final_interviews WHERE id IN (1, 58, 97, 199) ORDER BY id",
+      )[0].values;
+      expect(interviews).toHaveLength(4);
+      expect(interviews[0][2]).toBe(
+        "Não matei ninguém, juro. Quem pensaria que eu poderia matar alguém?",
+      );
+      expect(interviews[1][2]).toBe(
+        "Não matei Leo propriamente dito. Fui apenas um intermediário.",
+      );
+      expect(interviews[2][2]).toBe(
+        "Eu mandei fazer o serviço. Fui eu. Vocês me pegaram.",
+      );
+      expect(interviews[3][2]).toBe(
+        "Estava em uma aula de piano naquele dia. Faço música, não o caos.",
+      );
+
+      // Verify the investigative join between final_interviews and person resolves key suspects
+      const confessed = ptDb.exec(
+        `SELECT p.name, f.confession
+         FROM final_interviews f
+         JOIN person p ON p.id = f.person_id
+         WHERE f.person_id IN (58, 97)
+         ORDER BY f.person_id`,
+      )[0].values;
+      expect(confessed).toHaveLength(2);
+      expect(confessed[0][0]).toBe("Victor DiMarco");
+      expect(confessed[1][0]).toBe("Marco Santos");
+    } finally {
+      ptDb.close();
+      enDb.close();
+    }
+  });
+
   it("initializes pt-br case-005 in sql.js without syntax errors and preserves clues", async () => {
     const ptDb = await loadAndExecSchema("case-005", "pt-br");
     const enDb = await loadAndExecSchema("case-005", "en");
@@ -116,7 +165,7 @@ describe("Case SQL schemas", () => {
     });
 
     it(`loads and executes zh-CN ${caseId} schema cleanly`, async () => {
-      const DatabaseServiceCtor = db.constructor as {
+      const DatabaseServiceCtor = db.constructor as unknown as {
         loadCaseSchema: (id: string, loc?: string) => Promise<string[]>;
       };
       const [enStatements, zhStatements] = await Promise.all([
@@ -137,9 +186,9 @@ describe("Case SQL schemas", () => {
     });
   }
 
-  for (const caseId of PT_BR_CASE_IDS) {
+  for (const caseId of ALL_CASE_IDS) {
     it(`loads and executes pt-br ${caseId} schema cleanly`, async () => {
-      const DatabaseServiceCtor = db.constructor as {
+      const DatabaseServiceCtor = db.constructor as unknown as {
         loadCaseSchema: (id: string, loc?: string) => Promise<string[]>;
       };
       const [enStatements, ptStatements] = await Promise.all([
