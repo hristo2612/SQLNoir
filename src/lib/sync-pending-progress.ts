@@ -33,19 +33,23 @@ export async function syncPendingProgress(
         const caseData = getAllCases().find(item => item.id === solve.caseId)!;
         if (!isCaseFree(caseData)) {
           // Pending storage is not proof of payment or a correct paid answer.
-          const response = await fetch("/api/check-solution", {
-            method: "POST",
-            signal: AbortSignal.timeout(10_000),
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-            body: JSON.stringify({ caseId: solve.caseId, answer: solve.answer, locale: solve.locale }),
-          });
+          const response = await withTimeout(
+            fetch("/api/check-solution", {
+              method: "POST",
+              signal: AbortSignal.timeout(10_000),
+              headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+              body: JSON.stringify({ caseId: solve.caseId, answer: solve.answer, locale: solve.locale }),
+            }),
+          );
           const result = await response.json();
           if (!isCurrent()) return saved;
           if (!response.ok || !result.correct) continue;
         }
-        const { error } = await client.rpc("increment_user_xp", {
-          user_id: userId, case_id: solve.caseId,
-        }).abortSignal(AbortSignal.timeout(10_000));
+        const { error } = await withTimeout(
+          client.rpc("increment_user_xp", {
+            user_id: userId, case_id: solve.caseId,
+          }).abortSignal(AbortSignal.timeout(10_000)),
+        );
         if (error || !isCurrent()) return saved;
         acknowledgePendingSolve(userId, solve);
         saved = true;

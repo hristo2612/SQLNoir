@@ -38,9 +38,12 @@ export function SolutionSubmission({
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const [solutionExplanation, setSolutionExplanation] = useState(caseData.solution.explanation);
   const [solutionSuccessMessage, setSolutionSuccessMessage] = useState(caseData.solution.successMessage);
+  const submittingRef = useRef(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setIsLoading(true);
     setError(null);
     const attemptsNext = attempts + 1;
@@ -106,31 +109,39 @@ export function SolutionSubmission({
 
       if (isAnswerCorrect) {
         onSolve();
-        track("case_solve_success", {
-          case_slug: caseData.id,
-          title: caseData.title,
-          difficulty: caseData.difficulty,
-          category: caseData.category,
-          xp_reward: caseData.xpReward,
-          attempts: attemptsNext,
-          auth: Boolean(user),
-        });
-        const timeSpent = caseStartTime ? Math.round((Date.now() - caseStartTime) / 1000) : 0;
-        trackCaseCompleted({
-          case_id: caseData.id,
-          time_spent_seconds: timeSpent,
-          query_count: attemptsNext,
-        });
+        try {
+          track("case_solve_success", {
+            case_slug: caseData.id,
+            title: caseData.title,
+            difficulty: caseData.difficulty,
+            category: caseData.category,
+            xp_reward: caseData.xpReward,
+            attempts: attemptsNext,
+            auth: Boolean(user),
+          });
+          const timeSpent = caseStartTime ? Math.round((Date.now() - caseStartTime) / 1000) : 0;
+          trackCaseCompleted({
+            case_id: caseData.id,
+            time_spent_seconds: timeSpent,
+            query_count: attemptsNext,
+          });
+        } catch {
+          // Best-effort analytics must never interrupt submission flow.
+        }
       } else {
-        track("case_solve_failure", {
-          case_slug: caseData.id,
-          attempts: attemptsNext,
-          auth: Boolean(user),
-        });
-        trackCaseAbandoned({
-          case_id: caseData.id,
-          progress_percentage: 0,
-        });
+        try {
+          track("case_solve_failure", {
+            case_slug: caseData.id,
+            attempts: attemptsNext,
+            auth: Boolean(user),
+          });
+          trackCaseAbandoned({
+            case_id: caseData.id,
+            progress_percentage: 0,
+          });
+        } catch {
+          // Best-effort analytics must never interrupt submission flow.
+        }
       }
     } catch (err) {
       setError(
@@ -138,6 +149,7 @@ export function SolutionSubmission({
       );
       console.error("Error updating solved cases:", err);
     } finally {
+      submittingRef.current = false;
       setIsLoading(false);
     }
   };
@@ -329,7 +341,10 @@ export function SolutionSubmission({
               </div>
               <button
                 type="button"
-                onClick={() => setSubmitted(false)}
+                onClick={() => {
+                  setSubmitted(false);
+                  setError(null);
+                }}
                 className="inline-flex items-center justify-center rounded-lg bg-amber-800 px-5 py-2.5 font-detective leading-none text-amber-50 shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:bg-amber-700 hover:shadow-md active:scale-[0.96]"
               >
                 {t('solution.tryAgain')}
