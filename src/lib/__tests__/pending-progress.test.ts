@@ -106,3 +106,22 @@ it("serializes duplicate replay requests while auth is slow", async () => {
   await Promise.all([first, second]);
   expect(rpc).toHaveBeenCalledTimes(1);
 });
+
+it("recovers case-002 pending solve after a stalled RPC promise times out", async () => {
+  vi.useFakeTimers();
+  try {
+    queuePendingSolve(alice, { caseId: "case-002", answer: "Rico Delgado", locale: "en" });
+    rpc.mockReturnValueOnce({ abortSignal: () => new Promise(() => {}) });
+    const stalled = syncPendingProgress(client, alice, () => true);
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(await stalled).toBe(false);
+    expect(getPendingSolves(alice)).toHaveLength(1);
+
+    // The in-flight lock must be released so a subsequent retry saves case-002.
+    expect(await syncPendingProgress(client, alice, () => true)).toBe(true);
+    expect(rpc).toHaveBeenLastCalledWith("increment_user_xp", { user_id: alice, case_id: "case-002" });
+    expect(getPendingSolves(alice)).toEqual([]);
+  } finally {
+    vi.useRealTimers();
+  }
+});
