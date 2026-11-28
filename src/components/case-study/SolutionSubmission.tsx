@@ -10,9 +10,9 @@ import { track } from "@vercel/analytics/react";
 import { trackCaseCompleted, trackCaseAbandoned } from "../../lib/posthog-events";
 import { useTranslations, useLocale } from "next-intl";
 import { isCaseFree } from "../../lib/license";
-import { recordLocalSolve } from "../../lib/local-progress";
+import { getLocalProgress, recordLocalSolve } from "../../lib/local-progress";
 import { withTimeout } from "../../lib/request-timeout";
-import { queuePendingSolve } from "../../lib/pending-progress";
+import { getPendingSolves, queuePendingSolve } from "../../lib/pending-progress";
 
 interface SolutionSubmissionProps {
   caseData: Case;
@@ -27,22 +27,30 @@ export function SolutionSubmission({
 }: SolutionSubmissionProps) {
   const t = useTranslations();
   const locale = useLocale();
+  const caseId = caseData.id;
+  const isFree = isCaseFree(caseData);
+  const defaultAnswer = caseData.solution.answer;
+  const defaultExplanation = caseData.solution.explanation;
+  const defaultSuccessMessage = caseData.solution.successMessage;
+
   const [answer, setAnswer] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [alreadySolved, setAlreadySolved] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null); // Storing user data if logged in for conditional rendering XP reward message
   const [hasLicense, setHasLicense] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
-  const [solutionExplanation, setSolutionExplanation] = useState(caseData.solution.explanation);
-  const [solutionSuccessMessage, setSolutionSuccessMessage] = useState(caseData.solution.successMessage);
+  const [solvedAnswer, setSolvedAnswer] = useState(defaultAnswer);
+  const [solutionExplanation, setSolutionExplanation] = useState(defaultExplanation);
+  const [solutionSuccessMessage, setSolutionSuccessMessage] = useState(defaultSuccessMessage);
   const submittingRef = useRef(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (submittingRef.current) return;
+    if (submittingRef.current || alreadySolved) return;
     submittingRef.current = true;
     setIsLoading(true);
     setError(null);
@@ -103,6 +111,9 @@ export function SolutionSubmission({
       if (isAnswerCorrect && serverSuccessMessage) {
         setSolutionSuccessMessage(serverSuccessMessage);
       }
+      if (isAnswerCorrect) {
+        setSolvedAnswer(answer.trim());
+      }
 
       setIsCorrect(isAnswerCorrect);
       setSubmitted(true);
@@ -154,36 +165,142 @@ export function SolutionSubmission({
     }
   };
 
-  // Storing the user data in state if user is logged in
-  // This will allow us to show the XP reward message conditionally
   useEffect(() => {
-    if (!supabase) return;
+    setAnswer("");
+    setSubmitted(false);
+    setIsCorrect(false);
+    setError(null);
+    setAttempts(0);
+    setAlreadySolved(false);
+    setSolvedAnswer(defaultAnswer);
+    setSolutionExplanation(defaultExplanation);
+    setSolutionSuccessMessage(defaultSuccessMessage);
+  }, [caseId, defaultAnswer, defaultExplanation, defaultSuccessMessage]);
+
+  // Load user entitlement and check whether this case is already solved so
+  // returning detectives see the solved status instead of a fresh submit form.
+  useEffect(() => {
+    const isLocallySolvedFreeCase = () =>
+      isFree && getLocalProgress().solvedCaseIds.includes(caseId);
+
+    if (!supabase) {
+      setAlreadySolved(isLocallySolvedFreeCase());
+      setSolvedAnswer(defaultAnswer);
+      return;
+    }
+
     const client = supabase;
     let generation = 0;
+    let activeUserId: string | null = null;
     let timer: ReturnType<typeof setTimeout> | undefined;
+    let controller: AbortController | undefined;
+
     const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
       const revision = ++generation;
       clearTimeout(timer);
-      setUser(session?.user ?? null);
-      setHasLicense(false);
-      if (!session?.user) return;
-      const userId = session.user.id;
+      controller?.abort();
+
+      const nextUser = session?.user ?? null;
+      const nextUserId = nextUser?.id ?? null;
+      const userChanged = nextUserId !== activeUserId;
+      activeUserId = nextUserId;
+
+      setUser(nextUser);
+
+      if (!nextUser) {
+        setHasLicense(false);
+        if (userChanged) {
+          setSubmitted(false);
+          setIsCorrect(false);
+          setSolutionExplanation(defaultExplanation);
+          setSolutionSuccessMessage(defaultSuccessMessage);
+        }
+        setAlreadySolved(isLocallySolvedFreeCase());
+        setSolvedAnswer(defaultAnswer);
+        return;
+      }
+
+      if (userChanged) {
+        setHasLicense(false);
+        setSubmitted(false);
+        setIsCorrect(false);
+        setSolutionExplanation(defaultExplanation);
+        setSolutionSuccessMessage(defaultSuccessMessage);
+      }
+
+      const pendingSolve = getPendingSolves(nextUser.id).find((s) => s.caseId === caseId);
+      if (pendingSolve) {
+        setAlreadySolved(true);
+        setSolvedAnswer(pendingSolve.answer || defaultAnswer);
+      } else if (userChanged) {
+        setAlreadySolved(false);
+        setSolvedAnswer(defaultAnswer);
+      }
+
+      const accessToken = session?.access_token;
+      controller = new AbortController();
+      const signal = controller.signal;
+
       timer = setTimeout(() => {
         void (async () => {
-          const { data: info } = await withTimeout(client.from("user_info")
-            .select("has_license").eq("id", userId).single());
-          if (revision === generation) setHasLicense(Boolean(info?.has_license));
+          const { data: info } = await withTimeout(
+            client
+              .from("user_info")
+              .select("has_license, completed_cases")
+              .eq("id", nextUser.id)
+              .single(),
+          );
+          if (revision !== generation || signal.aborted) return;
+
+          setHasLicense(Boolean(info?.has_license));
+
+          const completedInDb =
+            Array.isArray(info?.completed_cases) &&
+            info.completed_cases.includes(caseId);
+          const pendingNow = getPendingSolves(nextUser.id).find(
+            (s) => s.caseId === caseId,
+          );
+          const isCompleted = completedInDb || Boolean(pendingNow);
+
+          setAlreadySolved(isCompleted);
+          if (pendingNow?.answer) {
+            setSolvedAnswer(pendingNow.answer);
+          }
+
+          if (completedInDb && (!isFree || !defaultAnswer || !defaultExplanation) && accessToken) {
+            const res = await withTimeout(
+              fetch(
+                `/api/check-solution?caseId=${encodeURIComponent(caseId)}&locale=${encodeURIComponent(locale)}`,
+                {
+                  method: "GET",
+                  signal,
+                  headers: { Authorization: `Bearer ${accessToken}` },
+                },
+              ),
+            );
+            if (revision !== generation || signal.aborted || !res.ok) return;
+            const data = await res.json();
+            if (revision !== generation || signal.aborted || !data?.solved) return;
+            if (data.answer) setSolvedAnswer(data.answer);
+            if (data.explanation) setSolutionExplanation(data.explanation);
+            if (data.successMessage) setSolutionSuccessMessage(data.successMessage);
+          }
         })().catch(() => {});
       }, 0);
     });
+
     return () => {
       generation++;
       clearTimeout(timer);
+      controller?.abort();
       subscription.unsubscribe();
     };
-  }, []);
+  }, [caseId, isFree, locale, defaultAnswer, defaultExplanation, defaultSuccessMessage]);
 
-  const showSuccess = submitted && isCorrect;
+  const showFreshSuccess = submitted && isCorrect;
+  const showSolvedView = showFreshSuccess || alreadySolved;
+  const isReopenedSolve = alreadySolved && !showFreshSuccess;
+  const displayAnswer = solvedAnswer || defaultAnswer;
   const showIncorrect = submitted && !isCorrect;
 
   // When the result renders, bring it to the top of the viewport. On mobile the
@@ -210,7 +327,7 @@ export function SolutionSubmission({
   // Fire a themed, on-brand confetti burst when the case is cracked.
   // Imperative (never in the React tree) and reduced-motion-safe.
   useEffect(() => {
-    if (!showSuccess) return;
+    if (!showFreshSuccess) return;
     if (typeof window === "undefined") return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -244,16 +361,16 @@ export function SolutionSubmission({
     }, 180);
 
     return () => window.clearTimeout(popTimer);
-  }, [showSuccess]);
+  }, [showFreshSuccess]);
 
-  if (showSuccess) {
+  if (showSolvedView) {
     return (
       <div ref={resultRef} className="max-w-2xl mx-auto scroll-mt-28">
-        <section className="animate-card-reveal rounded-xl border border-amber-900/15 bg-amber-50 shadow-lg">
+        <section className={`${showFreshSuccess ? "animate-card-reveal " : ""}rounded-xl border border-amber-900/15 bg-amber-50 shadow-lg`}>
           <div className="space-y-5 p-5 sm:p-7">
             {/* Single wax-seal badge: the one signature element */}
             <div className="flex flex-col items-center text-center">
-              <div className="animate-badge-pop flex h-16 w-16 items-center justify-center rounded-full bg-amber-800 shadow-md ring-4 ring-amber-200">
+              <div className={`${showFreshSuccess ? "animate-badge-pop " : ""}flex h-16 w-16 items-center justify-center rounded-full bg-amber-800 shadow-md ring-4 ring-amber-200`}>
                 <ShieldCheck
                   className="h-8 w-8 text-amber-50"
                   strokeWidth={1.75}
@@ -263,25 +380,42 @@ export function SolutionSubmission({
                 {t('solution.caseClosedStamp')}
               </p>
               <h3 className="text-balance font-detective text-2xl leading-tight text-amber-900 sm:text-3xl">
-                {t('solution.caseSolved')}
+                {isReopenedSolve ? t('solution.alreadySolved') : t('solution.caseSolved')}
               </h3>
-              <p className="mt-2 max-w-md text-pretty text-sm leading-6 text-amber-800/90">
-                {solutionSuccessMessage}
-              </p>
+              {(solutionSuccessMessage || isReopenedSolve) && (
+                <p className="mt-2 max-w-md text-pretty text-sm leading-6 text-amber-800/90">
+                  {solutionSuccessMessage || t('solution.alreadySolvedDescription')}
+                </p>
+              )}
               <span className="mt-3 inline-flex items-center rounded-full bg-amber-100 px-3 py-1 font-detective text-sm font-bold tabular-nums text-amber-900">
-                +{caseData.xpReward} XP
+                {isReopenedSolve
+                  ? t('solution.xpEarned', { xp: caseData.xpReward })
+                  : `+${caseData.xpReward} XP`}
               </span>
             </div>
 
+            {displayAnswer && (
+              <div className="rounded-lg border border-amber-900/10 bg-white/60 p-4">
+                <h4 className="mb-1.5 font-detective text-base text-amber-900">
+                  {t('solution.submittedAnswer')}
+                </h4>
+                <p className="font-mono text-sm text-amber-900">
+                  {displayAnswer}
+                </p>
+              </div>
+            )}
+
             {/* Explanation */}
-            <div className="rounded-lg border border-amber-900/10 bg-white/60 p-4">
-              <h4 className="mb-1.5 font-detective text-base text-amber-900">
-                {t('solution.explanation')}
-              </h4>
-              <p className="leading-7 text-amber-800">
-                {solutionExplanation}
-              </p>
-            </div>
+            {solutionExplanation && (
+              <div className="rounded-lg border border-amber-900/10 bg-white/60 p-4">
+                <h4 className="mb-1.5 font-detective text-base text-amber-900">
+                  {t('solution.explanation')}
+                </h4>
+                <p className="leading-7 text-amber-800">
+                  {solutionExplanation}
+                </p>
+              </div>
+            )}
 
             {/* Reward lands first, then the offer rises in */}
             {showPurchaseCta && (

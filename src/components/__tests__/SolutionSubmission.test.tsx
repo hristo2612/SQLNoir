@@ -2,11 +2,56 @@ import React from 'react';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { getAllCases } from '@/lib/case-utils';
-import { getPendingSolves } from '@/lib/pending-progress';
+import { recordLocalSolve } from '@/lib/local-progress';
+import { getPendingSolves, queuePendingSolve } from '@/lib/pending-progress';
+import confetti from 'canvas-confetti';
 
-const backend = vi.hoisted(() => ({ getUser: vi.fn(), getSession: vi.fn(), rpc: vi.fn(), paid: false, authUser: null as { id: string } | null }));
-vi.mock('@/lib/supabase', () => ({ supabase: { auth: { ...backend,
-  onAuthStateChange: (callback: (event: string, session: { user: { id: string } } | null) => void) => { callback("INITIAL_SESSION", backend.authUser ? { user: backend.authUser } : null); return { data: { subscription: { unsubscribe() {} } } }; } }, rpc: backend.rpc } }));
+type AuthSession = { user: { id: string }; access_token?: string } | null;
+type AuthCallback = (event: string, session: AuthSession) => void;
+
+const backend = vi.hoisted(() => ({
+  getUser: vi.fn(),
+  getSession: vi.fn(),
+  rpc: vi.fn(),
+  userInfoSingle: vi.fn(),
+  paid: false,
+  authUser: null as { id: string } | null,
+  accessToken: undefined as string | undefined,
+  authCallbacks: new Set<AuthCallback>(),
+}));
+vi.mock('@/lib/supabase', () => ({
+  supabase: {
+    auth: {
+      ...backend,
+      onAuthStateChange: (callback: AuthCallback) => {
+        backend.authCallbacks.add(callback);
+        callback(
+          'INITIAL_SESSION',
+          backend.authUser
+            ? { user: backend.authUser, ...(backend.accessToken ? { access_token: backend.accessToken } : {}) }
+            : null,
+        );
+        return {
+          data: {
+            subscription: {
+              unsubscribe() {
+                backend.authCallbacks.delete(callback);
+              },
+            },
+          },
+        };
+      },
+    },
+    from: () => ({
+      select: () => ({
+        eq: () => ({
+          single: () => backend.userInfoSingle(),
+        }),
+      }),
+    }),
+    rpc: backend.rpc,
+  },
+}));
 vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key, useLocale: () => 'en' }));
 vi.mock('@vercel/analytics/react', () => ({ track: vi.fn() }));
 vi.mock('@/lib/posthog-events', () => ({ trackCaseCompleted: vi.fn(), trackCaseAbandoned: vi.fn() }));
@@ -20,11 +65,19 @@ import { SolutionSubmission } from '../case-study/SolutionSubmission';
 let renderer: ReactTestRenderer;
 const caseData = getAllCases().find(c => c.id === 'case-001')!;
 const stolenSoundCase = getAllCases().find(c => c.id === 'case-002')!;
+const paidCase = {
+  ...getAllCases().find(c => c.id === 'case-004')!,
+  solution: { answer: '', explanation: '', successMessage: '' },
+};
 const storage = new Map<string, string>();
+const tick = () => new Promise<void>(resolve => setTimeout(resolve, 10));
 beforeEach(() => {
   vi.clearAllMocks();
   backend.paid = false;
   backend.authUser = null;
+  backend.accessToken = undefined;
+  backend.authCallbacks.clear();
+  backend.userInfoSingle.mockResolvedValue({ data: null });
   storage.clear();
   vi.stubGlobal('window', Object.assign(new EventTarget(), { matchMedia: () => ({ matches: true }), localStorage: {
     getItem: (key: string) => storage.get(key) ?? null,
@@ -168,4 +221,133 @@ it('ignores duplicate form submits while a submission is already in flight', asy
   });
   expect(backend.getSession).toHaveBeenCalledTimes(1);
   expect(fetchMock).toHaveBeenCalledTimes(1);
+});
+
+it('shows already-solved state instead of the submission form when a signed-in user reopens a completed free case', async () => {
+  const onSolve = vi.fn();
+  backend.authUser = { id: 'returning-detective' };
+  backend.userInfoSingle.mockResolvedValue({ data: { has_license: false, completed_cases: ['case-001'] } });
+
+  act(() => { renderer.unmount(); renderer = create(<SolutionSubmission caseData={caseData} onSolve={onSolve} />); });
+  await act(tick);
+
+  const rendered = JSON.stringify(renderer.toJSON());
+  expect(renderer.root.findAllByType('form')).toHaveLength(0);
+  expect(rendered).toContain('solution.alreadySolved');
+  expect(rendered).toContain('solution.caseClosedStamp');
+  expect(rendered).toContain('solution.submittedAnswer');
+  expect(rendered).toContain(caseData.solution.answer);
+  expect(rendered).toContain(caseData.solution.explanation);
+  expect(confetti).not.toHaveBeenCalled();
+  expect(onSolve).not.toHaveBeenCalled();
+});
+
+it('fetches and displays solved details when a signed-in licensed user reopens a completed paid case', async () => {
+  const onSolve = vi.fn();
+  backend.paid = true;
+  backend.authUser = { id: 'licensed-detective' };
+  backend.accessToken = 'synthetic-token';
+  backend.userInfoSingle.mockResolvedValue({ data: { has_license: true, completed_cases: ['case-004'] } });
+  const fetchMock = vi.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({
+      solved: true,
+      answer: 'Victor DiMarco',
+      explanation: 'Masked ball evidence points to Victor DiMarco.',
+      successMessage: 'You solved the masquerade murder.',
+    }),
+  });
+  vi.stubGlobal('fetch', fetchMock);
+
+  act(() => { renderer.unmount(); renderer = create(<SolutionSubmission caseData={paidCase} onSolve={onSolve} />); });
+  await act(tick);
+
+  const rendered = JSON.stringify(renderer.toJSON());
+  expect(renderer.root.findAllByType('form')).toHaveLength(0);
+  expect(fetchMock).toHaveBeenCalledWith(
+    '/api/check-solution?caseId=case-004&locale=en',
+    expect.objectContaining({
+      method: 'GET',
+      headers: expect.objectContaining({ Authorization: 'Bearer synthetic-token' }),
+    }),
+  );
+  expect(rendered).toContain('solution.alreadySolved');
+  expect(rendered).toContain('Victor DiMarco');
+  expect(rendered).toContain('Masked ball evidence points to Victor DiMarco.');
+  expect(rendered).toContain('You solved the masquerade murder.');
+  expect(confetti).not.toHaveBeenCalled();
+  expect(onSolve).not.toHaveBeenCalled();
+
+  // Signing out clears the rendered paid solution details immediately.
+  act(() => {
+    for (const cb of backend.authCallbacks) cb('SIGNED_OUT', null);
+  });
+  const afterSignOut = JSON.stringify(renderer.toJSON());
+  expect(renderer.root.findAllByType('form')).toHaveLength(1);
+  expect(afterSignOut).not.toContain('solution.alreadySolved');
+  expect(afterSignOut).not.toContain('Victor DiMarco');
+  expect(afterSignOut).not.toContain('Masked ball evidence points to Victor DiMarco.');
+});
+
+it('keeps already-solved state when a signed-in solve is still pending sync', async () => {
+  backend.authUser = { id: 'pending-detective' };
+  queuePendingSolve('pending-detective', { caseId: 'case-001', answer: 'Vincent Malone', locale: 'en' });
+  backend.userInfoSingle.mockResolvedValue({ data: { has_license: false, completed_cases: [] } });
+
+  act(() => { renderer.unmount(); renderer = create(<SolutionSubmission caseData={caseData} onSolve={vi.fn()} />); });
+  await act(tick);
+
+  const rendered = JSON.stringify(renderer.toJSON());
+  expect(renderer.root.findAllByType('form')).toHaveLength(0);
+  expect(rendered).toContain('solution.alreadySolved');
+  expect(rendered).toContain('Vincent Malone');
+  expect(confetti).not.toHaveBeenCalled();
+});
+
+it('keeps the submission form visible when a signed-in user has only solved other cases', async () => {
+  backend.authUser = { id: 'detective-other' };
+  backend.userInfoSingle.mockResolvedValue({ data: { has_license: false, completed_cases: ['case-002'] } });
+  recordLocalSolve('case-001');
+
+  act(() => { renderer.unmount(); renderer = create(<SolutionSubmission caseData={caseData} onSolve={vi.fn()} />); });
+  await act(tick);
+
+  const rendered = JSON.stringify(renderer.toJSON());
+  expect(renderer.root.findAllByType('form')).toHaveLength(1);
+  expect(rendered).not.toContain('solution.alreadySolved');
+});
+
+it('clears paid solved details on sign-out and ignores late profile responses', async () => {
+  backend.paid = true;
+  backend.authUser = { id: 'licensed-detective' };
+  backend.accessToken = 'synthetic-token';
+  let resolveProfile!: (val: { data: { has_license: boolean; completed_cases: string[] } }) => void;
+  backend.userInfoSingle.mockImplementation(() => new Promise(resolve => { resolveProfile = resolve; }));
+
+  act(() => { renderer.unmount(); renderer = create(<SolutionSubmission caseData={paidCase} onSolve={vi.fn()} />); });
+  await act(tick);
+
+  act(() => {
+    for (const cb of backend.authCallbacks) cb('SIGNED_OUT', null);
+  });
+  await act(async () => {
+    resolveProfile({ data: { has_license: true, completed_cases: ['case-004'] } });
+    await tick();
+  });
+
+  const rendered = JSON.stringify(renderer.toJSON());
+  expect(renderer.root.findAllByType('form')).toHaveLength(1);
+  expect(rendered).not.toContain('solution.alreadySolved');
+});
+
+it('shows already-solved state for anonymous users reopening a locally solved free case without confetti', async () => {
+  recordLocalSolve('case-001');
+  act(() => { renderer.unmount(); renderer = create(<SolutionSubmission caseData={caseData} onSolve={vi.fn()} />); });
+  await act(tick);
+
+  const rendered = JSON.stringify(renderer.toJSON());
+  expect(renderer.root.findAllByType('form')).toHaveLength(0);
+  expect(rendered).toContain('solution.alreadySolved');
+  expect(rendered).toContain(caseData.solution.answer);
+  expect(confetti).not.toHaveBeenCalled();
 });
