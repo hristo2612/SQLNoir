@@ -1,7 +1,10 @@
+import fs from "node:fs";
 import path from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 import initSqlJs, { type SqlJsStatic } from "sql.js";
 import { db } from "../DatabaseService";
+import case004 from "@/cases/case-004";
+import { getLocalizedCase } from "@/lib/case-localization";
 
 const ALL_CASE_IDS = [
   "case-001",
@@ -91,6 +94,139 @@ describe("Case SQL schemas", () => {
     } finally {
       ptDb.close();
       enDb.close();
+    }
+  });
+
+  it("keeps en and pt-br case-004 solution explanations consistent with schema clues", async () => {
+    const enDb = await loadAndExecSchema("case-004", "en");
+    const ptDb = await loadAndExecSchema("case-004", "pt-br");
+
+    try {
+      // English schema ground truth
+      const enSurveillanceNote = String(
+        enDb.exec(
+          `SELECT sr.note
+           FROM hotel_checkins hc
+           JOIN surveillance_records sr ON sr.hotel_checkin_id = hc.id
+           WHERE hc.hotel_name = 'The Grand Regency'
+             AND hc.room_number = '707'
+             AND hc.check_in_date = 19871030
+             AND sr.note LIKE '%phone%'`,
+        )[0].values[0][0],
+      );
+      expect(enSurveillanceNote).toContain('"Did you kill him?"');
+
+      const enCallsToVictor = enDb
+        .exec(
+          `SELECT id, note FROM phone_records WHERE recipient_id = 58 ORDER BY id`,
+        )[0]
+        .values.map((row) => [Number(row[0]), String(row[1])] as const);
+      expect(enCallsToVictor).toEqual([
+        [
+          117,
+          "Why did you kill him, bro? You should have left the carpenter do it himself!",
+        ],
+        [
+          163,
+          "I will do it. Only if you give me that nice Lambo of yours.",
+        ],
+      ]);
+
+      const enVictorInterview = String(
+        enDb.exec(
+          "SELECT confession FROM final_interviews WHERE person_id = 58",
+        )[0].values[0][0],
+      );
+      expect(enVictorInterview.toLowerCase()).toContain("middleman");
+      expect(enVictorInterview.toLowerCase()).not.toContain("carpenter");
+      expect(enVictorInterview.toLowerCase()).not.toContain("lamborghini");
+
+      const enByMake = enDb.exec(
+        `SELECT p.name
+         FROM person p
+         JOIN vehicle_registry vr ON vr.person_id = p.id
+         WHERE p.occupation = 'Carpenter' AND vr.car_make = 'Lamborghini'`,
+      )[0].values;
+      expect(enByMake).toEqual([["Marco Santos"]]);
+      const enByModel = enDb.exec(
+        `SELECT p.name
+         FROM person p
+         JOIN vehicle_registry vr ON vr.person_id = p.id
+         WHERE p.occupation = 'Carpenter' AND vr.car_model = 'Lamborghini'`,
+      );
+      expect(enByModel).toHaveLength(0);
+
+      // Verify English explanation (both server solution and en JSON) matches schema
+      const enLocalized = await getLocalizedCase(case004, "en");
+      const enJson = JSON.parse(
+        fs.readFileSync(
+          path.resolve(process.cwd(), "messages/cases/en/case-004.json"),
+          "utf8",
+        ),
+      ) as { solution: { explanation: string } };
+      expect(enJson.solution.explanation).toBe(enLocalized.solution.explanation);
+
+      for (const explanation of [
+        enLocalized.solution.explanation,
+        enJson.solution.explanation,
+      ]) {
+        expect(explanation).toContain('"Did you kill him?"');
+        expect(explanation).not.toContain("I'm gonna kill him!");
+        expect(explanation).toContain(enCallsToVictor[0][1]);
+        expect(explanation).toContain(enCallsToVictor[1][1]);
+        expect(explanation).toContain("middleman");
+        expect(explanation).not.toContain(
+          "hinted that the true murderer is a carpenter driving a Lamborghini",
+        );
+        expect(explanation).toContain('car make "Lamborghini"');
+        expect(explanation).not.toContain('car model "Lamborghini"');
+      }
+
+      // pt-BR schema ground truth
+      const ptSurveillanceNote = String(
+        ptDb.exec(
+          `SELECT sr.note
+           FROM hotel_checkins hc
+           JOIN surveillance_records sr ON sr.hotel_checkin_id = hc.id
+           WHERE hc.hotel_name = 'The Grand Regency'
+             AND hc.room_number = '707'
+             AND hc.check_in_date = 19871030
+             AND sr.note LIKE '%telefone%'`,
+        )[0].values[0][0],
+      );
+      expect(ptSurveillanceNote).toContain('"Você matou ele?"');
+
+      const ptCallsToVictor = ptDb
+        .exec(
+          `SELECT id, note FROM phone_records WHERE recipient_id = 58 ORDER BY id`,
+        )[0]
+        .values.map((row) => [Number(row[0]), String(row[1])] as const);
+      expect(ptCallsToVictor).toEqual([
+        [
+          117,
+          "Por que você matou ele, cara? Devia ter deixado o carpinteiro fazer o trabalho dele!",
+        ],
+        [
+          163,
+          "Eu faço isso. Mas só se você me der aquela Lambo linda que você tem.",
+        ],
+      ]);
+
+      const ptLocalized = await getLocalizedCase(case004, "pt-br");
+      const ptExplanation = ptLocalized.solution.explanation;
+      expect(ptExplanation).toContain('"Você matou ele?"');
+      expect(ptExplanation).not.toContain("Eu vou matar ele!");
+      expect(ptExplanation).toContain(ptCallsToVictor[0][1]);
+      expect(ptExplanation).toContain(ptCallsToVictor[1][1]);
+      expect(ptExplanation).toContain("intermediário");
+      expect(ptExplanation).not.toContain(
+        "insinuou que o verdadeiro assassino é um Carpinteiro que dirige uma Lamborghini",
+      );
+      expect(ptExplanation).toContain('marca de carro "Lamborghini"');
+      expect(ptExplanation).not.toContain('modelo de carro "Lamborghini"');
+    } finally {
+      enDb.close();
+      ptDb.close();
     }
   });
 

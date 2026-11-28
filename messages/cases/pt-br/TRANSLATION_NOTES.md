@@ -25,7 +25,7 @@ These translations are CRITICAL because they appear in SQL query results and mus
 | English | Portuguese | Rationale |
 |---------|-----------|-----------|
 | Carpenter | Carpinteiro | CRITICAL clue word - must match in occupation field and phone record text |
-| "I'm gonna kill him!" | "Eu vou matar ele!" | Natural spoken Brazilian Portuguese (not formal "Eu vou matá-lo!") |
+| "Did you kill him?" | "Você matou ele?" | Natural spoken Brazilian Portuguese (not formal "Você o matou?") |
 | Lamborghini | Lamborghini | Brand name, kept as-is |
 
 ### Case 005 - The Silicon Sabotage
