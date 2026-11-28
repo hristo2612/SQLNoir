@@ -6,6 +6,11 @@ import { X } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { supabase } from "../../lib/supabase";
 import { trackSignUpCompleted, trackLogin } from "../../lib/posthog-events";
+import {
+  getAuthRedirectUrl,
+  MIN_PASSWORD_LENGTH,
+  validateNewPassword,
+} from "../../lib/password-recovery";
 import { useTranslations } from "next-intl";
 
 interface AuthModalProps {
@@ -13,14 +18,28 @@ interface AuthModalProps {
   onClose: () => void;
 }
 
+type AuthMode = "login" | "signup" | "forgot";
+
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const t = useTranslations();
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState<AuthMode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+
+  const isLogin = mode === "login";
+  const isSignup = mode === "signup";
+  const isForgot = mode === "forgot";
+
+  const switchMode = (nextMode: AuthMode) => {
+    setMode(nextMode);
+    setError("");
+    setPassword("");
+    setConfirmPassword("");
+  };
 
   // Much simpler implementation using a direct call to Supabase
   const handleGoogleSignIn = async () => {
@@ -33,11 +52,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       setGoogleLoading(true);
       setError("");
 
-      const redirectTo =
-        process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL ||
-        (typeof window !== "undefined"
-          ? window.location.origin
-          : process.env.NEXT_PUBLIC_SITE_URL || "https://www.sqlnoir.com");
+      const redirectTo = getAuthRedirectUrl();
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -63,6 +78,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   // Reset state when modal closes
   useEffect(() => {
     if (!isOpen) {
+      setMode("login");
+      setPassword("");
+      setConfirmPassword("");
       setError("");
       setGoogleLoading(false);
     }
@@ -70,6 +88,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
 
     if (!supabase) {
       setError(t('auth.authNotAvailable'));
@@ -77,9 +96,32 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
 
     setError("");
+
+    if (isSignup) {
+      const validationError = validateNewPassword(password, confirmPassword);
+      if (validationError) {
+        setError(
+          validationError === "weakPassword"
+            ? t('auth.weakPassword')
+            : t('auth.passwordsDoNotMatch')
+        );
+        return;
+      }
+    }
+
     setLoading(true);
 
     try {
+      if (isForgot) {
+        const { error } = await supabase.auth.resetPasswordForEmail(
+          email.trim(),
+          { redirectTo: getAuthRedirectUrl() }
+        );
+        if (error) throw error;
+        setError("success:" + t('auth.resetPasswordEmailSent'));
+        return;
+      }
+
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -117,9 +159,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           // Show success message for sign up
           trackSignUpCompleted();
           setError("success:" + t('auth.accountCreated'));
-          setIsLogin(true);
+          setMode("login");
           setPassword("");
-          setLoading(false);
+          setConfirmPassword("");
           return;
         }
       }
@@ -131,7 +173,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === "undefined") return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
@@ -142,9 +184,14 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       <div className="relative bg-amber-50 rounded-xl shadow-2xl border border-amber-200 w-full max-w-md overflow-hidden">
         <div className="px-5 py-4 border-b border-amber-200 flex justify-between items-center">
           <h2 className="text-xl font-detective text-amber-900">
-            {isLogin ? t('auth.welcomeBack') : t('auth.joinInvestigation')}
+            {isForgot
+              ? t('auth.resetPassword')
+              : isLogin
+                ? t('auth.welcomeBack')
+                : t('auth.joinInvestigation')}
           </h2>
           <button
+            type="button"
             onClick={onClose}
             className="text-amber-900 hover:text-amber-700 transition-colors"
           >
@@ -165,6 +212,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </div>
           )}
 
+          {!isForgot && (
+          <>
           <button
             type="button"
             onClick={handleGoogleSignIn}
@@ -197,14 +246,24 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </span>
             </div>
           </div>
+          </>
+          )}
+
+          {isForgot && (
+            <p className="text-sm text-amber-800 mb-4">
+              {t('auth.resetPasswordDescription')}
+            </p>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-detective text-amber-800 mb-1">
+              <label htmlFor="auth-email" className="block text-sm font-detective text-amber-800 mb-1">
                 {t('auth.email')}
               </label>
               <input
+                id="auth-email"
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2
@@ -213,23 +272,59 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               />
             </div>
 
+            {!isForgot && (
             <div>
-              <label className="block text-sm font-detective text-amber-800 mb-1">
-                {t('auth.password')}
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label htmlFor="auth-password" className="block text-sm font-detective text-amber-800">
+                  {t('auth.password')}
+                </label>
+                {isLogin && (
+                  <button
+                    type="button"
+                    onClick={() => switchMode("forgot")}
+                    className="text-xs text-amber-700 hover:text-amber-600 underline-offset-2 hover:underline"
+                  >
+                    {t('auth.forgotPassword')}
+                  </button>
+                )}
+              </div>
               <input
+                id="auth-password"
                 type="password"
+                autoComplete={isLogin ? "current-password" : "new-password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2
                          focus:ring-amber-500 focus:border-amber-500 bg-white"
                 required
-                minLength={6}
+                minLength={MIN_PASSWORD_LENGTH}
               />
-              <p className="mt-1 text-xs text-amber-700">
-                {!isLogin && t('auth.passwordMinLength')}
-              </p>
+              {isSignup && (
+                <p className="mt-1 text-xs text-amber-700">
+                  {t('auth.passwordHint')}
+                </p>
+              )}
             </div>
+            )}
+
+            {isSignup && (
+              <div>
+                <label htmlFor="auth-confirm-password" className="block text-sm font-detective text-amber-800 mb-1">
+                  {t('auth.confirmPassword')}
+                </label>
+                <input
+                  id="auth-confirm-password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2
+                           focus:ring-amber-500 focus:border-amber-500 bg-white"
+                  required
+                  minLength={MIN_PASSWORD_LENGTH}
+                />
+              </div>
+            )}
 
             <button
               type="submit"
@@ -248,7 +343,11 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 </span>
               ) : (
                 <span>
-                  {isLogin ? t('auth.signInWithEmail') : t('auth.signUpWithEmail')}
+                  {isForgot
+                    ? t('auth.sendResetLink')
+                    : isLogin
+                      ? t('auth.signInWithEmail')
+                      : t('auth.signUpWithEmail')}
                 </span>
               )}
             </button>
@@ -256,16 +355,14 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <div className="text-center pt-2">
               <button
                 type="button"
-                onClick={() => {
-                  setIsLogin(!isLogin);
-                  setError("");
-                  setPassword("");
-                }}
+                onClick={() => switchMode(isForgot ? "login" : isLogin ? "signup" : "login")}
                 className="text-amber-700 hover:text-amber-600 text-sm underline-offset-2 hover:underline"
               >
-                {isLogin
-                  ? t('auth.noAccount')
-                  : t('auth.hasAccount')}
+                {isForgot
+                  ? t('auth.backToSignIn')
+                  : isLogin
+                    ? t('auth.noAccount')
+                    : t('auth.hasAccount')}
               </button>
             </div>
           </form>

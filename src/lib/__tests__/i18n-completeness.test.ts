@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import enMessages from "../../../messages/en.json";
 import ptBrMessages from "../../../messages/pt-br.json";
 import zhCnMessages from "../../../messages/zh-CN.json";
@@ -85,6 +87,27 @@ describe("i18n completeness", () => {
       const v = valueAt(messages, "paywall.redirecting");
       expect(typeof v).toBe("string");
       expect((v as string).length).toBeGreaterThan(0);
+    }
+  });
+
+  it("every translation key referenced in auth components exists in all locales", () => {
+    const authDir = join(process.cwd(), "src", "components", "auth");
+    const files = readdirSync(authDir).filter((f) => f.endsWith(".tsx"));
+    const keyRe = /\bt\(\s*['"]([^'"]+)['"]/g;
+    const referencedKeys = new Set<string>();
+    for (const file of files) {
+      const source = readFileSync(join(authDir, file), "utf8");
+      for (const match of source.matchAll(keyRe)) {
+        referencedKeys.add(match[1]);
+      }
+    }
+    expect(referencedKeys.size).toBeGreaterThan(0);
+    for (const key of referencedKeys) {
+      for (const messages of [enMessages, ptBrMessages, zhCnMessages]) {
+        const val = valueAt(messages, key);
+        expect(typeof val, `Missing translation key ${key}`).toBe("string");
+        expect((val as string).length, `Empty translation key ${key}`).toBeGreaterThan(0);
+      }
     }
   });
 });
