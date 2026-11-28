@@ -83,10 +83,10 @@ This document identifies all text strings within the case SQL databases (schemas
 | `person` | `occupation` | Job titles | 🔴 CRITICAL | "Carpenter" is a key clue |
 | `witness_statements` | `statement` | Testimony text | 🔴 CRITICAL | Contains clues about hotel, phone calls |
 | `hotel_checkins` | `hotel_name` | Hotel names | 🔴 CRITICAL | "The Grand Regency" + room 707 is a clue |
-| `surveillance_records` | `description` | Activity descriptions | 🔴 CRITICAL | "I'm gonna kill him!" is a key clue |
-| `phone_records` | `transcript` | Call transcripts | 🔴 CRITICAL | Contains the carpenter clue: "let the carpenter do his job" |
-| `final_interviews` | `transcript` | Interview text | 🔴 CRITICAL | Contains confessions |
-| `vehicle_registry` | `car_model` | Vehicle names | 🔴 CRITICAL | "Lamborghini" is a filtering clue |
+| `surveillance_records` | `note` | Activity descriptions | 🔴 CRITICAL | "Did you kill him?" is a key clue |
+| `phone_records` | `note` | Call notes | 🔴 CRITICAL | Contains the carpenter clue ("left the carpenter do it himself") and the Lambo clue ("that nice Lambo of yours") |
+| `final_interviews` | `confession` | Interview text | 🔴 CRITICAL | Contains middleman statement and final confession |
+| `vehicle_registry` | `car_make` | Vehicle makes | 🔴 CRITICAL | "Lamborghini" is a filtering clue |
 | `catering_orders` | Various | Order descriptions | 🟢 Low | Background data, not critical for solving |
 
 ---
