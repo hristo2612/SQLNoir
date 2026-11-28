@@ -7,6 +7,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { ProgressSync } from "@/components/ProgressSync";
 import { LicenseSync } from "@/components/LicenseSync";
+import { PasswordRecoveryModal } from "@/components/auth/PasswordRecoveryModal";
 import { routing } from "@/i18n/routing";
 
 const notoSansSC = Noto_Sans_SC({
@@ -205,6 +206,7 @@ export default async function LocaleLayout({
             <CookieConsent />
             <LicenseSync />
             <ProgressSync />
+            <PasswordRecoveryModal />
           </NextIntlClientProvider>
         </PostHogProvider>
         <Analytics />
