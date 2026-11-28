@@ -39,6 +39,160 @@ async function loadAndExecSchema(caseId: string, locale: string) {
 }
 
 describe("Case SQL schemas", () => {
+  it("keeps case-003 hotel_checkins and surveillance_records relationally consistent across en, pt-br, and zh-CN", async () => {
+    const localeSpecs = [
+      {
+        locale: "en",
+        personTable: "person",
+        nameCol: "name",
+        hcTable: "hotel_checkins",
+        srTable: "surveillance_records",
+        confTable: "confessions",
+        personIdCol: "person_id",
+        hcIdCol: "hotel_checkin_id",
+        hotelNameCol: "hotel_name",
+        dateCol: "check_in_date",
+        activityCol: "suspicious_activity",
+        confessionCol: "confession",
+        sunsetFilter: "%Sunset%",
+        expectedSuspects: [
+          [6, 16, "James Wilson", "Sunset Inn", "Spotted entering late at night"],
+          [7, 22, "Robert Smith", "Sunset Marina Hotel", "Seen arguing with an unknown person"],
+          [8, 55, "Thomas Brown", "Sunset Palm Resort", "Left suddenly at 3 AM"],
+        ],
+        expectedKillerConfessionSubstring: "never left the marina alive",
+      },
+      {
+        locale: "pt-br",
+        personTable: "person",
+        nameCol: "name",
+        hcTable: "hotel_checkins",
+        srTable: "surveillance_records",
+        confTable: "confessions",
+        personIdCol: "person_id",
+        hcIdCol: "hotel_checkin_id",
+        hotelNameCol: "hotel_name",
+        dateCol: "check_in_date",
+        activityCol: "suspicious_activity",
+        confessionCol: "confession",
+        sunsetFilter: "%Sunset%",
+        expectedSuspects: [
+          [6, 16, "James Wilson", "Sunset Inn", "Visto entrando tarde da noite"],
+          [7, 22, "Robert Smith", "Sunset Marina Hotel", "Visto discutindo com uma pessoa desconhecida"],
+          [8, 55, "Thomas Brown", "Sunset Palm Resort", "Saiu abruptamente às 3 da manhã"],
+        ],
+        expectedKillerConfessionSubstring: "nunca saísse vivo da marina",
+      },
+      {
+        locale: "zh-CN",
+        personTable: "人员",
+        nameCol: "name",
+        hcTable: "酒店入住记录",
+        srTable: "监控记录",
+        confTable: "供词",
+        personIdCol: "人员id",
+        hcIdCol: "酒店入住记录id",
+        hotelNameCol: "酒店名称",
+        dateCol: "入住日期",
+        activityCol: "可疑行为",
+        confessionCol: "供词",
+        sunsetFilter: "%日落%",
+        expectedSuspects: [
+          [6, 16, "赵思远", "日落旅馆", "被发现深夜进入"],
+          [7, 22, "刘志强", "日落码头酒店", "被发现与陌生人争吵"],
+          [8, 55, "黄语嫣", "日落棕榈度假村", "凌晨3点突然离开"],
+        ],
+        expectedKillerConfessionSubstring: "永远无法活着离开码头",
+      },
+    ] as const;
+
+    for (const spec of localeSpecs) {
+      const database = await loadAndExecSchema("case-003", spec.locale);
+      try {
+        expect(database.exec("PRAGMA foreign_key_check")).toHaveLength(0);
+
+        const [hcTotal, hcDistinctPersons] = database.exec(
+          `SELECT COUNT(*), COUNT(DISTINCT ${spec.personIdCol}) FROM ${spec.hcTable}`,
+        )[0].values[0];
+        expect(hcTotal).toBe(200);
+        expect(hcDistinctPersons).toBe(200);
+
+        const [srTotal, srDistinctCheckins, srNonNullCheckins] = database.exec(
+          `SELECT COUNT(*), COUNT(DISTINCT ${spec.hcIdCol}), COUNT(${spec.hcIdCol}) FROM ${spec.srTable}`,
+        )[0].values[0];
+        expect(srTotal).toBe(200);
+        expect(srDistinctCheckins).toBe(200);
+        expect(srNonNullCheckins).toBe(200);
+
+        // Every surveillance_records row must reference a hotel_checkins row for the same person
+        const mismatches = database.exec(
+          `SELECT sr.id, sr.${spec.personIdCol}, sr.${spec.hcIdCol}, hc.${spec.personIdCol}
+           FROM ${spec.srTable} sr
+           LEFT JOIN ${spec.hcTable} hc ON hc.id = sr.${spec.hcIdCol}
+           WHERE hc.id IS NULL OR sr.${spec.personIdCol} != hc.${spec.personIdCol}`,
+        );
+        expect(mismatches).toHaveLength(0);
+
+        // Joining on hotel_checkin_id, person_id, or both must yield identical Sunset 19860813 rows
+        const joinByCheckinId = database.exec(
+          `SELECT hc.id, hc.${spec.personIdCol}, p.${spec.nameCol}, hc.${spec.hotelNameCol}, sr.${spec.activityCol}
+           FROM ${spec.hcTable} hc
+           JOIN ${spec.personTable} p ON p.id = hc.${spec.personIdCol}
+           JOIN ${spec.srTable} sr ON sr.${spec.hcIdCol} = hc.id
+           WHERE hc.${spec.hotelNameCol} LIKE '${spec.sunsetFilter}'
+             AND hc.${spec.dateCol} = 19860813
+           ORDER BY hc.${spec.personIdCol}`,
+        )[0].values;
+
+        const joinByPersonId = database.exec(
+          `SELECT hc.id, hc.${spec.personIdCol}, p.${spec.nameCol}, hc.${spec.hotelNameCol}, sr.${spec.activityCol}
+           FROM ${spec.hcTable} hc
+           JOIN ${spec.personTable} p ON p.id = hc.${spec.personIdCol}
+           JOIN ${spec.srTable} sr ON sr.${spec.personIdCol} = hc.${spec.personIdCol}
+           WHERE hc.${spec.hotelNameCol} LIKE '${spec.sunsetFilter}'
+             AND hc.${spec.dateCol} = 19860813
+           ORDER BY hc.${spec.personIdCol}`,
+        )[0].values;
+
+        const joinByBoth = database.exec(
+          `SELECT hc.id, hc.${spec.personIdCol}, p.${spec.nameCol}, hc.${spec.hotelNameCol}, sr.${spec.activityCol}
+           FROM ${spec.hcTable} hc
+           JOIN ${spec.personTable} p ON p.id = hc.${spec.personIdCol}
+           JOIN ${spec.srTable} sr ON sr.${spec.hcIdCol} = hc.id AND sr.${spec.personIdCol} = hc.${spec.personIdCol}
+           WHERE hc.${spec.hotelNameCol} LIKE '${spec.sunsetFilter}'
+             AND hc.${spec.dateCol} = 19860813
+           ORDER BY hc.${spec.personIdCol}`,
+        )[0].values;
+
+        expect(joinByCheckinId).toHaveLength(50);
+        expect(joinByCheckinId).toEqual(joinByPersonId);
+        expect(joinByBoth).toEqual(joinByPersonId);
+
+        // Issue #52 reproducer: LEFT JOIN via hotel_checkin_id returns 1 exact row per key suspect
+        const keySuspects = database.exec(
+          `SELECT hc.${spec.personIdCol}, hc.id, p.${spec.nameCol}, hc.${spec.hotelNameCol}, sr.${spec.activityCol}
+           FROM ${spec.hcTable} hc
+           LEFT JOIN ${spec.personTable} p ON hc.${spec.personIdCol} = p.id
+           LEFT JOIN ${spec.srTable} sr ON hc.id = sr.${spec.hcIdCol}
+           WHERE hc.${spec.hotelNameCol} LIKE '${spec.sunsetFilter}'
+             AND hc.${spec.dateCol} = 19860813
+             AND hc.${spec.personIdCol} IN (6, 7, 8)
+           ORDER BY hc.${spec.personIdCol}`,
+        )[0].values;
+        expect(keySuspects).toEqual(spec.expectedSuspects);
+
+        const killerConfession = String(
+          database.exec(
+            `SELECT ${spec.confessionCol} FROM ${spec.confTable} WHERE ${spec.personIdCol} = 8`,
+          )[0].values[0][0],
+        );
+        expect(killerConfession).toContain(spec.expectedKillerConfessionSubstring);
+      } finally {
+        database.close();
+      }
+    }
+  });
+
   it("initializes pt-br case-004 in sql.js without syntax errors and preserves final interviews", async () => {
     const ptDb = await loadAndExecSchema("case-004", "pt-br");
     const enDb = await loadAndExecSchema("case-004", "en");

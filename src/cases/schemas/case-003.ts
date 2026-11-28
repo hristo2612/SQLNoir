@@ -753,6 +753,12 @@ export default [
       (199, 130, 'Beach Paradise Resort', 19860815),
       (200, 131, 'Coral View Lodge', 19860813)
     ;`,
+  `UPDATE hotel_checkins
+      SET person_id = CASE
+        WHEN id BETWEEN 138 AND 195 THEN id + 5
+        WHEN id BETWEEN 196 AND 200 THEN id - 195
+      END
+      WHERE id BETWEEN 138 AND 200;`,
 
   // 5. Surveillance Records Table (Used to further filter hotel check-ins)
   `CREATE TABLE surveillance_records (
@@ -965,6 +971,12 @@ export default [
       (199, 199, 40, NULL),
       (200, 200, 70, 'Asked about checkout time')
     ;`,
+  `UPDATE surveillance_records
+      SET hotel_checkin_id = (
+        SELECT hc.id
+        FROM hotel_checkins hc
+        WHERE hc.person_id = surveillance_records.person_id
+      );`,
 
   // 6. Final Interviews Table
   `CREATE TABLE confessions (
