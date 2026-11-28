@@ -35,7 +35,7 @@ export function CaseSolver({ caseData, onBack, onSolve, caseStartTime }: CaseSol
     { id: "brief", label: t('caseSolver.caseBrief'), icon: Book },
     { id: "workspace", label: t('caseSolver.sqlWorkspace'), icon: Code },
     { id: "schema", label: t('caseSolver.schema'), icon: Database },
-    { id: "notes", label: t('caseSolver.notes'), icon: PenLine, desktopOnly: true },
+    { id: "notes", label: t('caseSolver.notes'), icon: PenLine },
     { id: "submit", label: t('caseSolver.submit'), icon: Send },
   ];
 
@@ -121,34 +121,34 @@ export function CaseSolver({ caseData, onBack, onSolve, caseStartTime }: CaseSol
 
         {/* Mobile Navigation - Always Visible */}
         <div className="border-t border-amber-200 overflow-x-auto">
-          <div className="flex p-2 gap-2 min-w-full justify-center lg:justify-start">
-            {tabs
-              .filter((tab) => !tab.desktopOnly)
-              .map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabClick(tab.id)}
-                    className={`
-                    flex items-center px-3 py-2 rounded-lg font-detective text-sm whitespace-nowrap
-                    ${
-                      isActive
-                        ? "bg-amber-200 text-amber-900"
-                        : "bg-amber-100/50 text-amber-700 hover:bg-amber-100"
-                    }
-                  `}
-                  >
-                    {isActive ? (
-                      <Icon className="w-4 h-4 mr-2" />
-                    ) : (
-                      <Icon className="w-4 h-4 lg:mr-2" />
-                    )}
-                    {isActive ? tab.label : ""}
-                  </button>
-                );
-              })}
+          <div className="flex p-2 gap-2 w-max min-w-full justify-center lg:justify-start">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  aria-label={tab.label}
+                  title={tab.label}
+                  className={`
+                  flex items-center px-3 py-2 rounded-lg font-detective text-sm whitespace-nowrap
+                  ${
+                    isActive
+                      ? "bg-amber-200 text-amber-900"
+                      : "bg-amber-100/50 text-amber-700 hover:bg-amber-100"
+                  }
+                `}
+                >
+                  {isActive ? (
+                    <Icon className="w-4 h-4 mr-2" />
+                  ) : (
+                    <Icon className="w-4 h-4 lg:mr-2" />
+                  )}
+                  {isActive ? tab.label : ""}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
