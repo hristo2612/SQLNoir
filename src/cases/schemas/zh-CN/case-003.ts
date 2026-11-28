@@ -755,6 +755,12 @@ export default [
       (199,130,'海滩天堂度假村', 19860815),
       (200,131,'珊瑚之光旅馆', 19860813)
     ;`,
+  `UPDATE 酒店入住记录
+      SET 人员id = CASE
+        WHEN id BETWEEN 138 AND 195 THEN id + 5
+        WHEN id BETWEEN 196 AND 200 THEN id - 195
+      END
+      WHERE id BETWEEN 138 AND 200;`,
 
   // 5. Surveillance Records Table (Used to further filter hotel check-ins)
   `CREATE TABLE  监控记录 (
@@ -967,6 +973,12 @@ export default [
       (199,199,40,NULL),
       (200,200,70,'询问退房时间')
     ;`,
+  `UPDATE 监控记录
+      SET 酒店入住记录id = (
+        SELECT hc.id
+        FROM 酒店入住记录 hc
+        WHERE hc.人员id = 监控记录.人员id
+      );`,
 
   // 6. Final Confessions Table
   `CREATE TABLE 供词 (
