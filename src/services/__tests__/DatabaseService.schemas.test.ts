@@ -4,6 +4,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import initSqlJs, { type SqlJsStatic } from "sql.js";
 import { db } from "../DatabaseService";
 import case004 from "@/cases/case-004";
+import case005 from "@/cases/case-005";
 import { getLocalizedCase } from "@/lib/case-localization";
 
 const ALL_CASE_IDS = [
@@ -433,11 +434,135 @@ describe("Case SQL schemas", () => {
          WHERE f.facility_name = 'Facility 18' AND f.access_date = 19890421
          ORDER BY f.access_time`,
       )[0].values.map((row) => row[0]);
-      expect(facility18Employees).toContain("Elizabeth Gordon");
-      expect(facility18Employees).toContain("Hristo Bogoev");
+      expect(facility18Employees).toEqual(["Elizabeth Gordon", "Hristo Bogoev"]);
     } finally {
       ptDb.close();
       enDb.close();
+    }
+  });
+
+  it("keeps case-005 Facility 18 access logs restricted to the two clue entries across en, pt-br, and zh-CN", async () => {
+    const localeSpecs = [
+      {
+        locale: "en",
+        logsTable: "facility_access_logs",
+        employeesTable: "employee_records",
+        employeeIdCol: "employee_id",
+        employeeNameCol: "employee_name",
+        facilityNameCol: "facility_name",
+        accessDateCol: "access_date",
+        accessTimeCol: "access_time",
+        facility18: "Facility 18",
+        facility20: "Facility 20",
+        expectedEntries: [
+          [74, 99, "Elizabeth Gordon", 19890421, "08:55"],
+          [81, 297, "Hristo Bogoev", 19890421, "09:01"],
+        ],
+        expectedExplanationSubstring:
+          "Only two individuals accessed Facility 18: Elizabeth Gordon and one other shortly afterward - Hristo Bogoev.",
+      },
+      {
+        locale: "pt-br",
+        logsTable: "facility_access_logs",
+        employeesTable: "employee_records",
+        employeeIdCol: "employee_id",
+        employeeNameCol: "employee_name",
+        facilityNameCol: "facility_name",
+        accessDateCol: "access_date",
+        accessTimeCol: "access_time",
+        facility18: "Facility 18",
+        facility20: "Facility 20",
+        expectedEntries: [
+          [74, 99, "Elizabeth Gordon", 19890421, "08:55"],
+          [81, 297, "Hristo Bogoev", 19890421, "09:01"],
+        ],
+        expectedExplanationSubstring:
+          "Apenas dois indivíduos acessaram a Instalação 18: Elizabeth Gordon e outro logo em seguida - Hristo Bogoev.",
+      },
+      {
+        locale: "zh-CN",
+        logsTable: "设施访问日志",
+        employeesTable: "员工信息",
+        employeeIdCol: "员工id",
+        employeeNameCol: "员工姓名",
+        facilityNameCol: "设施名称",
+        accessDateCol: "访问日期",
+        accessTimeCol: "访问时间",
+        facility18: "18号设施",
+        facility20: "20号设施",
+        expectedEntries: [
+          [74, 99, "刘欣怡", 19890421, "08:55"],
+          [81, 297, "黄浩宇", 19890421, "09:01"],
+        ],
+        expectedExplanationSubstring:
+          "结果显示进入 18 号设施的只有两个人：刘欣怡，以及紧随其后进入的黄浩宇。",
+      },
+    ] as const;
+
+    for (const spec of localeSpecs) {
+      const database = await loadAndExecSchema("case-005", spec.locale);
+      try {
+        const totalRows = Number(
+          database.exec(`SELECT COUNT(*) FROM ${spec.logsTable}`)[0].values[0][0],
+        );
+        expect(totalRows, `${spec.locale} total facility_access_logs rows`).toBe(100);
+
+        const facility18OnDay = database
+          .exec(
+            `SELECT f.id, f.${spec.employeeIdCol}, e.${spec.employeeNameCol}, f.${spec.accessDateCol}, f.${spec.accessTimeCol}
+             FROM ${spec.logsTable} f
+             JOIN ${spec.employeesTable} e ON e.id = f.${spec.employeeIdCol}
+             WHERE f.${spec.facilityNameCol} = '${spec.facility18}'
+               AND f.${spec.accessDateCol} = 19890421
+             ORDER BY f.${spec.accessTimeCol}`,
+          )[0]
+          .values.map((row) => [
+            Number(row[0]),
+            Number(row[1]),
+            String(row[2]),
+            Number(row[3]),
+            String(row[4]),
+          ]);
+        expect(facility18OnDay, `${spec.locale} Facility 18 on 19890421`).toEqual(
+          spec.expectedEntries,
+        );
+
+        const facility18AllDates = database
+          .exec(
+            `SELECT f.id, f.${spec.employeeIdCol}, e.${spec.employeeNameCol}, f.${spec.accessDateCol}, f.${spec.accessTimeCol}
+             FROM ${spec.logsTable} f
+             JOIN ${spec.employeesTable} e ON e.id = f.${spec.employeeIdCol}
+             WHERE f.${spec.facilityNameCol} = '${spec.facility18}'
+             ORDER BY f.${spec.accessTimeCol}`,
+          )[0]
+          .values.map((row) => [
+            Number(row[0]),
+            Number(row[1]),
+            String(row[2]),
+            Number(row[3]),
+            String(row[4]),
+          ]);
+        expect(facility18AllDates, `${spec.locale} Facility 18 across all dates`).toEqual(
+          spec.expectedEntries,
+        );
+
+        const row59 = database.exec(
+          `SELECT id, ${spec.employeeIdCol}, ${spec.facilityNameCol}, ${spec.accessDateCol}, ${spec.accessTimeCol}
+           FROM ${spec.logsTable}
+           WHERE id = 59`,
+        )[0].values[0];
+        expect(
+          [Number(row59[0]), Number(row59[1]), String(row59[2]), Number(row59[3]), String(row59[4])],
+          `${spec.locale} row 59 reassigned away from Facility 18`,
+        ).toEqual([59, 290, spec.facility20, 19890421, "12:56"]);
+
+        const localizedCase = await getLocalizedCase(case005, spec.locale);
+        expect(localizedCase.solution.explanation, `${spec.locale} solution explanation`).toContain(
+          spec.expectedExplanationSubstring,
+        );
+      } finally {
+        database.close();
+      }
     }
   });
 
