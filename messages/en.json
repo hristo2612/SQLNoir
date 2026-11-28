@@ -150,7 +150,11 @@
   },
   "solution": {
     "caseSolved": "Case Solved!",
+    "alreadySolved": "Case Already Solved",
+    "alreadySolvedDescription": "You have already cracked this case. Review your findings below.",
     "caseClosedStamp": "Case Closed",
+    "submittedAnswer": "Your Submitted Answer",
+    "xpEarned": "{xp} XP Earned",
     "explanation": "Explanation",
     "saveXpNote": "Your XP is saved on this device. Sign in anytime to keep it across devices.",
     "unlockRemainingCases": "Unlock the remaining cases",

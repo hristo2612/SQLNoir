@@ -150,7 +150,11 @@
   },
   "solution": {
     "caseSolved": "案件已侦破！",
+    "alreadySolved": "此案件已侦破",
+    "alreadySolvedDescription": "你已经侦破了这起案件，可在下方回顾你的调查结果。",
     "caseClosedStamp": "结案",
+    "submittedAnswer": "你提交的答案",
+    "xpEarned": "已获得 {xp} XP",
     "explanation": "解析说明",
     "saveXpNote": "你的经验值已保存在这台设备上。登录后可在多台设备间保留进度。",
     "unlockRemainingCases": "解锁剩余案件",

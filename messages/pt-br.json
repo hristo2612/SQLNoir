@@ -150,7 +150,11 @@
   },
   "solution": {
     "caseSolved": "Caso Resolvido!",
+    "alreadySolved": "Caso Já Resolvido",
+    "alreadySolvedDescription": "Você já solucionou este caso. Revise suas descobertas abaixo.",
     "caseClosedStamp": "Caso Encerrado",
+    "submittedAnswer": "Sua Resposta Enviada",
+    "xpEarned": "{xp} XP Ganhos",
     "explanation": "Explicação",
     "saveXpNote": "Seu XP está salvo neste dispositivo. Entre quando quiser para manter o progresso entre dispositivos.",
     "unlockRemainingCases": "Desbloqueie os casos restantes",
