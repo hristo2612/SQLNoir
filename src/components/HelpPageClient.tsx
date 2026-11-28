@@ -50,7 +50,7 @@ export function HelpPageClient() {
                 className="underline"
                 onClick={() => track("help_action", { action: "blog", page: "/help" })}
               >
-                {t('help.caseFiles')}
+                {t('help.detectivesJournal')}
               </Link>
               .
             </p>
